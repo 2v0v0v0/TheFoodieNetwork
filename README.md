@@ -1,6 +1,3 @@
-Original App Design Project - README Template
-===
-
 # The Foodie Network
 
 ## Table of Contents
@@ -11,7 +8,7 @@ Original App Design Project - README Template
 
 ## Overview
 ### Description
-Social club for foodies of all experience levels. To connect and explore new taste across the nation.
+Social club for foodies of all experience levels. To connect and explore new taste across the nation. You write reviews for yourself and your friends. 
 
 ### App Evaluation
 [Evaluation of your app across the following attributes]
@@ -28,45 +25,51 @@ Social club for foodies of all experience levels. To connect and explore new tas
 
 **Required Must-have Stories**
 
-*User can sign up for account 
-*Login/out of the app
-*Posting review to restaurants + pictures
-*Have followers and following friends
-*add profile picture
-*Google map API
-*Feed/timeline
+* User can sign up for account 
+* Login/out of the app
+* Posting review to restaurants + pictures
+* Have followers and following friends
+* add profile picture
+* Feed/timeline
 
 **Optional Nice-to-have Stories**
 
 * Create events and invite friends
-*share reviews and recommendations
-* ...
+* share reviews and recommendations
+* User can favorites reviews
+* User can bookmark review and view bookmarked reviews
+* User can comment on post/review
 
 ### 2. Screen Archetypes
 
 * [login page]
    * user can login and out of app
+   * go to sigup page
+* [signup page]
    * sigup for account
-* [Home timeline]
+* [Global timeline]
    * New feeds
-   * Recommend friends 
+* [Home timeline]
+   * New feeds among friends/ from followings
+* [Review compose]
+  * write and publish review
+* [Search results]
+  * search for food establishment to write a review for.
 
 ### 3. Navigation
 
 **Tab Navigation** (Tab to Screen)
 
-* [fill out your first tab]
-* [fill out your second tab]
-* [fill out your third tab]
+* Global feeds
+* Home feeds
+* Compose
+
+Optional:
+* Bookmark
+* Profile
 
 **Flow Navigation** (Screen to Screen)
-
-* [list first screen here]
-   * [list screen navigation here]
-   * ...
-* [list second screen here]
-   * [list screen navigation here]
-   * ...
+* 
 
 ## Wireframes
 [Add picture of your hand sketched wireframes in this section]
@@ -79,9 +82,36 @@ Social club for foodies of all experience levels. To connect and explore new tas
 ## Schema 
 [This section will be completed in Unit 9]
 ### Models
-[Add table of models]
+#### Review
+
+   | Property      | Type     | Description |
+   | ------------- | -------- | ------------|
+   | objectId      | String   | unique id for the user post (default field) |
+   | author        | Pointer to User| image author |
+   | image         | File     | image that user posts |
+   | text          | String   | review text |
+   | rating        | Number   | out of 5 rating score |
+   | recommend     | Boolean  | Does user want to recommend this place to friends |
+   | commentsCount | Number   | number of comments that has been posted to a review |
+   | likesCount    | Number   | number of likes for the post |
+   | createdAt     | DateTime | date when post is created (default field) |
+   | updatedAt     | DateTime | date when post is last updated (default field) |
+ 
+#### User
+
+   | Property      | Type     | Description |
+   | ------------- | -------- | ------------|
+   | objectId      | String   | unique id for the user (default field) |
+   | username      | String   | unique name for the user (required) |
+   
 ### Networking
 - [Add list of network requests by screen ]
 - [Create basic snippets for each Parse network request]
-- [OPTIONAL: List endpoints if using existing API such as Yelp]
+##### Zomato API
+- Base URL - [https://developers.zomato.com/api/v2.1/](https://developers.zomato.com/api/v2.1/)
+
+   HTTP Verb | Endpoint | Description
+   ----------|----------|------------
+    `GET`    | /search | Search for restaurants
+
 
