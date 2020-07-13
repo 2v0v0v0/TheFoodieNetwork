@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">The Foodie Network</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="login">Login</string>
+    <string name="signup">Create an account</string>
 </resources>
