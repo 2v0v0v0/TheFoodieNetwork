@@ -32,6 +32,7 @@ android {
     defaultConfig{
         buildConfigField("String", "GOOGLE_KEY", apikeyProperties['GOOGLE_KEY'])
         buildConfigField("String", "ZOMATO_KEY", apikeyProperties['ZOMATO_KEY'])
+        buildConfigField("String", "HEROKU_KEY", apikeyProperties['HEROKU_KEY'])
     }
 }
 
