@@ -1,0 +1,65 @@
+package com.fbu.thefoodienetwork;
+
+import android.util.Log;
+
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+public class ZomatoRequest {
+    private static final String TAG = "ZomatoRequest";
+    private static final String apiKey = BuildConfig.ZOMATO_KEY;
+    private static final String BASE_URL = "https://developers.zomato.com/api/v2.1/";
+    //endpoints
+    public static final String LOCATIONS = "locations";
+    public static final String LOCATION_DETAILS = "location_details";
+    public static final String SEARCH = "search";
+    public static final String RESTAURANT = "restaurant";
+
+    private OkHttpClient client = new OkHttpClient();
+    private HttpUrl.Builder urlBuilder;
+
+    public ZomatoRequest() { }
+
+    public void getLocations(String query) {
+        urlBuilder = HttpUrl.parse(BASE_URL + LOCATIONS).newBuilder();
+        urlBuilder.addQueryParameter("apikey", apiKey);
+        urlBuilder.addQueryParameter("count", "10");
+        urlBuilder.addQueryParameter("query", query);
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                Log.d(TAG, "onResponse");
+                try {
+                    String responseData = response.body().string();
+                    JSONObject json = new JSONObject(responseData);
+                    JSONArray locations = json.getJSONArray("location_suggestions");
+                } catch (JSONException e) {
+                    Log.i(TAG, "error: " + e);
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Log.d(TAG, "onFaliure");
+            }
+        });
+    }
+
+
+}

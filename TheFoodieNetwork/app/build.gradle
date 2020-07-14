@@ -28,6 +28,11 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    defaultConfig{
+        buildConfigField("String", "GOOGLE_KEY", apikeyProperties['GOOGLE_KEY'])
+        buildConfigField("String", "ZOMATO_KEY", apikeyProperties['ZOMATO_KEY'])
+    }
 }
 
 dependencies {
@@ -38,9 +43,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.github.parse-community.Parse-SDK-Android:parse:1.24.2'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1' // for logging API calls to LogCat
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-
+    implementation 'com.squareup.okhttp3:okhttp:4.1.0'
+    implementation 'com.google.android.libraries.places:places:2.3.0'
 }
