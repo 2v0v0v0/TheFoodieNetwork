@@ -3,6 +3,7 @@ package com.fbu.thefoodienetwork;
 import android.util.Log;
 
 import com.fbu.thefoodienetwork.models.Location;
+import com.fbu.thefoodienetwork.models.Restaurant;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -36,7 +37,7 @@ public class ZomatoRequest {
     public ZomatoRequest() { }
 
     public List<Location> getLocations(String query) {
-        final List<Location> locationList = new ArrayList<>();;
+        final List<Location> locationList = new ArrayList<>();
         urlBuilder = HttpUrl.parse(BASE_URL + LOCATIONS).newBuilder();
         urlBuilder.addQueryParameter("apikey", apiKey);
         urlBuilder.addQueryParameter("count", "10"); ////max number of results to display
@@ -69,7 +70,8 @@ public class ZomatoRequest {
         return locationList;
     }
 
-    public void getRetaurants(Location location, String query, int start, int count){
+    public List<Restaurant> getRetaurants(Location location, String query, int start, int count){
+        final List<Restaurant> restaurantList = new ArrayList<>();
         urlBuilder = HttpUrl.parse(BASE_URL + SEARCH).newBuilder();
         urlBuilder.addQueryParameter("apikey", apiKey);
         urlBuilder.addQueryParameter("lat", String.valueOf(location.getLatitude()));
@@ -94,7 +96,9 @@ public class ZomatoRequest {
                     String responseData = response.body().string();
                     JSONObject json = new JSONObject(responseData);
                     JSONArray restaurants = json.getJSONArray("restaurants");
+                    restaurantList.addAll(Restaurant.fromJsonArray(restaurants));
                     Log.i(TAG, restaurants.toString());
+                    Log.i(TAG, restaurantList.toString());
                 } catch (JSONException e) {
                     Log.i(TAG, "error: " + e);
                 }
@@ -105,6 +109,7 @@ public class ZomatoRequest {
                 Log.d(TAG, "onFaliure");
             }
         });
+        return restaurantList;
     }
 
 

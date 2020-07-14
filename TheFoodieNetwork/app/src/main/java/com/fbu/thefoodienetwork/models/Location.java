@@ -14,6 +14,13 @@ public class Location {
     private int city_id;
     private double latitude;
     private double longitude;
+    private String address;
+
+    public Location (String latitude, String longitude, String address){
+        this.latitude = Double.parseDouble(latitude);
+        this.longitude = Double.parseDouble(longitude);
+        this.address = address;
+    }
 
     public Location(JSONObject jsonObject) throws JSONException {
         entity_type = jsonObject.getString("entity_type");
@@ -23,10 +30,10 @@ public class Location {
         longitude = jsonObject.getDouble("longitude");
     }
 
-    public static List<Location> fromJsonArray(JSONArray movieJsonArray) throws JSONException {
+    public static List<Location> fromJsonArray(JSONArray locationJsonArray) throws JSONException {
         List<Location> locationList = new ArrayList<>();
-        for (int i = 0; i < movieJsonArray.length(); i++) {
-            locationList.add(new Location(movieJsonArray.getJSONObject(i)));
+        for (int i = 0; i < locationJsonArray.length(); i++) {
+            locationList.add(new Location(locationJsonArray.getJSONObject(i)));
         }
         return locationList;
     }
@@ -63,6 +70,14 @@ public class Location {
         this.city_id = city_id;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public double getLatitude() {
         return latitude;
     }
@@ -88,6 +103,7 @@ public class Location {
                 ", city_id=" + city_id +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
+                ", address='" + address + '\'' +
                 '}';
     }
 }
