@@ -4,18 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.SearchActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".activities.SearchActivity">
 
-    <SearchView
-        android:id="@+id/loactionSearch"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:searchIcon="@drawable/ic_action_map_pin" />
-    <SearchView
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/locationSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:drawableLeft="@drawable/ic_action_map_pin"
+            android:imeOptions="actionSearch"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/restaurantSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:drawableLeft="@drawable/ic_action_search"
+            android:imeOptions="actionSearch"
+            android:inputType="text"/>
+    </LinearLayout>
+
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/loactionSearch"
-        android:layout_margin="10dp" />
+        android:layout_height="match_parent" />
 </LinearLayout>
