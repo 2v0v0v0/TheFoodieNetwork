@@ -8,28 +8,38 @@
     tools:context=".activities.SearchActivity">
 
 
-        <EditText
-            android:id="@+id/locationSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:drawableLeft="@drawable/ic_action_map_pin"
-            android:imeOptions="actionSearch"
-            android:inputType="text"/>
+    <EditText
+        android:id="@+id/locationSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:drawableLeft="@drawable/ic_action_map_pin"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:visibility="visible"/>
 
-        <EditText
-            android:id="@+id/restaurantSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:drawableLeft="@drawable/ic_action_search"
-            android:imeOptions="actionSearch"
-            android:inputType="text"/>
+    <TextView
+        android:id="@+id/locationResultTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:visibility="gone"
+        android:drawableLeft="@drawable/ic_action_map_pin"
+        tools:text="Menlo Park, CA"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/resultsRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+    <EditText
+        android:id="@+id/restaurantSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:drawableLeft="@drawable/ic_action_search"
+        android:imeOptions="actionSearch"
+        android:inputType="text" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/resultsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
 </LinearLayout>

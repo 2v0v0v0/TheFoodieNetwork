@@ -59,16 +59,30 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
                 return false;
             }
         });
+
         binding.restaurantSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if(selectedLocation == null){
+                        binding.locationSearch.setError("Select a location first.");
+                        return true;
+                    }
                     String keyWord = binding.restaurantSearch.getText().toString();
                     Log.i(TAG, keyWord);
                     performRestaurantSearch(selectedLocation, keyWord);
                     return true;
                 }
                 return false;
+            }
+        });
+
+        binding.locationResultTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.locationResultTextView.setVisibility(View.GONE);
+                binding.locationSearch.setVisibility(View.VISIBLE);
+                selectedLocation = null;
             }
         });
     }
@@ -101,7 +115,12 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
     public void onClickLocation(int position) {
         selectedLocation = locationList.get(position);
         String locationTitle = selectedLocation.getTitle();
-        binding.locationSearch.setText(locationTitle);
+
+        binding.locationSearch.getText().clear();
+        binding.locationResultTextView.setText(locationTitle);
+        binding.locationSearch.setVisibility(View.GONE);
+        binding.locationResultTextView.setVisibility(View.VISIBLE);
+
         Log.i(TAG, "selected: "+ locationTitle);
         locationList.clear();
         locationAdapter.notifyDataSetChanged();
