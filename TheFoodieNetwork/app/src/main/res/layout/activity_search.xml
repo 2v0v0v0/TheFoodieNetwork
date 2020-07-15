@@ -7,10 +7,6 @@
     android:orientation="vertical"
     tools:context=".activities.SearchActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
 
         <EditText
             android:id="@+id/locationSearch"
@@ -29,12 +25,11 @@
             android:drawableLeft="@drawable/ic_action_search"
             android:imeOptions="actionSearch"
             android:inputType="text"/>
-    </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/resultsRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/resultsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
 
 </LinearLayout>

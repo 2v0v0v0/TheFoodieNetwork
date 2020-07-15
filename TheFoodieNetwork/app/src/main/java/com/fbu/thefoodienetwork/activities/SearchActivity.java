@@ -26,7 +26,7 @@ public class SearchActivity extends AppCompatActivity {
     private static final String TAG = "SearchActivity";
     private ActivitySearchBinding binding;
     private ZomatoRequest zomatoRequest = new ZomatoRequest();
-    private List<Location> locationList;
+    private List<Location> locationList = new ArrayList<>();;
     private LocationAdapter locationAdapter;
 
     @Override
@@ -36,12 +36,6 @@ public class SearchActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
         searchListener();
-
-        locationList = new ArrayList<>();
-        locationAdapter = new LocationAdapter(this, locationList);
-        binding.resultsRecyclerView.setAdapter(locationAdapter);
-        binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
     }
 
     private void searchListener(){
@@ -70,12 +64,15 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void performSearchLocation(String keyWord){
+        Log.i(TAG, locationList.toString());
         this.locationList = zomatoRequest.getLocations(keyWord);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 Log.i(TAG, locationList.toString());
-                locationAdapter.notifyDataSetChanged();
+                locationAdapter = new LocationAdapter(SearchActivity.this, locationList);
+                binding.resultsRecyclerView.setAdapter(locationAdapter);
+                binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
             }
         }, 5000);
     }

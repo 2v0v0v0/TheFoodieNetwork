@@ -21,11 +21,11 @@ import java.util.List;
 public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHolder> {
     private static final String TAG = "LocationAdapter";
     private Context context;
-    private List<Location> listLocations;
+    private List<Location> locationList;
 
-    public LocationAdapter(Context context, List<Location> listLocations) {
+    public LocationAdapter(Context context, List<Location> locationList) {
         this.context = context;
-        this.listLocations = listLocations;
+        this.locationList = locationList;
     }
 
     @NonNull
@@ -38,13 +38,14 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull LocationAdapter.ViewHolder holder, int position) {
-        Location location = listLocations.get(position);
+        Log.i(TAG, "onBindViewHolder");
+        Location location = locationList.get(position);
         holder.bind(location);
     }
 
     @Override
     public int getItemCount() {
-        return listLocations.size();
+        return locationList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
