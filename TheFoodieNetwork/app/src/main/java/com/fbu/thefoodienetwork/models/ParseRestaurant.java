@@ -6,21 +6,22 @@ import com.parse.ParseObject;
 
 @ParseClassName("Restaurant")
 public class ParseRestaurant extends ParseObject {
-    private Restaurant restaurant;
     public static final String ID = "objectId";
     public static final String ZOMATO_ID = "zomatoID";
     public static final String NAME = "name";
     public static final String CUISINES = "cuisines";
     public static final String ADRESS = "address";
     public static final String GEO_POINT = "geoPoint";
+    private Restaurant restaurant;
 
     public ParseRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
 
-    public ParseRestaurant(){};
+    public ParseRestaurant() {
+    }
 
-    public void set(){
+    public void set() {
         put(ZOMATO_ID, restaurant.getId());
         put(NAME, restaurant.getName());
         put(CUISINES, restaurant.getCuisines());

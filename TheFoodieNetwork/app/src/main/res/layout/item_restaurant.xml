@@ -26,5 +26,10 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         tools:text="2442 Pleasant Hill Rd # 3A, Duluth, GA 30096" />
+    <Button
+        android:id="@+id/reviewButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Write Review"/>
 
 </LinearLayout>

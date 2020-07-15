@@ -1,8 +1,5 @@
 package com.fbu.thefoodienetwork.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -10,17 +7,16 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.fbu.thefoodienetwork.ZomatoRequest;
 import com.fbu.thefoodienetwork.adapters.LocationAdapter;
 import com.fbu.thefoodienetwork.adapters.RestaurantAdapter;
 import com.fbu.thefoodienetwork.databinding.ActivitySearchBinding;
 import com.fbu.thefoodienetwork.models.Location;
-import com.fbu.thefoodienetwork.models.ParseRestaurant;
 import com.fbu.thefoodienetwork.models.Restaurant;
-import com.parse.ParseException;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +42,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
 
-    private void searchListener(){
+    private void searchListener() {
         binding.locationSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -64,7 +60,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    if(selectedLocation == null){
+                    if (selectedLocation == null) {
                         binding.locationSearch.setError("Select a location first.");
                         return true;
                     }
@@ -87,7 +83,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         });
     }
 
-    public void performLocationSearch(String keyWord){
+    public void performLocationSearch(String keyWord) {
         this.locationList = zomatoRequest.getLocations(keyWord);
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -99,8 +95,8 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         }, 2000);
     }
 
-    public void performRestaurantSearch(Location location, String keyWord){
-        this.restaurantList= zomatoRequest.getRetaurants(location, keyWord,0, 20);
+    public void performRestaurantSearch(Location location, String keyWord) {
+        this.restaurantList = zomatoRequest.getRetaurants(location, keyWord, 0, 20);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -115,13 +111,13 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
     public void onClickLocation(int position) {
         selectedLocation = locationList.get(position);
         String locationTitle = selectedLocation.getTitle();
-
+        //show selected location as text view
         binding.locationSearch.getText().clear();
         binding.locationResultTextView.setText(locationTitle);
         binding.locationSearch.setVisibility(View.GONE);
         binding.locationResultTextView.setVisibility(View.VISIBLE);
-
-        Log.i(TAG, "selected: "+ locationTitle);
+        //clear recycler view
+        Log.i(TAG, "selected: " + locationTitle);
         locationList.clear();
         locationAdapter.notifyDataSetChanged();
     }
@@ -130,7 +126,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
     public void onClickRestaurant(int position) {
         selectedRestaurant = restaurantList.get(position);
         String restaurantName = selectedRestaurant.getName();
-        Log.i(TAG, "selected: " +restaurantName);
+        Log.i(TAG, "selected: " + restaurantName);
         restaurantList.clear();
         restaurantAdapter.notifyDataSetChanged();
         /*ParseRestaurant parseRestaurant = new ParseRestaurant(selectedRestaurant);

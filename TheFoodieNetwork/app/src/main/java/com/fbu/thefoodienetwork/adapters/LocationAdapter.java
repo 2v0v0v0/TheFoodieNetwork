@@ -54,7 +54,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
     }
 
     public interface OnClickLocationListener {
-         void onClickLocation(int position);
+        void onClickLocation(int position);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         }
 
         public void bind(Location location) {
-            Log.i(TAG,"bind");
+            Log.i(TAG, "bind");
             locationTitle.setText(location.getTitle());
         }
     }

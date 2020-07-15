@@ -1,10 +1,12 @@
 package com.fbu.thefoodienetwork.adapters;
 
 import android.content.Context;
+import android.location.Location;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -62,23 +64,33 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         return restaurantList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView nameTextView;
         public TextView cuisinesTextView;
         public TextView addressTextView;
+        public Button reviewButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.nameTextView);
             cuisinesTextView = itemView.findViewById(R.id.cuisinesTextView);
             addressTextView = itemView.findViewById(R.id.addressTextView);
+            reviewButton = itemView.findViewById(R.id.reviewButton);
         }
 
         public void bind(Restaurant restaurant) {
-            Log.i(TAG,"bind");
+            Log.i(TAG, "bind");
             nameTextView.setText(restaurant.getName());
             cuisinesTextView.setText(restaurant.getCuisines());
             addressTextView.setText(restaurant.getAddress());
+
+            reviewButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //TODO: go to compose fragment
+                    Log.i(TAG, "on write review button clicked of " + getAdapterPosition());
+                }
+            });
         }
     }
 }

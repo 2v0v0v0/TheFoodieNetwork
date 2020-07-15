@@ -1,7 +1,5 @@
 package com.fbu.thefoodienetwork.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,6 +8,8 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.databinding.ActivitySignUpBinding;
@@ -25,6 +25,23 @@ public class SignUpActivity extends AppCompatActivity {
 
     private static EditText usernameEditText;
     private static EditText emailEditText;
+
+    private static boolean isValidEmail(CharSequence target) {
+        if (target == null) {
+            return true;
+        }
+        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
+    }
+
+    private static int isValidPassword(String password, String confirmPass) {
+        if (password.length() < 6) {
+            return PASS_INVALID_LENGTH;
+        }
+        if (!password.equals(confirmPass)) {
+            return PASS_UNMATCH;
+        }
+        return PASS_VALID;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,23 +82,6 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private static boolean isValidEmail(CharSequence target) {
-        if (target == null) {
-            return true;
-        }
-        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
-    }
-
-    private static int isValidPassword(String password, String confirmPass) {
-        if (password.length() < 6) {
-            return PASS_INVALID_LENGTH;
-        }
-        if (!password.equals(confirmPass)) {
-            return PASS_UNMATCH;
-        }
-        return PASS_VALID;
     }
 
     private void signUp(String email, String screenname, String username, String password) {
