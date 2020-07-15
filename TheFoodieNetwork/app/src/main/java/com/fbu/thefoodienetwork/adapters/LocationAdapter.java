@@ -5,17 +5,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fbu.thefoodienetwork.R;
-import com.fbu.thefoodienetwork.databinding.ItemLocationBinding;
 import com.fbu.thefoodienetwork.models.Location;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHolder> {
@@ -39,7 +36,6 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
     @Override
     public LocationAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View locationView = LayoutInflater.from(context).inflate(R.layout.item_location, parent, false);
-
         return new ViewHolder(locationView);
     }
 
@@ -78,6 +74,5 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
             Log.i(TAG,"bind");
             locationTitle.setText(location.getTitle());
         }
-
     }
 }
