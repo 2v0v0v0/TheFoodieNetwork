@@ -17,7 +17,10 @@ import com.fbu.thefoodienetwork.adapters.LocationAdapter;
 import com.fbu.thefoodienetwork.adapters.RestaurantAdapter;
 import com.fbu.thefoodienetwork.databinding.ActivitySearchBinding;
 import com.fbu.thefoodienetwork.models.Location;
+import com.fbu.thefoodienetwork.models.ParseRestaurant;
 import com.fbu.thefoodienetwork.models.Restaurant;
+import com.parse.ParseException;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,5 +114,16 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         Log.i(TAG, "selected: " +restaurantName);
         restaurantList.clear();
         restaurantAdapter.notifyDataSetChanged();
+        /*ParseRestaurant parseRestaurant = new ParseRestaurant(selectedRestaurant);
+        parseRestaurant.set();
+        parseRestaurant.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error while saving", e);
+                }
+                Log.i(TAG, "Restaurant save was success!!");
+            }
+        });*/
     }
 }

@@ -18,6 +18,8 @@ public class ParseRestaurant extends ParseObject {
         this.restaurant = restaurant;
     }
 
+    public ParseRestaurant(){};
+
     public void set(){
         put(ZOMATO_ID, restaurant.getId());
         put(NAME, restaurant.getName());
@@ -27,12 +29,12 @@ public class ParseRestaurant extends ParseObject {
         put(GEO_POINT, point);
     }
 
-    public String getId() {
+    public String getParseId() {
         return getString(ID);
     }
 
-    public String getZomatoId() {
-        return getString(ZOMATO_ID);
+    public int getZomatoId() {
+        return getInt(ZOMATO_ID);
     }
 
     public String getNAME() {
