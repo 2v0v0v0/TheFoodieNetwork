@@ -22,18 +22,16 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class ZomatoRequest {
-    private static final String TAG = "ZomatoRequest";
-    private static final String apiKey = BuildConfig.ZOMATO_KEY;
-    private static final String BASE_URL = "https://developers.zomato.com/api/v2.1/";
     //endpoints
     public static final String LOCATIONS = "locations";
     public static final String LOCATION_DETAILS = "location_details";
     public static final String SEARCH = "search";
     public static final String RESTAURANT = "restaurant";
-
+    private static final String TAG = "ZomatoRequest";
+    private static final String apiKey = BuildConfig.ZOMATO_KEY;
+    private static final String BASE_URL = "https://developers.zomato.com/api/v2.1/";
     private OkHttpClient client = new OkHttpClient();
     private HttpUrl.Builder urlBuilder;
-
 
     public List<Location> getLocations(String query) {
         final List<Location> locationList = new ArrayList<>();
@@ -69,7 +67,7 @@ public class ZomatoRequest {
         return locationList;
     }
 
-    public List<Restaurant> getRetaurants(Location location, String query, int start, int count){
+    public List<Restaurant> getRetaurants(Location location, String query, int start, int count) {
         final List<Restaurant> restaurantList = new ArrayList<>();
         urlBuilder = HttpUrl.parse(BASE_URL + SEARCH).newBuilder();
         urlBuilder.addQueryParameter("apikey", apiKey);

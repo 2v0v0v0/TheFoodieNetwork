@@ -14,11 +14,11 @@ public class ParseRestaurant extends ParseObject {
     public static final String GEO_POINT = "geoPoint";
     private Restaurant restaurant;
 
-    public ParseRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
+    public ParseRestaurant() {
     }
 
-    public ParseRestaurant() {
+    public ParseRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 
     public void set() {

@@ -3,10 +3,12 @@ package com.fbu.thefoodienetwork.models;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Parcel
 public class Location {
     private String entity_type;
     private int entity_id;
@@ -16,7 +18,10 @@ public class Location {
     private double longitude;
     private String address;
 
-    public Location (String latitude, String longitude, String address){
+    public Location() {
+    } // empty constructor needed by the Parceler library
+
+    public Location(String latitude, String longitude, String address) {
         this.latitude = Double.parseDouble(latitude);
         this.longitude = Double.parseDouble(longitude);
         this.address = address;

@@ -3,10 +3,12 @@ package com.fbu.thefoodienetwork.models;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Parcel
 public class Restaurant {
     private int id;
     private String name;
@@ -14,6 +16,9 @@ public class Restaurant {
     private Double lat;
     private Double lon;
     private String address;
+
+    public Restaurant() {
+    } // empty constructor needed by the Parceler library
 
     public Restaurant(JSONObject jsonObject) throws JSONException {
         JSONObject restaurantJSONObject = jsonObject.getJSONObject("restaurant");

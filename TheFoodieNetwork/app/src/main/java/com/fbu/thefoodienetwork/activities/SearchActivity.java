@@ -1,5 +1,6 @@
 package com.fbu.thefoodienetwork.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -17,6 +18,9 @@ import com.fbu.thefoodienetwork.adapters.RestaurantAdapter;
 import com.fbu.thefoodienetwork.databinding.ActivitySearchBinding;
 import com.fbu.thefoodienetwork.models.Location;
 import com.fbu.thefoodienetwork.models.Restaurant;
+import com.parse.ParseUser;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +87,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         });
     }
 
-    public void performLocationSearch(String keyWord) {
+    private void performLocationSearch(String keyWord) {
         this.locationList = zomatoRequest.getLocations(keyWord);
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -95,7 +99,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         }, 2000);
     }
 
-    public void performRestaurantSearch(Location location, String keyWord) {
+    private void performRestaurantSearch(Location location, String keyWord) {
         this.restaurantList = zomatoRequest.getRetaurants(location, keyWord, 0, 20);
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -129,6 +133,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         Log.i(TAG, "selected: " + restaurantName);
         restaurantList.clear();
         restaurantAdapter.notifyDataSetChanged();
+        goToRestaurantDetailsActivity();
         /*ParseRestaurant parseRestaurant = new ParseRestaurant(selectedRestaurant);
         parseRestaurant.set();
         parseRestaurant.saveInBackground(new SaveCallback() {
@@ -140,5 +145,11 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
                 Log.i(TAG, "Restaurant save was success!!");
             }
         });*/
+    }
+
+    private void goToRestaurantDetailsActivity(){
+        Intent intent = new Intent(this, RestaurantDetailsActivity.class);
+        intent.putExtra("selectedRestaurant", Parcels.wrap(selectedRestaurant));
+        startActivity(intent);
     }
 }

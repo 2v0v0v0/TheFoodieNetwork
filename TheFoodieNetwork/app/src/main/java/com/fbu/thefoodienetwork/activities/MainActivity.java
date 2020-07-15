@@ -13,7 +13,6 @@ import android.view.View;
 
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.ZomatoRequest;
-import com.fbu.thefoodienetwork.databinding.ActivityLoginBinding;
 import com.fbu.thefoodienetwork.databinding.ActivityMainBinding;
 import com.fbu.thefoodienetwork.models.Location;
 import com.parse.ParseUser;
