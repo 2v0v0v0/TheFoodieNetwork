@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.fbu.thefoodienetwork.databinding.ActivityLoginBinding;
@@ -32,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         onClickLogin();
+        onTouchRegister();
 
     }
 
@@ -63,8 +65,25 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    private void onTouchRegister(){
+        binding.SignupTextView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                Log.i(TAG, "onTouch sign up");
+                goSignUpActivity();
+                return false;
+            }
+        });
+    }
+
     private void goMainActivity() {
         Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
+        finish();
+    }
+
+    private void goSignUpActivity() {
+        Intent i = new Intent(this, SignUpActivity.class);
         startActivity(i);
         finish();
     }
