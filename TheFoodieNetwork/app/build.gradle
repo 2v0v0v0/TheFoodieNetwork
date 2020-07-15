@@ -47,4 +47,5 @@ dependencies {
     implementation 'com.github.parse-community.Parse-SDK-Android:parse:1.24.2'
     implementation 'com.squareup.okhttp3:okhttp:4.1.0'
     implementation 'com.google.android.libraries.places:places:2.3.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 }

@@ -32,13 +32,6 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
-        ZomatoRequest zq = new ZomatoRequest();
-        List<Location> locations = zq.getLocations("Lawrenceville");
-        /*Location l = locations.get(4);
-        zq.getRetaurants(l, "Korean", 0, 20);*/
-
-
     }
 
     @Override

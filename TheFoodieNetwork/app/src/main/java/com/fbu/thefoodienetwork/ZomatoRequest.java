@@ -34,7 +34,6 @@ public class ZomatoRequest {
     private OkHttpClient client = new OkHttpClient();
     private HttpUrl.Builder urlBuilder;
 
-    public ZomatoRequest() { }
 
     public List<Location> getLocations(String query) {
         final List<Location> locationList = new ArrayList<>();
@@ -70,7 +69,7 @@ public class ZomatoRequest {
         return locationList;
     }
 
-    public List<Restaurant> getRetaurants(Location location, String query, int start, int count){
+    /*public List<Restaurant> getRetaurants(Location location, String query, int start, int count){
         final List<Restaurant> restaurantList = new ArrayList<>();
         urlBuilder = HttpUrl.parse(BASE_URL + SEARCH).newBuilder();
         urlBuilder.addQueryParameter("apikey", apiKey);
@@ -110,7 +109,7 @@ public class ZomatoRequest {
             }
         });
         return restaurantList;
-    }
+    }*/
 
 
 }
