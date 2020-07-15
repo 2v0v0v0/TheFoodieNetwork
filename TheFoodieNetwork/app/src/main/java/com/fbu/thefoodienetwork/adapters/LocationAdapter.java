@@ -22,10 +22,17 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
     private static final String TAG = "LocationAdapter";
     private Context context;
     private List<Location> locationList;
+    private OnClickLocationListener onClickLocationListener;
 
     public LocationAdapter(Context context, List<Location> locationList) {
         this.context = context;
         this.locationList = locationList;
+
+        try {
+            this.onClickLocationListener = ((OnClickLocationListener) context);
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Activity must implement OnClickLocationListener.");
+        }
     }
 
     @NonNull
@@ -37,10 +44,21 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull LocationAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull LocationAdapter.ViewHolder holder, final int position) {
         Log.i(TAG, "onBindViewHolder");
-        Location location = locationList.get(position);
+        final Location location = locationList.get(position);
         holder.bind(location);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(TAG, "on click item: " + position);
+                onClickLocationListener.onClickLocation(position);
+            }
+        });
+    }
+
+    public interface OnClickLocationListener {
+         void onClickLocation(int position);
     }
 
     @Override
@@ -48,7 +66,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         return locationList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView locationTitle;
 
         public ViewHolder(@NonNull View itemView) {
@@ -60,5 +78,6 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
             Log.i(TAG,"bind");
             locationTitle.setText(location.getTitle());
         }
+
     }
 }

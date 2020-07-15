@@ -2,7 +2,6 @@ package com.fbu.thefoodienetwork.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,19 +14,19 @@ import android.widget.Toast;
 
 import com.fbu.thefoodienetwork.ZomatoRequest;
 import com.fbu.thefoodienetwork.adapters.LocationAdapter;
-import com.fbu.thefoodienetwork.databinding.ActivityMainBinding;
 import com.fbu.thefoodienetwork.databinding.ActivitySearchBinding;
 import com.fbu.thefoodienetwork.models.Location;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity implements LocationAdapter.OnClickLocationListener {
     private static final String TAG = "SearchActivity";
     private ActivitySearchBinding binding;
     private ZomatoRequest zomatoRequest = new ZomatoRequest();
     private List<Location> locationList = new ArrayList<>();;
     private LocationAdapter locationAdapter;
+    private Location selectedLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +73,17 @@ public class SearchActivity extends AppCompatActivity {
                 binding.resultsRecyclerView.setAdapter(locationAdapter);
                 binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
             }
-        }, 5000);
+        }, 2000);
     }
 
+
+    @Override
+    public void onClickLocation(int position) {
+        selectedLocation = locationList.get(position);
+        String locationTitle = locationList.get(position).getTitle();
+        binding.locationSearch.setText(locationTitle);
+        Log.i(TAG, "selected: "+ locationTitle);
+        locationList.clear();
+        locationAdapter.notifyDataSetChanged();
+    }
 }
