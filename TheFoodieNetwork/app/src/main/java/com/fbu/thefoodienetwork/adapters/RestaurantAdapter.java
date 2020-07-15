@@ -1,6 +1,7 @@
 package com.fbu.thefoodienetwork.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fbu.thefoodienetwork.R;
+import com.fbu.thefoodienetwork.activities.MainActivity;
 import com.fbu.thefoodienetwork.models.Restaurant;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -51,12 +55,14 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             public void onClick(View view) {
                 Log.i(TAG, "on click item: " + position);
                 onClickRestaurantListener.onClickRestaurant(position);
+                onClickRestaurantListener.onClickWriteReview(false);
             }
         });
     }
 
     public interface OnClickRestaurantListener {
         void onClickRestaurant(int position);
+        void onClickWriteReview(boolean indicator);
     }
 
     @Override
@@ -65,10 +71,11 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView nameTextView;
-        public TextView cuisinesTextView;
-        public TextView addressTextView;
-        public Button reviewButton;
+        private TextView nameTextView;
+        private TextView cuisinesTextView;
+        private TextView addressTextView;
+        private Button reviewButton;
+        private Restaurant selectedRestaurant;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -79,6 +86,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         }
 
         public void bind(Restaurant restaurant) {
+            selectedRestaurant = restaurant;
             Log.i(TAG, "bind");
             nameTextView.setText(restaurant.getName());
             cuisinesTextView.setText(restaurant.getCuisines());
@@ -87,10 +95,20 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             reviewButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //TODO: go to compose fragment
                     Log.i(TAG, "on write review button clicked of " + getAdapterPosition());
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        onClickRestaurantListener.onClickRestaurant(position);
+                        onClickRestaurantListener.onClickWriteReview(true);
+                    }
                 }
             });
         }
+
+        /*private void goToComposeFragment(){
+            Intent intent = new Intent(context, MainActivity.class);
+            intent.putExtra("selectedRestaurant", Parcels.wrap(selectedRestaurant));
+            context.startActivity(intent);
+        }*/
     }
 }

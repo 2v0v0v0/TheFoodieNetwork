@@ -1,10 +1,5 @@
 package com.fbu.thefoodienetwork.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,23 +7,28 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.fbu.thefoodienetwork.R;
-import com.fbu.thefoodienetwork.ZomatoRequest;
 import com.fbu.thefoodienetwork.databinding.ActivityMainBinding;
 import com.fbu.thefoodienetwork.fragments.ComposeFragment;
 import com.fbu.thefoodienetwork.fragments.GlobeFragment;
 import com.fbu.thefoodienetwork.fragments.HomeFragment;
-import com.fbu.thefoodienetwork.models.Location;
+import com.fbu.thefoodienetwork.models.Restaurant;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseUser;
 
-import java.util.List;
+import org.parceler.Parcels;
 
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivity";
+    private final static int SEARCH_CODE = 55;
     private ActivityMainBinding binding;
 
 
@@ -87,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_profile:
                 //TODO: navigate to user profile
                 return true;
+            case R.id.menu_bookmark:
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -94,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void goToSearchActivity() {
         Intent i = new Intent(MainActivity.this, SearchActivity.class);
-        startActivity(i);
+        startActivityForResult(i, SEARCH_CODE);
     }
 
     private void logoutUser() {
@@ -103,5 +105,14 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(i);
         finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == SEARCH_CODE) {
+            Restaurant restaurant = (Restaurant) Parcels.unwrap(data.getParcelableExtra("selectedRestaurant"));
+            Log.i(TAG, restaurant.toString());
+        }
     }
 }

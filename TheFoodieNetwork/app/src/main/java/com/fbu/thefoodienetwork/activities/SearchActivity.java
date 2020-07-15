@@ -18,7 +18,6 @@ import com.fbu.thefoodienetwork.adapters.RestaurantAdapter;
 import com.fbu.thefoodienetwork.databinding.ActivitySearchBinding;
 import com.fbu.thefoodienetwork.models.Location;
 import com.fbu.thefoodienetwork.models.Restaurant;
-import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
@@ -131,9 +130,6 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         selectedRestaurant = restaurantList.get(position);
         String restaurantName = selectedRestaurant.getName();
         Log.i(TAG, "selected: " + restaurantName);
-        restaurantList.clear();
-        restaurantAdapter.notifyDataSetChanged();
-        goToRestaurantDetailsActivity();
         /*ParseRestaurant parseRestaurant = new ParseRestaurant(selectedRestaurant);
         parseRestaurant.set();
         parseRestaurant.saveInBackground(new SaveCallback() {
@@ -147,9 +143,25 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         });*/
     }
 
-    private void goToRestaurantDetailsActivity(){
+    @Override
+    public void onClickWriteReview(boolean indicator) {
+        if (indicator == true) {
+            goToComposeFragment();
+        } else {
+            goToRestaurantDetailsActivity();
+        }
+    }
+
+    private void goToRestaurantDetailsActivity() {
         Intent intent = new Intent(this, RestaurantDetailsActivity.class);
         intent.putExtra("selectedRestaurant", Parcels.wrap(selectedRestaurant));
         startActivity(intent);
+    }
+
+    private void goToComposeFragment() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("selectedRestaurant", Parcels.wrap(selectedRestaurant));
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

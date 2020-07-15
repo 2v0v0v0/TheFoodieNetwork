@@ -14,7 +14,11 @@
         <menu>
             <item
                 android:id="@+id/menu_profile"
-                android:title="Profile"/>
+                android:icon="@android:drawable/ic_delete"
+                android:title="Profile" />
+            <item
+                android:id="@+id/menu_bookmark"
+                android:title="Bookmark"/>
             <item
                 android:id="@+id/menu_logout"
                 android:title="Logout"/>
