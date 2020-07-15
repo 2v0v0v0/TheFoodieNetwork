@@ -69,7 +69,7 @@ public class ZomatoRequest {
         return locationList;
     }
 
-    /*public List<Restaurant> getRetaurants(Location location, String query, int start, int count){
+    public List<Restaurant> getRetaurants(Location location, String query, int start, int count){
         final List<Restaurant> restaurantList = new ArrayList<>();
         urlBuilder = HttpUrl.parse(BASE_URL + SEARCH).newBuilder();
         urlBuilder.addQueryParameter("apikey", apiKey);
@@ -109,7 +109,5 @@ public class ZomatoRequest {
             }
         });
         return restaurantList;
-    }*/
-
-
+    }
 }

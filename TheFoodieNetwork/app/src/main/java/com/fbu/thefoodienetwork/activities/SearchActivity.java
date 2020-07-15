@@ -16,6 +16,7 @@ import com.fbu.thefoodienetwork.ZomatoRequest;
 import com.fbu.thefoodienetwork.adapters.LocationAdapter;
 import com.fbu.thefoodienetwork.databinding.ActivitySearchBinding;
 import com.fbu.thefoodienetwork.models.Location;
+import com.fbu.thefoodienetwork.models.Restaurant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,8 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
     private static final String TAG = "SearchActivity";
     private ActivitySearchBinding binding;
     private ZomatoRequest zomatoRequest = new ZomatoRequest();
-    private List<Location> locationList = new ArrayList<>();;
+    private List<Location> locationList = new ArrayList<>();
+    private List<Restaurant> restaurantList = new ArrayList<>();
     private LocationAdapter locationAdapter;
     private Location selectedLocation;
 
@@ -43,8 +45,8 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     String keyWord = binding.locationSearch.getText().toString();
-                    performSearchLocation(keyWord);
-                    Toast.makeText(SearchActivity.this, binding.locationSearch.getText(), Toast.LENGTH_LONG).show();
+                    Log.i(TAG, keyWord);
+                    performLocationSearch(keyWord);
                     return true;
                 }
                 return false;
@@ -54,7 +56,9 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    Toast.makeText(SearchActivity.this, binding.restaurantSearch.getText(), Toast.LENGTH_LONG).show();
+                    String keyWord = binding.restaurantSearch.getText().toString();
+                    Log.i(TAG, keyWord);
+                    performRestaurantSearch(selectedLocation, keyWord);
                     return true;
                 }
                 return false;
@@ -62,8 +66,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         });
     }
 
-    public void performSearchLocation(String keyWord){
-        Log.i(TAG, locationList.toString());
+    public void performLocationSearch(String keyWord){
         this.locationList = zomatoRequest.getLocations(keyWord);
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -76,7 +79,6 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         }, 2000);
     }
 
-
     @Override
     public void onClickLocation(int position) {
         selectedLocation = locationList.get(position);
@@ -85,5 +87,15 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         Log.i(TAG, "selected: "+ locationTitle);
         locationList.clear();
         locationAdapter.notifyDataSetChanged();
+    }
+
+    public void performRestaurantSearch(Location location, String keyWord){
+        this.restaurantList= zomatoRequest.getRetaurants(location, keyWord,0, 20);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.i(TAG, restaurantList.toString());
+            }
+        }, 2000);
     }
 }
