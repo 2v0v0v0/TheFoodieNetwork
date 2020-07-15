@@ -22,7 +22,7 @@ import com.fbu.thefoodienetwork.models.Restaurant;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchActivity extends AppCompatActivity implements LocationAdapter.OnClickLocationListener {
+public class SearchActivity extends AppCompatActivity implements LocationAdapter.OnClickLocationListener, RestaurantAdapter.OnClickRestaurantListener {
     private static final String TAG = "SearchActivity";
     private ActivitySearchBinding binding;
     private ZomatoRequest zomatoRequest = new ZomatoRequest();
@@ -31,6 +31,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
     private LocationAdapter locationAdapter;
     private RestaurantAdapter restaurantAdapter;
     private Location selectedLocation;
+    private Restaurant selectedRestaurant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         View view = binding.getRoot();
         setContentView(view);
         searchListener();
+        binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
 
     private void searchListener(){
@@ -76,19 +78,8 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
                 Log.i(TAG, locationList.toString());
                 locationAdapter = new LocationAdapter(SearchActivity.this, locationList);
                 binding.resultsRecyclerView.setAdapter(locationAdapter);
-                binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
             }
         }, 2000);
-    }
-
-    @Override
-    public void onClickLocation(int position) {
-        selectedLocation = locationList.get(position);
-        String locationTitle = locationList.get(position).getTitle();
-        binding.locationSearch.setText(locationTitle);
-        Log.i(TAG, "selected: "+ locationTitle);
-        locationList.clear();
-        locationAdapter.notifyDataSetChanged();
     }
 
     public void performRestaurantSearch(Location location, String keyWord){
@@ -99,8 +90,26 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
                 Log.i(TAG, restaurantList.toString());
                 restaurantAdapter = new RestaurantAdapter(SearchActivity.this, restaurantList);
                 binding.resultsRecyclerView.setAdapter(restaurantAdapter);
-                binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
             }
         }, 2000);
+    }
+
+    @Override
+    public void onClickLocation(int position) {
+        selectedLocation = locationList.get(position);
+        String locationTitle = selectedLocation.getTitle();
+        binding.locationSearch.setText(locationTitle);
+        Log.i(TAG, "selected: "+ locationTitle);
+        locationList.clear();
+        locationAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClickRestaurant(int position) {
+        selectedRestaurant = restaurantList.get(position);
+        String restaurantName = selectedRestaurant.getName();
+        Log.i(TAG, "selected: " +restaurantName);
+        restaurantList.clear();
+        restaurantAdapter.notifyDataSetChanged();
     }
 }

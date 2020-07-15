@@ -19,10 +19,17 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     private static final String TAG = "RestaurantAdapter";
     private Context context;
     private List<Restaurant> restaurantList;
+    private RestaurantAdapter.OnClickRestaurantListener onClickRestaurantListener;
 
     public RestaurantAdapter(Context context, List<Restaurant> restaurantList) {
         this.context = context;
         this.restaurantList = restaurantList;
+
+        try {
+            this.onClickRestaurantListener = ((RestaurantAdapter.OnClickRestaurantListener) context);
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Activity must implement OnClickRestaurantListener.");
+        }
     }
 
     @NonNull
@@ -33,10 +40,21 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RestaurantAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RestaurantAdapter.ViewHolder holder, final int position) {
         Log.i(TAG, "onBindViewHolder");
         final Restaurant restaurant = restaurantList.get(position);
         holder.bind(restaurant);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(TAG, "on click item: " + position);
+                onClickRestaurantListener.onClickRestaurant(position);
+            }
+        });
+    }
+
+    public interface OnClickRestaurantListener {
+        void onClickRestaurant(int position);
     }
 
     @Override

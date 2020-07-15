@@ -75,9 +75,6 @@ public class ZomatoRequest {
         urlBuilder.addQueryParameter("apikey", apiKey);
         urlBuilder.addQueryParameter("lat", String.valueOf(location.getLatitude()));
         urlBuilder.addQueryParameter("lon", String.valueOf(location.getLongitude()));
-        //sort restaurants by ascending distance
-        urlBuilder.addQueryParameter("sort", "real_distance");
-        urlBuilder.addQueryParameter("order", "asc");
         urlBuilder.addQueryParameter("q", query); //search keyword
         urlBuilder.addQueryParameter("start", String.valueOf(start)); //fetch results after offset
         urlBuilder.addQueryParameter("count", String.valueOf(count)); //max number of results to display
