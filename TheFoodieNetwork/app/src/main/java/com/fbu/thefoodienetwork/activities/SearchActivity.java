@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.fbu.thefoodienetwork.ZomatoRequest;
 import com.fbu.thefoodienetwork.adapters.LocationAdapter;
+import com.fbu.thefoodienetwork.adapters.RestaurantAdapter;
 import com.fbu.thefoodienetwork.databinding.ActivitySearchBinding;
 import com.fbu.thefoodienetwork.models.Location;
 import com.fbu.thefoodienetwork.models.Restaurant;
@@ -28,6 +29,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
     private List<Location> locationList = new ArrayList<>();
     private List<Restaurant> restaurantList = new ArrayList<>();
     private LocationAdapter locationAdapter;
+    private RestaurantAdapter restaurantAdapter;
     private Location selectedLocation;
 
     @Override
@@ -95,6 +97,9 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
             @Override
             public void run() {
                 Log.i(TAG, restaurantList.toString());
+                restaurantAdapter = new RestaurantAdapter(SearchActivity.this, restaurantList);
+                binding.resultsRecyclerView.setAdapter(restaurantAdapter);
+                binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
             }
         }, 2000);
     }
