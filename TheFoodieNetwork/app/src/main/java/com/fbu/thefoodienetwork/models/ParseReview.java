@@ -34,12 +34,12 @@ public class ParseReview extends ParseObject {
         return (ParseRestaurant) getParseObject(RESTAURANT_KEY);
     }
 
-    public void setRating(Double rating) {
+    public void setRating(float rating) {
         put(RATING_KEY, rating);
     }
 
-    public double getRating() {
-        return getDouble(RATING_KEY);
+    public float getRating() {
+        return (float)getDouble(RATING_KEY);
     }
 
     public void setText(String text) {

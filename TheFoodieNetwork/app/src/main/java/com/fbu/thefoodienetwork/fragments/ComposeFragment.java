@@ -16,10 +16,12 @@ import android.widget.Toast;
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.databinding.FragmentComposeBinding;
 import com.fbu.thefoodienetwork.models.ParseRestaurant;
+import com.fbu.thefoodienetwork.models.ParseReview;
 import com.fbu.thefoodienetwork.models.Restaurant;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
@@ -95,24 +97,55 @@ public class ComposeFragment extends Fragment {
                     Toast.makeText(getContext(), "Review cannot be empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                float reviewRating = binding.ratingBar.getRating();
+                ParseUser author = ParseUser.getCurrentUser();
+                saveReview(mRestaurant, author, reviewText, reviewRating);
             }
         });
     }
 
-    private void saveReview(Restaurant selectedRestaurant){
+    private void saveReview(Restaurant selectedRestaurant, ParseUser author, String text, float rating){
+        ParseReview review = new ParseReview();
+        review.setAuthor(author);
+        review.setRating(rating);
+        review.setText(text);
+        queryRestaurantExist(selectedRestaurant, review);
 
+        /*review.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error while saving review", e);
+                }else {
+                    Log.i(TAG, "Review save was success!!");
+                }
+            }
+        });*/
     }
 
     //TODO associate ParseRestaurant with Review
-    private void queryRestaurantExist (final Restaurant selectedRestaurant){
+    private void queryRestaurantExist (final Restaurant selectedRestaurant, final ParseReview review){
         ParseQuery<ParseRestaurant> parseRestaurantQuery = ParseQuery.getQuery(ParseRestaurant.class);
         parseRestaurantQuery.whereEqualTo(ParseRestaurant.ZOMATO_ID_KEY, selectedRestaurant.getId());
         parseRestaurantQuery.findInBackground(new FindCallback<ParseRestaurant>() {
             @Override
-            public void done(List<ParseRestaurant> objects, ParseException e) {
-                if(objects.isEmpty() || e != null){
-                    SaveRestaurant(selectedRestaurant);
+            public void done(List<ParseRestaurant> restaurants, ParseException e) {
+                if(restaurants.isEmpty() || e != null){
+                    review.setRestaurant(SaveRestaurant(selectedRestaurant));
+                }else {
+                    review.setRestaurant(restaurants.get(0));
                 }
+                review.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e != null) {
+                            Log.e(TAG, "Error while saving review", e);
+                        }else {
+                            Log.i(TAG, "Review save was success!!");
+                        }
+                    }
+                });
                 return;
             }
         });
@@ -126,8 +159,9 @@ public class ComposeFragment extends Fragment {
             public void done(ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Error while saving restaurant", e);
+                }else {
+                    Log.i(TAG, "Restaurant save was success!!");
                 }
-                Log.i(TAG, "Restaurant save was success!!");
             }
         });
         return parseRestaurant;
