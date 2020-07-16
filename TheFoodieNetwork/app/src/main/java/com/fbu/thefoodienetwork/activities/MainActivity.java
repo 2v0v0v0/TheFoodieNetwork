@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.databinding.ActivityMainBinding;
@@ -30,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivity";
     private final static int SEARCH_CODE = 55;
     private ActivityMainBinding binding;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +113,11 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == SEARCH_CODE) {
             Restaurant restaurant = (Restaurant) Parcels.unwrap(data.getParcelableExtra("selectedRestaurant"));
             Log.i(TAG, restaurant.toString());
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ComposeFragment composeFragment = ComposeFragment.newInstance(restaurant);
+            binding.bottomNavigation.setSelectedItemId(R.id.action_compose);
+            ft.replace(R.id.containerFrameLayout, composeFragment);
+            ft.commit();
         }
     }
 }
