@@ -49,7 +49,7 @@ public class ParseReview extends ParseObject {
         put(TEXT_KEY, text);
     }
 
-    public String getTEXT() {
+    public String getText() {
         return getString(TEXT_KEY);
     }
 

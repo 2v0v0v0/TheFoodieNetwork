@@ -13,7 +13,7 @@ public class ParseRestaurant extends ParseObject {
     public static final String ZOMATO_ID_KEY = "zomatoID";
     public static final String NAME_KEY = "name";
     public static final String CUISINES_KEY = "cuisines";
-    public static final String ADRESS_KEY = "address";
+    public static final String ADDRESS_KEY = "address";
     public static final String GEO_POINT_KEY = "geoPoint";
     private Restaurant restaurant;
 
@@ -28,7 +28,7 @@ public class ParseRestaurant extends ParseObject {
         put(ZOMATO_ID_KEY, restaurant.getId());
         put(NAME_KEY, restaurant.getName());
         put(CUISINES_KEY, restaurant.getCuisines());
-        put(ADRESS_KEY, restaurant.getAddress());
+        put(ADDRESS_KEY, restaurant.getAddress());
         ParseGeoPoint point = new ParseGeoPoint(restaurant.getLat(), restaurant.getLon());
         put(GEO_POINT_KEY, point);
     }
@@ -41,16 +41,16 @@ public class ParseRestaurant extends ParseObject {
         return getInt(ZOMATO_ID_KEY);
     }
 
-    public String getNAME() {
+    public String getName() {
         return getString(NAME_KEY);
     }
 
-    public String getCUISINES() {
+    public String getCuisines() {
         return getString(CUISINES_KEY);
     }
 
-    public String getADRESS() {
-        return getString(ADRESS_KEY);
+    public String getAddress() {
+        return getString(ADDRESS_KEY);
     }
 
     public ParseGeoPoint getGeoPoint() {
