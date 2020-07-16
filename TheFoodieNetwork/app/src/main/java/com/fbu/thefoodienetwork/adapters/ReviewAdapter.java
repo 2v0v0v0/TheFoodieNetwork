@@ -19,11 +19,11 @@ import java.util.List;
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
     private static final String TAG = "ReviewAdapter";
     private Context context;
-    private List<ParseReview> reviewtList;
+    private List<ParseReview> reviewsList;
 
-    public ReviewAdapter(Context context, List<ParseReview> reviewtList) {
+    public ReviewAdapter(Context context, List<ParseReview> reviewsList) {
         this.context = context;
-        this.reviewtList = reviewtList;
+        this.reviewsList = reviewsList;
     }
 
     @NonNull
@@ -36,7 +36,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ReviewAdapter.ViewHolder holder, int position) {
-        ParseReview aReview = reviewtList.get(position);
+        ParseReview aReview = reviewsList.get(position);
         try {
             holder.bind(aReview);
         } catch (ParseException e) {
@@ -46,7 +46,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return reviewtList.size();
+        return reviewsList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
