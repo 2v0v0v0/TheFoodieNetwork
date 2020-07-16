@@ -4,17 +4,30 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.RatingBar;
+import android.widget.Toast;
 
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.databinding.FragmentComposeBinding;
+import com.fbu.thefoodienetwork.models.ParseRestaurant;
 import com.fbu.thefoodienetwork.models.Restaurant;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
+import java.util.List;
+
 public class ComposeFragment extends Fragment {
+    private static final String TAG = "ComposeFragment";
     private FragmentComposeBinding binding;
     private static final String ARG_RESTAURANT = "selectedRestaurant";
     private Restaurant mRestaurant;
@@ -46,8 +59,78 @@ public class ComposeFragment extends Fragment {
         binding = FragmentComposeBinding.inflate(getLayoutInflater(), container, false);
         View view = binding.getRoot();
         if (mRestaurant != null){
-            binding.restaurantInfoTextView.setText(mRestaurant.getName());
+            ratingListener(true);
+        }else {
+            ratingListener(false);
         }
         return view;
     }
+
+    private void ratingListener(boolean enable){
+        //if restaurant is selected let user use the rating bar else show message
+        if(enable == true){
+            binding.restaurantInfoTextView.setText(mRestaurant.getName());
+            binding.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                    binding.ratingTextView.setText(String.valueOf(ratingBar.getRating()));
+                }
+            });
+            submitButtonListener();
+        }else {
+            binding.ratingBar.setEnabled(false);
+            binding.ratingBar.setIsIndicator(true);
+            binding.reviewEditText.setEnabled(false);
+        }
+        //TODO: set up some message
+    }
+
+    private void submitButtonListener(){
+        binding.submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String reviewText = binding.reviewEditText.getText().toString();
+                //check if review text is empty
+                if (reviewText.isEmpty()) {
+                    Toast.makeText(getContext(), "Review cannot be empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+        });
+    }
+
+    private void saveReview(Restaurant selectedRestaurant){
+
+    }
+
+    //TODO associate ParseRestaurant with Review
+    private void queryRestaurantExist (final Restaurant selectedRestaurant){
+        ParseQuery<ParseRestaurant> parseRestaurantQuery = ParseQuery.getQuery(ParseRestaurant.class);
+        parseRestaurantQuery.whereEqualTo(ParseRestaurant.ZOMATO_ID, selectedRestaurant.getId());
+        parseRestaurantQuery.findInBackground(new FindCallback<ParseRestaurant>() {
+            @Override
+            public void done(List<ParseRestaurant> objects, ParseException e) {
+                if(objects.isEmpty() || e != null){
+                    SaveRestaurant(selectedRestaurant);
+                }
+                return;
+            }
+        });
+    }
+
+    private ParseRestaurant SaveRestaurant(Restaurant selectedRestaurant){
+        ParseRestaurant parseRestaurant = new ParseRestaurant(selectedRestaurant);
+        parseRestaurant.set();
+        parseRestaurant.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error while saving restaurant", e);
+                }
+                Log.i(TAG, "Restaurant save was success!!");
+            }
+        });
+        return parseRestaurant;
+    }
+
 }

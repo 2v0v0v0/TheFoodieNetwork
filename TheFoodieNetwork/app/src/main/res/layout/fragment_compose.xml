@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:text="Search for a restaurant" />
         <ImageView
-            android:id="@+id/searchImageView"
+            android:id="@+id/searchIconImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_action_search"
@@ -24,7 +24,7 @@
     </LinearLayout>
 
     <RatingBar
-        android:id="@+id/rating"
+        android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -32,13 +32,22 @@
         android:rating="0"
         android:stepSize="0.5"
         android:theme="@style/RatingBar" />
+    <TextView
+        android:id="@+id/ratingTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:inputType="numberDecimal"
+        android:text="0.0"/>
 
     <EditText
+        android:id="@+id/reviewEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
 
     <Button
+        android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Submit" />
