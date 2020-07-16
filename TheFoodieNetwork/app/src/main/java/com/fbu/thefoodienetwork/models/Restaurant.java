@@ -31,7 +31,6 @@ public class Restaurant {
         lat = Double.parseDouble(locationJSONObject.getString("latitude"));
         lon = Double.parseDouble(locationJSONObject.getString("longitude"));
         address = locationJSONObject.getString("address");
-
     }
 
     public static List<Restaurant> fromJsonArray(JSONArray restaurantJsonArray) throws JSONException {

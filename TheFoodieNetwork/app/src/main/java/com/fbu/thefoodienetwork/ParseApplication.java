@@ -3,6 +3,7 @@ package com.fbu.thefoodienetwork;
 import android.app.Application;
 
 import com.fbu.thefoodienetwork.models.ParseRestaurant;
+import com.fbu.thefoodienetwork.models.ParseReview;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -14,6 +15,7 @@ public class ParseApplication extends Application {
         super.onCreate();
 
         ParseObject.registerSubclass(ParseRestaurant.class);
+        ParseObject.registerSubclass(ParseReview.class);
 
         // Initalize Parse
         Parse.initialize(new Parse.Configuration.Builder(this)

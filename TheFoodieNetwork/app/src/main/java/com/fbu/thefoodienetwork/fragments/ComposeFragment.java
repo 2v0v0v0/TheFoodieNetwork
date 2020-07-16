@@ -106,7 +106,7 @@ public class ComposeFragment extends Fragment {
     //TODO associate ParseRestaurant with Review
     private void queryRestaurantExist (final Restaurant selectedRestaurant){
         ParseQuery<ParseRestaurant> parseRestaurantQuery = ParseQuery.getQuery(ParseRestaurant.class);
-        parseRestaurantQuery.whereEqualTo(ParseRestaurant.ZOMATO_ID, selectedRestaurant.getId());
+        parseRestaurantQuery.whereEqualTo(ParseRestaurant.ZOMATO_ID_KEY, selectedRestaurant.getId());
         parseRestaurantQuery.findInBackground(new FindCallback<ParseRestaurant>() {
             @Override
             public void done(List<ParseRestaurant> objects, ParseException e) {

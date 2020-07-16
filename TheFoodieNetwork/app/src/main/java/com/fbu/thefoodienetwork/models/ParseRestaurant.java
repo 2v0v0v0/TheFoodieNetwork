@@ -4,14 +4,17 @@ import com.parse.ParseClassName;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
+import org.parceler.Parcel;
+
 @ParseClassName("Restaurant")
+@Parcel(analyze = ParseRestaurant.class)
 public class ParseRestaurant extends ParseObject {
-    public static final String ID = "objectId";
-    public static final String ZOMATO_ID = "zomatoID";
-    public static final String NAME = "name";
-    public static final String CUISINES = "cuisines";
-    public static final String ADRESS = "address";
-    public static final String GEO_POINT = "geoPoint";
+    public static final String ID_KEY = "objectId";
+    public static final String ZOMATO_ID_KEY = "zomatoID";
+    public static final String NAME_KEY = "name";
+    public static final String CUISINES_KEY = "cuisines";
+    public static final String ADRESS_KEY = "address";
+    public static final String GEO_POINT_KEY = "geoPoint";
     private Restaurant restaurant;
 
     public ParseRestaurant() {
@@ -22,35 +25,35 @@ public class ParseRestaurant extends ParseObject {
     }
 
     public void set() {
-        put(ZOMATO_ID, restaurant.getId());
-        put(NAME, restaurant.getName());
-        put(CUISINES, restaurant.getCuisines());
-        put(ADRESS, restaurant.getAddress());
+        put(ZOMATO_ID_KEY, restaurant.getId());
+        put(NAME_KEY, restaurant.getName());
+        put(CUISINES_KEY, restaurant.getCuisines());
+        put(ADRESS_KEY, restaurant.getAddress());
         ParseGeoPoint point = new ParseGeoPoint(restaurant.getLat(), restaurant.getLon());
-        put(GEO_POINT, point);
+        put(GEO_POINT_KEY, point);
     }
 
     public String getParseId() {
-        return getString(ID);
+        return getString(ID_KEY);
     }
 
     public int getZomatoId() {
-        return getInt(ZOMATO_ID);
+        return getInt(ZOMATO_ID_KEY);
     }
 
     public String getNAME() {
-        return getString(NAME);
+        return getString(NAME_KEY);
     }
 
     public String getCUISINES() {
-        return getString(CUISINES);
+        return getString(CUISINES_KEY);
     }
 
     public String getADRESS() {
-        return getString(ADRESS);
+        return getString(ADRESS_KEY);
     }
 
     public ParseGeoPoint getGeoPoint() {
-        return getParseGeoPoint(GEO_POINT);
+        return getParseGeoPoint(GEO_POINT_KEY);
     }
 }
