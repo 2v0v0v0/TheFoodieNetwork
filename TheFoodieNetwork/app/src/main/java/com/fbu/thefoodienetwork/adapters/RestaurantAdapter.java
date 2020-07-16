@@ -1,8 +1,6 @@
 package com.fbu.thefoodienetwork.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.location.Location;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +13,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fbu.thefoodienetwork.R;
-import com.fbu.thefoodienetwork.activities.MainActivity;
 import com.fbu.thefoodienetwork.models.Restaurant;
-
-import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -27,6 +22,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     private Context context;
     private List<Restaurant> restaurantList;
     private RestaurantAdapter.OnClickRestaurantListener onClickRestaurantListener;
+    private int selectedItem = 0;
+    private int lastSelected = 0;
 
     public RestaurantAdapter(Context context, List<Restaurant> restaurantList) {
         this.context = context;
@@ -46,9 +43,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         return new RestaurantAdapter.ViewHolder(restaurantView);
     }
 
-    private int selectedItem = 0;
-    private int lastSelected = 0;
-
     @Override
     public void onBindViewHolder(@NonNull RestaurantAdapter.ViewHolder holder, final int position) {
         final View background = holder.itemView.findViewById(R.id.parent);
@@ -56,7 +50,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         final Restaurant restaurant = restaurantList.get(position);
         holder.bind(restaurant);
         //If is selected the color change
-        int backgroundColor = (position == selectedItem) ? R.color.colorLightBlue: R.color.white;
+        int backgroundColor = (position == selectedItem) ? R.color.colorLightBlue : R.color.white;
 
         background.setBackgroundColor(ContextCompat.getColor(context, backgroundColor));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -70,19 +64,12 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
                 lastSelected = selectedItem;
                 //Save the position of the current selected item
                 selectedItem = position;
-
                 //This update the last item selected
                 notifyItemChanged(lastSelected);
-
                 //This update the item selected
                 notifyItemChanged(selectedItem);
             }
         });
-    }
-
-    public interface OnClickRestaurantListener {
-        void onClickRestaurant(int position);
-        void onClickMoreInfo(boolean indicator);
     }
 
     @Override
@@ -90,11 +77,16 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         return restaurantList.size();
     }
 
+    public interface OnClickRestaurantListener {
+        void onClickRestaurant(int position);
+        void onClickMoreInfo(boolean indicator);//check if the user select the restaurant or click on more info button
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView nameTextView;
         private TextView cuisinesTextView;
         private TextView addressTextView;
-        private Button moreInfowButton;
+        private Button moreInfoButton;
         private Restaurant selectedRestaurant;
 
         public ViewHolder(@NonNull View itemView) {
@@ -102,7 +94,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             nameTextView = itemView.findViewById(R.id.nameTextView);
             cuisinesTextView = itemView.findViewById(R.id.cuisinesTextView);
             addressTextView = itemView.findViewById(R.id.addressTextView);
-            moreInfowButton = itemView.findViewById(R.id.moreInfoButton);
+            moreInfoButton = itemView.findViewById(R.id.moreInfoButton);
         }
 
         public void bind(Restaurant restaurant) {
@@ -112,7 +104,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             cuisinesTextView.setText(restaurant.getCuisines());
             addressTextView.setText(restaurant.getAddress());
 
-            moreInfowButton.setOnClickListener(new View.OnClickListener() {
+            moreInfoButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Log.i(TAG, "on more info button clicked of " + getAdapterPosition());
@@ -123,6 +115,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
                     }
                 }
             });
+
         }
 
     }

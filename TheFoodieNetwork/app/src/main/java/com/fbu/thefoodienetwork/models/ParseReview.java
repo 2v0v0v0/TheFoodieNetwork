@@ -15,6 +15,7 @@ public class ParseReview extends ParseObject {
     public static final String AUTHOR_KEY = "author";
     public static final String RESTAURANT_KEY = "restaurant";
     public static final String RATING_KEY = "rating";
+    public static final String GLOBAL_KEY = "isGlobal";
     public static final String TEXT_KEY = "reviewText";
 
     public ParseReview() {
@@ -50,6 +51,14 @@ public class ParseReview extends ParseObject {
 
     public String getTEXT() {
         return getString(TEXT_KEY);
+    }
+
+    public void setGlobal(boolean shareWithEveryone){
+        put(GLOBAL_KEY, shareWithEveryone);
+    }
+
+    public boolean getGlobal(){
+        return getBoolean(GLOBAL_KEY);
     }
 
     public Date getCreatedAt(){

@@ -106,6 +106,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
                 Log.i(TAG, restaurantList.toString());
                 restaurantAdapter = new RestaurantAdapter(SearchActivity.this, restaurantList);
                 binding.resultsRecyclerView.setAdapter(restaurantAdapter);
+                selectedRestaurant = restaurantList.get(0);//set first result as default value
                 composeButtonListener();
             }
         }, 2000);
