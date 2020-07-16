@@ -27,6 +27,7 @@ Social club for foodies of all experience levels. To connect and explore new tas
 
 * User can sign up for account 
 * Login/out of the app
+* User can search for restaurants
 * Posting review to restaurants + pictures
 * Have followers and following friends
 * add profile picture
@@ -39,6 +40,9 @@ Social club for foodies of all experience levels. To connect and explore new tas
 * User can favorites reviews
 * User can bookmark review and view bookmarked reviews
 * User can comment on post/review
+*set limit rate for review user can write for restaurant in a day.
+- user cannot write review for the same restaurant more than once within 24 hours.
+- user cannot write more than 10 reviews in a day.
 
 ### 2. Screen Archetypes
 
