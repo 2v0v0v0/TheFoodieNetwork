@@ -12,4 +12,5 @@
     <color name="color1">#6c8cdc</color>
     <color name="colorPinkGray">#dcd4e4</color>
     <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
 </resources>

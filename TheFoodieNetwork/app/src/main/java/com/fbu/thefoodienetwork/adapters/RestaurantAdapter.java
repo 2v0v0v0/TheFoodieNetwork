@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fbu.thefoodienetwork.R;
@@ -45,24 +46,43 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         return new RestaurantAdapter.ViewHolder(restaurantView);
     }
 
+    private int selectedItem = 0;
+    private int lastSelected = 0;
+
     @Override
     public void onBindViewHolder(@NonNull RestaurantAdapter.ViewHolder holder, final int position) {
+        final View background = holder.itemView.findViewById(R.id.parent);
         Log.i(TAG, "onBindViewHolder");
         final Restaurant restaurant = restaurantList.get(position);
         holder.bind(restaurant);
+        //If is selected the color change
+        int backgroundColor = (position == selectedItem) ? R.color.colorLightBlue: R.color.white;
+
+        background.setBackgroundColor(ContextCompat.getColor(context, backgroundColor));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i(TAG, "on click item: " + position);
+                Log.i(TAG, "on select item: " + position);
                 onClickRestaurantListener.onClickRestaurant(position);
-                onClickRestaurantListener.onClickWriteReview(false);
+                onClickRestaurantListener.onClickMoreInfo(false);
+
+                //Save the position of the last selected item
+                lastSelected = selectedItem;
+                //Save the position of the current selected item
+                selectedItem = position;
+
+                //This update the last item selected
+                notifyItemChanged(lastSelected);
+
+                //This update the item selected
+                notifyItemChanged(selectedItem);
             }
         });
     }
 
     public interface OnClickRestaurantListener {
         void onClickRestaurant(int position);
-        void onClickWriteReview(boolean indicator);
+        void onClickMoreInfo(boolean indicator);
     }
 
     @Override
@@ -74,7 +94,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         private TextView nameTextView;
         private TextView cuisinesTextView;
         private TextView addressTextView;
-        private Button reviewButton;
+        private Button moreInfowButton;
         private Restaurant selectedRestaurant;
 
         public ViewHolder(@NonNull View itemView) {
@@ -82,7 +102,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             nameTextView = itemView.findViewById(R.id.nameTextView);
             cuisinesTextView = itemView.findViewById(R.id.cuisinesTextView);
             addressTextView = itemView.findViewById(R.id.addressTextView);
-            reviewButton = itemView.findViewById(R.id.reviewButton);
+            moreInfowButton = itemView.findViewById(R.id.moreInfoButton);
         }
 
         public void bind(Restaurant restaurant) {
@@ -92,23 +112,18 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             cuisinesTextView.setText(restaurant.getCuisines());
             addressTextView.setText(restaurant.getAddress());
 
-            reviewButton.setOnClickListener(new View.OnClickListener() {
+            moreInfowButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.i(TAG, "on write review button clicked of " + getAdapterPosition());
+                    Log.i(TAG, "on more info button clicked of " + getAdapterPosition());
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         onClickRestaurantListener.onClickRestaurant(position);
-                        onClickRestaurantListener.onClickWriteReview(true);
+                        onClickRestaurantListener.onClickMoreInfo(true);
                     }
                 }
             });
         }
 
-        /*private void goToComposeFragment(){
-            Intent intent = new Intent(context, MainActivity.class);
-            intent.putExtra("selectedRestaurant", Parcels.wrap(selectedRestaurant));
-            context.startActivity(intent);
-        }*/
     }
 }

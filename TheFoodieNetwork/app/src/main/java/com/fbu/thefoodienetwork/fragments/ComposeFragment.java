@@ -110,27 +110,17 @@ public class ComposeFragment extends Fragment {
         review.setAuthor(author);
         review.setRating(rating);
         review.setText(text);
-        queryRestaurantExist(selectedRestaurant, review);
-
-        /*review.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Error while saving review", e);
-                }else {
-                    Log.i(TAG, "Review save was success!!");
-                }
-            }
-        });*/
+        checkRestaurantExistAndSave(selectedRestaurant, review);
     }
 
-    //TODO associate ParseRestaurant with Review
-    private void queryRestaurantExist (final Restaurant selectedRestaurant, final ParseReview review){
+    private void checkRestaurantExistAndSave (final Restaurant selectedRestaurant, final ParseReview review){
         ParseQuery<ParseRestaurant> parseRestaurantQuery = ParseQuery.getQuery(ParseRestaurant.class);
         parseRestaurantQuery.whereEqualTo(ParseRestaurant.ZOMATO_ID_KEY, selectedRestaurant.getId());
         parseRestaurantQuery.findInBackground(new FindCallback<ParseRestaurant>() {
             @Override
             public void done(List<ParseRestaurant> restaurants, ParseException e) {
+                //if restaurant is not exist yet on Parse go ahead an save to Parse
+                //else get the exist restaurant and set the review points to that
                 if(restaurants.isEmpty() || e != null){
                     review.setRestaurant(SaveRestaurant(selectedRestaurant));
                 }else {
@@ -151,6 +141,7 @@ public class ComposeFragment extends Fragment {
         });
     }
 
+    //Save restaurant to Parse
     private ParseRestaurant SaveRestaurant(Restaurant selectedRestaurant){
         ParseRestaurant parseRestaurant = new ParseRestaurant(selectedRestaurant);
         parseRestaurant.set();
@@ -166,5 +157,6 @@ public class ComposeFragment extends Fragment {
         });
         return parseRestaurant;
     }
+
 
 }

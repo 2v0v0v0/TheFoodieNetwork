@@ -6,6 +6,8 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcel;
 
+import java.util.Date;
+
 @ParseClassName("Review")
 @Parcel(analyze = ParseReview.class)
 public class ParseReview extends ParseObject {
@@ -48,5 +50,9 @@ public class ParseReview extends ParseObject {
 
     public String getTEXT() {
         return getString(TEXT_KEY);
+    }
+
+    public Date getCreatedAt(){
+        return getDate(CREATED_AT_KEY);
     }
 }

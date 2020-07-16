@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_margin="10dp">
+    android:layout_margin="10dp"
+    android:id="@+id/parent">
 
     <TextView
         android:id="@+id/nameTextView"
@@ -27,9 +28,9 @@
         android:textSize="20sp"
         tools:text="2442 Pleasant Hill Rd # 3A, Duluth, GA 30096" />
     <Button
-        android:id="@+id/reviewButton"
+        android:id="@+id/moreInfoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Write Review"/>
+        android:text="More Info"/>
 
 </LinearLayout>

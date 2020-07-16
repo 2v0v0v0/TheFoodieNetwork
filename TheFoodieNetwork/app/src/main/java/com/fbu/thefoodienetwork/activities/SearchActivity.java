@@ -106,6 +106,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
                 Log.i(TAG, restaurantList.toString());
                 restaurantAdapter = new RestaurantAdapter(SearchActivity.this, restaurantList);
                 binding.resultsRecyclerView.setAdapter(restaurantAdapter);
+                composeButtonListener();
             }
         }, 2000);
     }
@@ -130,25 +131,13 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         selectedRestaurant = restaurantList.get(position);
         String restaurantName = selectedRestaurant.getName();
         Log.i(TAG, "selected: " + restaurantName);
-        /*ParseRestaurant parseRestaurant = new ParseRestaurant(selectedRestaurant);
-        parseRestaurant.set();
-        parseRestaurant.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Error while saving", e);
-                }
-                Log.i(TAG, "Restaurant save was success!!");
-            }
-        });*/
     }
 
     @Override
-    public void onClickWriteReview(boolean indicator) {
+    public void onClickMoreInfo(boolean indicator) {
         if (indicator == true) {
-            goToComposeFragment();
-        } else {
             goToRestaurantDetailsActivity();
+            return;
         }
     }
 
@@ -163,5 +152,15 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         intent.putExtra("selectedRestaurant", Parcels.wrap(selectedRestaurant));
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    private void composeButtonListener(){
+        binding.composeFltButton.setVisibility(View.VISIBLE);
+        binding.composeFltButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToComposeFragment();
+            }
+        });
     }
 }
