@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.fbu.thefoodienetwork.ZomatoRequest;
+import com.fbu.thefoodienetwork.API_Severs.ZomatoRequest;
 import com.fbu.thefoodienetwork.adapters.LocationAdapter;
 import com.fbu.thefoodienetwork.adapters.RestaurantAdapter;
 import com.fbu.thefoodienetwork.databinding.ActivitySearchBinding;

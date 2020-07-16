@@ -50,7 +50,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         final Restaurant restaurant = restaurantList.get(position);
         holder.bind(restaurant);
         //If is selected the color change
-        int backgroundColor = (position == selectedItem) ? R.color.colorLightBlue : R.color.white;
+        int backgroundColor = (position == selectedItem) ? R.color.colorLightBlue : R.color.colorMain;
 
         background.setBackgroundColor(ContextCompat.getColor(context, backgroundColor));
         holder.itemView.setOnClickListener(new View.OnClickListener() {

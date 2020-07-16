@@ -1,7 +1,8 @@
-package com.fbu.thefoodienetwork;
+package com.fbu.thefoodienetwork.API_Severs;
 
 import android.app.Application;
 
+import com.fbu.thefoodienetwork.BuildConfig;
 import com.fbu.thefoodienetwork.models.ParseRestaurant;
 import com.fbu.thefoodienetwork.models.ParseReview;
 import com.parse.Parse;

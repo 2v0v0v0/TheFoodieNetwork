@@ -1,7 +1,8 @@
-package com.fbu.thefoodienetwork;
+package com.fbu.thefoodienetwork.API_Severs;
 
 import android.util.Log;
 
+import com.fbu.thefoodienetwork.BuildConfig;
 import com.fbu.thefoodienetwork.models.Location;
 import com.fbu.thefoodienetwork.models.Restaurant;
 
