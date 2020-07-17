@@ -81,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_search:
                 goToSearchActivity();
                 return true;
+            case R.id.menu_search_friend:
+                goToSearchFriend();
+                return true;
             case R.id.menu_logout:
                 logoutUser();
                 return true;
@@ -95,8 +98,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToSearchActivity() {
-        Intent i = new Intent(MainActivity.this, SearchActivity.class);
-        startActivityForResult(i, SEARCH_CODE);
+        Intent searchActivity = new Intent(MainActivity.this, SearchActivity.class);
+        startActivityForResult(searchActivity, SEARCH_CODE);
+    }
+
+    private void goToSearchFriend(){
+        Intent searchFriend = new Intent(MainActivity.this, SearchFriendActivity.class);
+        startActivity(searchFriend);
     }
 
     private void logoutUser() {
