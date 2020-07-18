@@ -86,6 +86,16 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         });
     }
 
+    private void composeButtonListener(){
+        binding.composeFltButton.setVisibility(View.VISIBLE);
+        binding.composeFltButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToComposeFragment();
+            }
+        });
+    }
+
     private void performLocationSearch(String keyWord) {
         this.locationList = zomatoRequest.getLocations(keyWord);
         new Handler().postDelayed(new Runnable() {
@@ -153,15 +163,5 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         intent.putExtra("selectedRestaurant", Parcels.wrap(selectedRestaurant));
         setResult(RESULT_OK, intent);
         finish();
-    }
-
-    private void composeButtonListener(){
-        binding.composeFltButton.setVisibility(View.VISIBLE);
-        binding.composeFltButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToComposeFragment();
-            }
-        });
     }
 }
