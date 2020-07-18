@@ -71,7 +71,6 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         }
 
         public void bind(Location location) {
-            Log.i(TAG, "bind");
             locationTitle.setText(location.getTitle());
         }
     }

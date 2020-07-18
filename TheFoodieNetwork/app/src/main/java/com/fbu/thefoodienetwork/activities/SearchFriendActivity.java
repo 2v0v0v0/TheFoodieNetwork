@@ -22,7 +22,7 @@ public class SearchFriendActivity extends AppCompatActivity {
     private final static String TAG = "SearchFriend";
     private final static String modifier = "i";
     private final static String USERNAME_KEY = "username";
-    private final static String SCREENNAME_KEY = "screenName";
+    private final static String SCREEN_NAME_KEY = "screenName";
     private final ParseUser CURRENT_USER = ParseUser.getCurrentUser();
     List<ParseUser> userList;
     private ActivitySearchFriendBinding binding;
@@ -58,7 +58,7 @@ public class SearchFriendActivity extends AppCompatActivity {
         queryByUsername.whereMatches(USERNAME_KEY, keyword, modifier);
 
         ParseQuery<ParseUser> queryByScreenName = ParseUser.getQuery();
-        queryByScreenName.whereMatches(SCREENNAME_KEY, keyword, modifier);
+        queryByScreenName.whereMatches(SCREEN_NAME_KEY, keyword, modifier);
 
         List<ParseQuery<ParseUser>> queries = new ArrayList<>();
         queries.add(queryByUsername);
@@ -74,12 +74,11 @@ public class SearchFriendActivity extends AppCompatActivity {
                     return;
                 }
                 for (ParseUser user : results) {
-                    Log.i(TAG, "result: " + user.getUsername() + " " + user.get(SCREENNAME_KEY));
+                    Log.i(TAG, "result: " + user.getUsername() + " " + user.get(SCREEN_NAME_KEY));
                 }
                 userList.addAll(results);
             }
         });
     }
-
 
 }
