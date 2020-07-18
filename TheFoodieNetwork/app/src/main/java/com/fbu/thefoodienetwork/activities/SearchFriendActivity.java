@@ -24,8 +24,8 @@ public class SearchFriendActivity extends AppCompatActivity {
     private final static String USERNAME_KEY = "username";
     private final static String SCREENNAME_KEY = "screenName";
     private final ParseUser CURRENT_USER = ParseUser.getCurrentUser();
-    private ActivitySearchFriendBinding binding;
     List<ParseUser> userList;
+    private ActivitySearchFriendBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class SearchFriendActivity extends AppCompatActivity {
                 String keyword = binding.searchEditText.getText().toString();
                 if (actionId == EditorInfo.IME_ACTION_SEARCH && !keyword.isEmpty()) {
                     Log.i(TAG, "search for: " + keyword);
-                    searchForUsername(keyword);
+                    searchForUsernameAndScreenName(keyword);
                     return true;
                 }
                 binding.searchEditText.setError("Cannot be empty");
@@ -53,43 +53,33 @@ public class SearchFriendActivity extends AppCompatActivity {
         });
     }
 
-    private void searchForUsername(final String keyword) {
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.whereMatches(USERNAME_KEY, keyword, modifier);
-        query.whereNotEqualTo(USERNAME_KEY, CURRENT_USER.getUsername());
-        query.findInBackground(new FindCallback<ParseUser>() {
+    private void searchForUsernameAndScreenName(final String keyword) {
+        ParseQuery<ParseUser> queryByUsername = ParseUser.getQuery();
+        queryByUsername.whereMatches(USERNAME_KEY, keyword, modifier);
+
+        ParseQuery<ParseUser> queryByScreenName = ParseUser.getQuery();
+        queryByScreenName.whereMatches(SCREENNAME_KEY, keyword, modifier);
+
+        List<ParseQuery<ParseUser>> queries = new ArrayList<>();
+        queries.add(queryByUsername);
+        queries.add(queryByScreenName);
+
+        ParseQuery<ParseUser> mainQuery = ParseQuery.or(queries);
+        mainQuery.whereNotEqualTo(USERNAME_KEY, CURRENT_USER.getUsername());
+        mainQuery.findInBackground(new FindCallback<ParseUser>() {
             @Override
-            public void done(List<ParseUser> objects, ParseException e) {
+            public void done(List<ParseUser> results, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Issue with getting users");
                     return;
                 }
-                /*for (ParseUser user : objects) {
+                for (ParseUser user : results) {
                     Log.i(TAG, "result: " + user.getUsername() + " " + user.get(SCREENNAME_KEY));
-                }*/
-                userList.addAll(objects);
-                searchForScreenname(keyword);
+                }
+                userList.addAll(results);
             }
         });
     }
 
-    private void searchForScreenname(String keyword) {
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.whereMatches(SCREENNAME_KEY, keyword, modifier);
-        query.whereNotEqualTo(USERNAME_KEY, CURRENT_USER.getUsername());
-        query.findInBackground(new FindCallback<ParseUser>() {
-            @Override
-            public void done(List<ParseUser> objects, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Issue with getting users");
-                    return;
-                }
-                /*for (ParseUser user : objects) {
-                    Log.i(TAG, "result: " + user.getUsername() + " " + user.get(SCREENNAME_KEY));
-                }*/
-                userList.addAll(objects);
-            }
-        });
-    }
 
 }
