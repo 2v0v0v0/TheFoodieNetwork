@@ -42,7 +42,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         View view = binding.getRoot();
         setContentView(view);
         searchListener();
-        binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void searchListener() {

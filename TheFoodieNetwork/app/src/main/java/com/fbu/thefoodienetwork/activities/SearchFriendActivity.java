@@ -8,7 +8,10 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.fbu.thefoodienetwork.adapters.FriendAdapter;
+import com.fbu.thefoodienetwork.adapters.LocationAdapter;
 import com.fbu.thefoodienetwork.databinding.ActivitySearchFriendBinding;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -24,7 +27,8 @@ public class SearchFriendActivity extends AppCompatActivity {
     private final static String USERNAME_KEY = "username";
     private final static String SCREEN_NAME_KEY = "screenName";
     private final ParseUser CURRENT_USER = ParseUser.getCurrentUser();
-    List<ParseUser> userList;
+    private List<ParseUser> userList;
+    private FriendAdapter friendAdapter;
     private ActivitySearchFriendBinding binding;
 
     @Override
@@ -35,6 +39,9 @@ public class SearchFriendActivity extends AppCompatActivity {
         setContentView(view);
         searchListener();
         userList = new ArrayList<>();
+        binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        friendAdapter = new FriendAdapter(SearchFriendActivity.this, userList);
+        binding.resultsRecyclerView.setAdapter(friendAdapter);
     }
 
     private void searchListener() {
@@ -44,6 +51,8 @@ public class SearchFriendActivity extends AppCompatActivity {
                 String keyword = binding.searchEditText.getText().toString();
                 if (actionId == EditorInfo.IME_ACTION_SEARCH && !keyword.isEmpty()) {
                     Log.i(TAG, "search for: " + keyword);
+                    userList.clear();
+                    friendAdapter.notifyDataSetChanged();
                     searchForUsernameAndScreenName(keyword);
                     return true;
                 }
@@ -77,6 +86,7 @@ public class SearchFriendActivity extends AppCompatActivity {
                     Log.i(TAG, "result: " + user.getUsername() + " " + user.get(SCREEN_NAME_KEY));
                 }
                 userList.addAll(results);
+                friendAdapter.notifyDataSetChanged();
             }
         });
     }
