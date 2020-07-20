@@ -10,12 +10,12 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.fbu.thefoodienetwork.CurrentUserUtilities;
 import com.fbu.thefoodienetwork.adapters.FriendAdapter;
 import com.fbu.thefoodienetwork.databinding.ActivitySearchFriendBinding;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -40,10 +40,14 @@ public class SearchFriendActivity extends AppCompatActivity {
         setContentView(view);
 
         searchListener();
-        getFriendList();
 
-        currentUserFriendList = new ArrayList<>();
+        CurrentUserUtilities currentUserUtilities = new CurrentUserUtilities();
+        currentUserFriendList = currentUserUtilities.currentUserFriendList;
         resultList = new ArrayList<>();
+
+        binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        friendAdapter = new FriendAdapter(SearchFriendActivity.this, resultList, currentUserFriendList);
+        binding.resultsRecyclerView.setAdapter(friendAdapter);
     }
 
     private void searchListener() {
@@ -93,24 +97,4 @@ public class SearchFriendActivity extends AppCompatActivity {
         });
     }
 
-    private void getFriendList() {
-        ParseRelation relation = CURRENT_USER.getRelation("friends");
-        relation.getQuery().findInBackground(new FindCallback<ParseUser>() {
-            public void done(List<ParseUser> results, ParseException e) {
-                if (e != null) {
-                    Log.i(TAG, "error: " + e);
-                } else {
-                    for(ParseUser user : results){
-                        currentUserFriendList.add(user.getUsername());
-                    }
-                    binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                    friendAdapter = new FriendAdapter(SearchFriendActivity.this, resultList, currentUserFriendList);
-                    binding.resultsRecyclerView.setAdapter(friendAdapter);
-                    for (ParseUser user : results) {
-                        Log.i(TAG, user.getUsername());
-                    }
-                }
-            }
-        });
-    }
 }
