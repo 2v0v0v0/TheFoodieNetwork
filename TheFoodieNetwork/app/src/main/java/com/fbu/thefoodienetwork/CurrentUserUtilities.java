@@ -39,20 +39,18 @@ public class CurrentUserUtilities {
         });
     }
 
-    public void addFriend(ParseUser otherUser){
+    public boolean addFriend(ParseUser otherUser){
         //Create friend request
         ParseObject request = new ParseObject("FriendRequest");
         request.put("from", CURRENT_USER);
         request.put("to", otherUser);
-        request.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null) {
-                    Log.i(TAG, "friend request fail: " + e);
-                    return;
-                }
-                Log.i(TAG, "friend request success");
+        try {
+            request.save();
+        } catch (ParseException e) {
+            if(e != null){
+                return false;
             }
-        });
+        }
+        return true;
     }
 }

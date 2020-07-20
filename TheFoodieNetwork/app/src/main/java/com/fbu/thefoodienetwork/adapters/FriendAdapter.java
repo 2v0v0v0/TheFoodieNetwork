@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.fbu.thefoodienetwork.CurrentUserUtilities;
 import com.fbu.thefoodienetwork.R;
 import com.parse.ParseUser;
 
@@ -22,11 +23,12 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
     private Context context;
     private List<ParseUser> resultList;
     private List<String> friendList;
+    private CurrentUserUtilities currentUserUtilities;
 
-    public FriendAdapter(Context context, List<ParseUser> resultList, List<String> friendList) {
+    public FriendAdapter(Context context, List<ParseUser> resultList, List<String> currentUserFriendList) {
         this.context = context;
         this.resultList = resultList;
-        this.friendList = friendList;
+        this.friendList = currentUserFriendList;
     }
 
     @NonNull
@@ -39,9 +41,12 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull FriendAdapter.ViewHolder holder, int position) {
         ParseUser aUser = resultList.get(position);
-        Log.i(TAG, friendList.toString());
+        boolean setAddFriendButtonOn = false;
+        if (!friendList.contains(aUser.getUsername())){
+            setAddFriendButtonOn = true;
+        }
         try {
-            holder.bind(aUser, friendList);
+            holder.bind(aUser, setAddFriendButtonOn);
         } catch (Exception e) {
             Log.i(TAG, e.toString());
         }
@@ -65,16 +70,29 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
             addFriednImageView = itemView.findViewById(R.id.addFriendImageView);
         }
 
-        public void bind(ParseUser aUser, List<String> friendList) throws Exception {
+        public void bind(ParseUser aUser, boolean setAddFriendButtonOn) throws Exception {
             //set add friend button to only users that not in current user's friend list
-            if (!friendList.contains(aUser.getUsername())){
-                addFriednImageView.setVisibility(View.VISIBLE);
+            if (setAddFriendButtonOn){
+                addFriendButtonListener();
             }
             String screenName = aUser.get("screenName").toString();
             if(screenName != null){
                 screennameTextView.setText(screenName);
             }
                 usernameTextview.setText(aUser.getUsername());
+        }
+
+        private void addFriendButtonListener(){
+            addFriednImageView.setVisibility(View.VISIBLE);
+            addFriednImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    ParseUser otherUser = resultList.get(position);
+                    Log.i(TAG, "onclick " + otherUser.getUsername());
+                    Log.i(TAG, "success: "+currentUserUtilities.addFriend(otherUser));
+                }
+            });
         }
     }
 }

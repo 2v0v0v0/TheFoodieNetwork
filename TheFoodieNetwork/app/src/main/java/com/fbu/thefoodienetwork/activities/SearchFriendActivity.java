@@ -45,9 +45,7 @@ public class SearchFriendActivity extends AppCompatActivity {
         currentUserFriendList = currentUserUtilities.currentUserFriendList;
         resultList = new ArrayList<>();
 
-        binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        friendAdapter = new FriendAdapter(SearchFriendActivity.this, resultList, currentUserFriendList);
-        binding.resultsRecyclerView.setAdapter(friendAdapter);
+
     }
 
     private void searchListener() {
@@ -58,7 +56,6 @@ public class SearchFriendActivity extends AppCompatActivity {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH && !keyword.isEmpty()) {
                     Log.i(TAG, "search for: " + keyword);
                     resultList.clear();
-                    friendAdapter.notifyDataSetChanged();
                     searchForUsernameAndScreenName(keyword);
                     return true;
                 }
@@ -92,7 +89,9 @@ public class SearchFriendActivity extends AppCompatActivity {
                     Log.i(TAG, "result: " + user.getUsername() + " " + user.get(SCREEN_NAME_KEY));
                 }
                 resultList.addAll(results);
-                friendAdapter.notifyDataSetChanged();
+                binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                friendAdapter = new FriendAdapter(SearchFriendActivity.this, resultList, currentUserFriendList);
+                binding.resultsRecyclerView.setAdapter(friendAdapter);
             }
         });
     }
