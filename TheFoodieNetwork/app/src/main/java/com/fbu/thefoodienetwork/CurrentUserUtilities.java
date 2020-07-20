@@ -8,8 +8,10 @@ import com.fbu.thefoodienetwork.activities.SearchFriendActivity;
 import com.fbu.thefoodienetwork.adapters.FriendAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,23 @@ public class CurrentUserUtilities {
                         currentUserFriendList.add(user.getUsername());
                     }
                 }
+            }
+        });
+    }
+
+    public void addFriend(ParseUser otherUser){
+        //Create friend request
+        ParseObject request = new ParseObject("FriendRequest");
+        request.put("from", CURRENT_USER);
+        request.put("to", otherUser);
+        request.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.i(TAG, "friend request fail: " + e);
+                    return;
+                }
+                Log.i(TAG, "friend request success");
             }
         });
     }

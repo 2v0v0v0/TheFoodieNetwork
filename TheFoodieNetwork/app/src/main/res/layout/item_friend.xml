@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/ic_baseline_group_add_24"
+        android:src="@drawable/ic_baseline_person_add_24"
         android:tint="@color/colorPinkAccent"
         android:visibility="gone"
         android:layout_centerVertical="true"
