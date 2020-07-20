@@ -88,10 +88,9 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
-                    currentUserUtilities = new CurrentUserUtilities();
                     ParseUser otherUser = resultList.get(position);
                     Log.i(TAG, "onclick " + otherUser.getUsername());
-                    boolean requestSuccess = currentUserUtilities.sendFriendRequest(otherUser);
+                    boolean requestSuccess = CurrentUserUtilities.sendFriendRequest(otherUser);
                     Log.i(TAG, "success: "+ requestSuccess);
                     //addFriednImageView.setVisibility(View.GONE);
                 }

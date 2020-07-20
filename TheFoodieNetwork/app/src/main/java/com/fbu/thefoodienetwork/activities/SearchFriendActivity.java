@@ -30,6 +30,7 @@ public class SearchFriendActivity extends AppCompatActivity {
     private final ParseUser CURRENT_USER = ParseUser.getCurrentUser();
     private List<ParseUser> resultList;
     private List<String> currentUserFriendList;
+    private List<String> currentUserPendingFriendRequest;
     private FriendAdapter friendAdapter;
     private ActivitySearchFriendBinding binding;
 
@@ -42,10 +43,10 @@ public class SearchFriendActivity extends AppCompatActivity {
 
         searchListener();
 
-        CurrentUserUtilities currentUserUtilities = new CurrentUserUtilities();
-        currentUserUtilities.getFriendList();
-        currentUserFriendList = currentUserUtilities.currentUserFriendList;
 
+        currentUserFriendList = CurrentUserUtilities.currentUserFriendList;
+        currentUserPendingFriendRequest = CurrentUserUtilities.currentUserPendingFriendRequest;
+        Log.i(TAG, currentUserPendingFriendRequest.toString());
         resultList = new ArrayList<>();
     }
 
