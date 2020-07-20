@@ -11,11 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.fbu.thefoodienetwork.adapters.FriendAdapter;
-import com.fbu.thefoodienetwork.adapters.LocationAdapter;
 import com.fbu.thefoodienetwork.databinding.ActivitySearchFriendBinding;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -27,7 +27,8 @@ public class SearchFriendActivity extends AppCompatActivity {
     private final static String USERNAME_KEY = "username";
     private final static String SCREEN_NAME_KEY = "screenName";
     private final ParseUser CURRENT_USER = ParseUser.getCurrentUser();
-    private List<ParseUser> userList;
+    private List<ParseUser> resultList;
+    private List<String> currentUserFriendList;
     private FriendAdapter friendAdapter;
     private ActivitySearchFriendBinding binding;
 
@@ -37,11 +38,12 @@ public class SearchFriendActivity extends AppCompatActivity {
         binding = ActivitySearchFriendBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
         searchListener();
-        userList = new ArrayList<>();
-        binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        friendAdapter = new FriendAdapter(SearchFriendActivity.this, userList);
-        binding.resultsRecyclerView.setAdapter(friendAdapter);
+        getFriendList();
+
+        currentUserFriendList = new ArrayList<>();
+        resultList = new ArrayList<>();
     }
 
     private void searchListener() {
@@ -51,7 +53,7 @@ public class SearchFriendActivity extends AppCompatActivity {
                 String keyword = binding.searchEditText.getText().toString();
                 if (actionId == EditorInfo.IME_ACTION_SEARCH && !keyword.isEmpty()) {
                     Log.i(TAG, "search for: " + keyword);
-                    userList.clear();
+                    resultList.clear();
                     friendAdapter.notifyDataSetChanged();
                     searchForUsernameAndScreenName(keyword);
                     return true;
@@ -85,10 +87,30 @@ public class SearchFriendActivity extends AppCompatActivity {
                 for (ParseUser user : results) {
                     Log.i(TAG, "result: " + user.getUsername() + " " + user.get(SCREEN_NAME_KEY));
                 }
-                userList.addAll(results);
+                resultList.addAll(results);
                 friendAdapter.notifyDataSetChanged();
             }
         });
     }
 
+    private void getFriendList() {
+        ParseRelation relation = CURRENT_USER.getRelation("friends");
+        relation.getQuery().findInBackground(new FindCallback<ParseUser>() {
+            public void done(List<ParseUser> results, ParseException e) {
+                if (e != null) {
+                    Log.i(TAG, "error: " + e);
+                } else {
+                    for(ParseUser user : results){
+                        currentUserFriendList.add(user.getUsername());
+                    }
+                    binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    friendAdapter = new FriendAdapter(SearchFriendActivity.this, resultList, currentUserFriendList);
+                    binding.resultsRecyclerView.setAdapter(friendAdapter);
+                    for (ParseUser user : results) {
+                        Log.i(TAG, user.getUsername());
+                    }
+                }
+            }
+        });
+    }
 }
