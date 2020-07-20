@@ -15,14 +15,15 @@ import java.util.List;
 public class CurrentUserUtilities {
     private final static String TAG = "CurrentUserUtilities";
     public static List<String> currentUserFriendList;
-    public static List<String> currentUserPendingFriendRequest;
+    public static List<String> currentUserReceivedFriendRequest;
     public static List<String> currentUserSentFriendRequest;
     private static ParseUser currentUser;
 
     public CurrentUserUtilities() {
         currentUser = ParseUser.getCurrentUser();
         currentUserFriendList = new ArrayList<>();
-        currentUserPendingFriendRequest = new ArrayList<>();
+        currentUserReceivedFriendRequest = new ArrayList<>();
+        currentUserSentFriendRequest = new ArrayList<>();
         getFriendList();
         getPendingFriendRequest();
         getSentFriendRequest();
@@ -52,7 +53,7 @@ public class CurrentUserUtilities {
                     Log.i(TAG, "error: " + e);
                 } else {
                     for (ParseUser user : results) {
-                        currentUserFriendList.add(user.getUsername());
+                        currentUserFriendList.add(user.getObjectId());
                     }
                 }
             }
@@ -72,9 +73,9 @@ public class CurrentUserUtilities {
                 for (ParseObject object : objects) {
                     try {
                         ParseUser user = object.fetchIfNeeded().getParseUser("from");
-                        String username = user.fetchIfNeeded().getUsername();
-                        currentUserPendingFriendRequest.add(username);
-                        Log.i(TAG, "received: " + username);
+                        String userID = user.fetchIfNeeded().getObjectId();
+                        currentUserReceivedFriendRequest.add(userID);
+                        Log.i(TAG, "received: " + userID);
                     } catch (ParseException ex) {
                         ex.printStackTrace();
                     }
@@ -96,9 +97,9 @@ public class CurrentUserUtilities {
                 for (ParseObject object : objects) {
                     try {
                         ParseUser user = object.fetchIfNeeded().getParseUser("to");
-                        String username = user.fetchIfNeeded().getUsername();
-                        currentUserPendingFriendRequest.add(username);
-                        Log.i(TAG, "sent: " + username);
+                        String userID = user.fetchIfNeeded().getObjectId();
+                        currentUserSentFriendRequest.add(userID);
+                        Log.i(TAG, "sent: " + userID);
                     } catch (ParseException ex) {
                         ex.printStackTrace();
                     }
@@ -106,4 +107,5 @@ public class CurrentUserUtilities {
             }
         });
     }
+
 }

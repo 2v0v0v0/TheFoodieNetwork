@@ -27,10 +27,10 @@ public class SearchFriendActivity extends AppCompatActivity {
     private final static String modifier = "i";
     private final static String USERNAME_KEY = "username";
     private final static String SCREEN_NAME_KEY = "screenName";
-    private final ParseUser CURRENT_USER = ParseUser.getCurrentUser();
+    private ParseUser currentUser = ParseUser.getCurrentUser();
     private List<ParseUser> resultList;
     private List<String> currentUserFriendList;
-    private List<String> currentUserPendingFriendRequest;
+    private List<String> currentUserReceivedFriendRequest;
     private FriendAdapter friendAdapter;
     private ActivitySearchFriendBinding binding;
 
@@ -43,10 +43,9 @@ public class SearchFriendActivity extends AppCompatActivity {
 
         searchListener();
 
-
         currentUserFriendList = CurrentUserUtilities.currentUserFriendList;
-        currentUserPendingFriendRequest = CurrentUserUtilities.currentUserPendingFriendRequest;
-        Log.i(TAG, currentUserPendingFriendRequest.toString());
+        currentUserReceivedFriendRequest = CurrentUserUtilities.currentUserReceivedFriendRequest;
+
         resultList = new ArrayList<>();
     }
 
@@ -79,7 +78,7 @@ public class SearchFriendActivity extends AppCompatActivity {
         queries.add(queryByScreenName);
 
         ParseQuery<ParseUser> mainQuery = ParseQuery.or(queries);
-        mainQuery.whereNotEqualTo(USERNAME_KEY, CURRENT_USER.getUsername());
+        mainQuery.whereNotEqualTo("objectId", currentUser.getObjectId());
         mainQuery.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> results, ParseException e) {
@@ -92,7 +91,7 @@ public class SearchFriendActivity extends AppCompatActivity {
                 }
                 resultList.addAll(results);
                 binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                friendAdapter = new FriendAdapter(SearchFriendActivity.this, resultList, currentUserFriendList);
+                friendAdapter = new FriendAdapter(SearchFriendActivity.this, resultList);
                 binding.resultsRecyclerView.setAdapter(friendAdapter);
             }
         });
