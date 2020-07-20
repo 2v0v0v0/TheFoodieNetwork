@@ -15,6 +15,7 @@ import com.fbu.thefoodienetwork.adapters.FriendAdapter;
 import com.fbu.thefoodienetwork.databinding.ActivitySearchFriendBinding;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -42,10 +43,10 @@ public class SearchFriendActivity extends AppCompatActivity {
         searchListener();
 
         CurrentUserUtilities currentUserUtilities = new CurrentUserUtilities();
+        currentUserUtilities.getFriendList();
         currentUserFriendList = currentUserUtilities.currentUserFriendList;
+
         resultList = new ArrayList<>();
-
-
     }
 
     private void searchListener() {
