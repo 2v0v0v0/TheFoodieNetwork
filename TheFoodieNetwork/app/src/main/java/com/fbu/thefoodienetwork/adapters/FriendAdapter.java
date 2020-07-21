@@ -1,6 +1,8 @@
 package com.fbu.thefoodienetwork.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fbu.thefoodienetwork.CurrentUserUtilities;
-import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.databinding.ItemFriendBinding;
-import com.fbu.thefoodienetwork.databinding.ItemReviewBinding;
 import com.parse.ParseUser;
 
 import java.util.List;
@@ -53,19 +53,20 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
     public void onBindViewHolder(@NonNull FriendAdapter.ViewHolder holder, int position) {
         ParseUser aUser = resultList.get(position);
         String userID = aUser.getObjectId();
+
         int relationStatus = IS_STRANGER;
         if (friendList.contains(userID)) {
             relationStatus = IS_FRIEND;
         } else if (sentFRList.contains(userID)) {
             relationStatus = SENT_FR;
-        } else if (receivedFRList.contains(userID)){
+        } else if (receivedFRList.contains(userID)) {
             relationStatus = RECEIVED_FR;
         }
-        Log.i("onBindViewHolder", aUser.getUsername() + " " + relationStatus);
+
         try {
             holder.bind(aUser, relationStatus);
         } catch (Exception e) {
-            Log.i(TAG, e.toString());
+            Log.i(TAG, "error: " + e);
         }
     }
 
@@ -75,20 +76,20 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        private final ItemFriendBinding binding;
         private ImageView profileImageView;
         private TextView screennameTextView;
-        private TextView usernameTextview;
+        private TextView usernameTextView;
         private ImageView addFriendImageView;
         private TextView pendingTextView;
         private LinearLayout receivedFRButtonsContainer;
-        private final ItemFriendBinding binding;
 
         public ViewHolder(ItemFriendBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
             profileImageView = binding.profileImageView;
             screennameTextView = binding.screenNameTextView;
-            usernameTextview = binding.usernameTextView;
+            usernameTextView = binding.usernameTextView;
             addFriendImageView = binding.addFriendImageView;
             pendingTextView = binding.pendingTextView;
             receivedFRButtonsContainer = binding.receivedFRButtonsContainer;
@@ -97,7 +98,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
         public void bind(ParseUser aUser, int relationStatus) throws Exception {
             //set add friend button to only users that not in current user's friend list
             Log.i("bind", aUser.getUsername() + " " + relationStatus);
-            switch (relationStatus){
+            switch (relationStatus) {
                 case IS_STRANGER:
                     addFriendButtonListener();
                     break;
@@ -115,7 +116,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
             if (screenName != null) {
                 screennameTextView.setText(screenName);
             }
-            usernameTextview.setText(aUser.getUsername());
+            usernameTextView.setText(aUser.getUsername());
         }
 
         private void addFriendButtonListener() {
@@ -125,12 +126,39 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     ParseUser otherUser = resultList.get(position);
+                    showSendFRDialog(otherUser, position);
                     Log.i(TAG, "onclick " + otherUser.getUsername());
-                    boolean requestSuccess = CurrentUserUtilities.sendFriendRequest(otherUser);
-                    Log.i(TAG, "success: " + requestSuccess);
-                    //addFriednImageView.setVisibility(View.GONE);
                 }
             });
+        }
+
+        private void showSendFRDialog(final ParseUser otherUser, final int position){
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+            alertDialog.setTitle("Send Friend Request");
+            alertDialog.setMessage("Want to send friend request to " + otherUser.getUsername() + "?");
+
+            alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    boolean requestSuccess = CurrentUserUtilities.sendFriendRequest(otherUser);
+                    Log.i(TAG, "success: " + requestSuccess);
+                    if(requestSuccess == true){
+                        CurrentUserUtilities.currentUserSentFriendRequest.add(otherUser.getObjectId());
+                        addFriendImageView.setVisibility(View.GONE);
+                        notifyItemChanged(position);
+                    }
+                }
+            });
+
+            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            AlertDialog dialog = alertDialog.create();
+            dialog.show();
         }
     }
 }

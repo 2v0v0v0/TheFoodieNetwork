@@ -180,7 +180,6 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
         return parseRestaurant;
     }
 
-
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
         if(position == EVERYONE){
