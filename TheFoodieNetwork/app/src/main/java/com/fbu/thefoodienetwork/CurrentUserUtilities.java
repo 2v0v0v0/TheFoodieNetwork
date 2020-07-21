@@ -44,6 +44,28 @@ public class CurrentUserUtilities {
         return true;
     }
 
+    public static boolean acceptFriendRequest(ParseUser otherUser){
+        return true;
+    }
+
+    public static boolean deleteFriendRequest(ParseUser otherUser){
+        List<ParseObject> results = new ArrayList<>();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendRequest");
+        query.whereEqualTo("from", otherUser);
+        query.whereEqualTo("to", currentUser);
+        try {
+            results.addAll(query.find());
+            for (ParseObject object: results){
+                Log.i("deleteFriendRequest", object.getObjectId());
+            }
+        } catch (ParseException e) {
+            if (e != null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void getFriendList() {
         ParseRelation relation = currentUser.getRelation("friends");
         ParseQuery query = relation.getQuery();
@@ -66,14 +88,14 @@ public class CurrentUserUtilities {
         query.whereEqualTo("isDeclined", false);
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
-            public void done(List<ParseObject> objects, ParseException e) {
+            public void done(List<ParseObject> requests, ParseException e) {
                 if (e != null) {
                     Log.i(TAG, "error: " + e);
                     return;
                 }
-                for (ParseObject object : objects) {
+                for (ParseObject friendRequest : requests) {
                     try {
-                        ParseUser user = object.fetchIfNeeded().getParseUser("from");
+                        ParseUser user = friendRequest.fetchIfNeeded().getParseUser("from");
                         String userID = user.fetchIfNeeded().getObjectId();
                         currentUserReceivedFriendRequest.add(userID);
                         Log.i(TAG, "received: " + userID);
