@@ -44,20 +44,20 @@ public class CurrentUserUtilities {
         return true;
     }
 
-    public static boolean acceptFriendRequest(ParseUser otherUser){
+    public static boolean acceptFriendRequest(ParseUser otherUser) {
         return true;
     }
 
-    public static boolean deleteFriendRequest(ParseUser otherUser){
-        List<ParseObject> results = new ArrayList<>();
+    public static boolean deleteFriendRequest(ParseUser otherUser) {
+        ParseObject result = new ParseObject("FriendRequest");
         ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendRequest");
         query.whereEqualTo("from", otherUser);
         query.whereEqualTo("to", currentUser);
         try {
-            results.addAll(query.find());
-            for (ParseObject object: results){
-                Log.i("deleteFriendRequest", object.getObjectId());
-            }
+            result = query.getFirst();
+            result.put("isDeclined", true);
+            result.saveInBackground();
+            Log.i("deleteFriendRequest", result.getObjectId());
         } catch (ParseException e) {
             if (e != null) {
                 return false;
@@ -66,7 +66,7 @@ public class CurrentUserUtilities {
         return true;
     }
 
-    private void getFriendList() {
+    public static void getFriendList() {
         ParseRelation relation = currentUser.getRelation("friends");
         ParseQuery query = relation.getQuery();
         query.findInBackground(new FindCallback<ParseUser>() {
@@ -82,7 +82,7 @@ public class CurrentUserUtilities {
         });
     }
 
-    private void getPendingFriendRequest() {
+    public static void getPendingFriendRequest() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendRequest");
         query.whereEqualTo("to", currentUser);
         query.whereEqualTo("isDeclined", false);
@@ -107,7 +107,7 @@ public class CurrentUserUtilities {
         });
     }
 
-    private void getSentFriendRequest() {
+    public static void getSentFriendRequest() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendRequest");
         query.whereEqualTo("from", currentUser);
         query.findInBackground(new FindCallback<ParseObject>() {

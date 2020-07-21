@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -76,12 +77,15 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        private int position = getAdapterPosition();
         private final ItemFriendBinding binding;
         private ImageView profileImageView;
         private TextView screennameTextView;
         private TextView usernameTextView;
         private ImageView addFriendImageView;
         private TextView pendingTextView;
+        private Button acceptFR;
+        private Button deleteFR;
         private LinearLayout receivedFRButtonsContainer;
 
         public ViewHolder(ItemFriendBinding binding) {
@@ -93,6 +97,8 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
             addFriendImageView = binding.addFriendImageView;
             pendingTextView = binding.pendingTextView;
             receivedFRButtonsContainer = binding.receivedFRButtonsContainer;
+            acceptFR = binding.acceptButton;
+            deleteFR = binding.deleteButton;
         }
 
         public void bind(ParseUser aUser, int relationStatus) throws Exception {
@@ -106,7 +112,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
                     pendingTextView.setVisibility(View.VISIBLE);
                     break;
                 case RECEIVED_FR:
-                    receivedFRButtonsContainer.setVisibility(View.VISIBLE);
+                    receivedFRButtonsListener();
                     break;
                 default:
                     break;
@@ -145,6 +151,46 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
                     if(requestSuccess == true){
                         CurrentUserUtilities.currentUserSentFriendRequest.add(otherUser.getObjectId());
                         addFriendImageView.setVisibility(View.GONE);
+                        notifyItemChanged(position);
+                    }
+                }
+            });
+
+            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            AlertDialog dialog = alertDialog.create();
+            dialog.show();
+        }
+
+        private void receivedFRButtonsListener(){
+            receivedFRButtonsContainer.setVisibility(View.VISIBLE);
+            deleteFR.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    ParseUser otherUser = resultList.get(position);
+                    showDeleteFRDialog(otherUser, position);
+                }
+            });
+        }
+
+        private void showDeleteFRDialog(final ParseUser otherUser, final int position){
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+            alertDialog.setTitle("Delete Request");
+            alertDialog.setMessage("Want to delete friend request from " + otherUser.getUsername() + "?");
+
+            alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    boolean deleteFRSuccess = CurrentUserUtilities.deleteFriendRequest(otherUser);
+                    Log.i("deleteFR", ""+deleteFRSuccess);
+                    if(deleteFRSuccess == true){
+                        CurrentUserUtilities.currentUserReceivedFriendRequest.remove(otherUser.getObjectId());
                         notifyItemChanged(position);
                     }
                 }
