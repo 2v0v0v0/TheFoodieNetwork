@@ -217,6 +217,12 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
                     if (deleteFRSuccess == true) {
                         notifyItemChanged(position);
                     }
+                case ACCEPT_FR_CODE:
+                    boolean acceptFRSuccess = CurrentUserUtilities.acceptFriendRequest(otherUser);
+                    Log.i("deleteFR", "" + acceptFRSuccess);
+                    if (acceptFRSuccess == true) {
+                        notifyItemChanged(position);
+                    }
             }
 
         }

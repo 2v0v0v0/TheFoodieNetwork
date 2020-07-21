@@ -8,6 +8,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class CurrentUserUtilities {
     }
 
     public static boolean sendFriendRequest(ParseUser otherUser) {
-        //Create friend request
+        //Create new friend request and save to database
         ParseObject request = new ParseObject("FriendRequest");
         request.put("from", currentUser);
         request.put("to", otherUser);
@@ -41,12 +42,27 @@ public class CurrentUserUtilities {
                 return false;
             }
         }
+
+        //update currentUser local data
         currentUserSentFriendRequest.add(otherUser.getObjectId());
         return true;
     }
 
     public static boolean acceptFriendRequest(ParseUser otherUser) {
-        ParseObject result = new ParseObject("FriendRequest");
+        //Add otherUser to currentUser friends relation
+        ParseRelation<ParseUser> relation = currentUser.getRelation("friends");
+        relation.add(otherUser);
+        try {
+            currentUser.save();
+        } catch (ParseException e) {
+            if (e != null) {
+                Log.i("acceptFriendRequest", e.toString());
+                return false;
+            }
+        }
+
+        //Delete friend request from FriendRequest class
+        ParseObject result;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendRequest");
         query.whereEqualTo("from", otherUser);
         query.whereEqualTo("to", currentUser);
@@ -57,15 +73,19 @@ public class CurrentUserUtilities {
             Log.i("acceptFriendRequest", result.getObjectId());
         } catch (ParseException e) {
             if (e != null) {
+                Log.i("acceptFriendRequest", e.toString());
                 return false;
             }
         }
+
+        //update currentUser local data
         currentUserReceivedFriendRequest.remove(otherUser.getObjectId());
         currentUserFriendList.add(otherUser.getObjectId());
         return true;
     }
 
     public static boolean deleteFriendRequest(ParseUser otherUser) {
+        //Set isDeclined field in friend request object as true
         ParseObject result = new ParseObject("FriendRequest");
         ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendRequest");
         query.whereEqualTo("from", otherUser);
@@ -80,11 +100,13 @@ public class CurrentUserUtilities {
                 return false;
             }
         }
+
+        //update currentUser local data
         currentUserReceivedFriendRequest.remove(otherUser.getObjectId());
         return true;
     }
 
-    public static void getFriendList() {
+    private static void getFriendList() {
         ParseRelation relation = currentUser.getRelation("friends");
         ParseQuery query = relation.getQuery();
         query.findInBackground(new FindCallback<ParseUser>() {
@@ -100,7 +122,7 @@ public class CurrentUserUtilities {
         });
     }
 
-    public static void getPendingFriendRequest() {
+    private static void getPendingFriendRequest() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendRequest");
         query.whereEqualTo("to", currentUser);
         query.whereEqualTo("isDeclined", false);
@@ -125,7 +147,7 @@ public class CurrentUserUtilities {
         });
     }
 
-    public static void getSentFriendRequest() {
+    private static void getSentFriendRequest() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendRequest");
         query.whereEqualTo("from", currentUser);
         query.findInBackground(new FindCallback<ParseObject>() {
