@@ -41,6 +41,7 @@ public class CurrentUserUtilities {
                 return false;
             }
         }
+        currentUserSentFriendRequest.add(otherUser.getObjectId());
         return true;
     }
 
@@ -63,6 +64,7 @@ public class CurrentUserUtilities {
                 return false;
             }
         }
+        currentUserReceivedFriendRequest.remove(otherUser.getObjectId());
         return true;
     }
 

@@ -77,8 +77,15 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private int position = getAdapterPosition();
-        private final ItemFriendBinding binding;
+        private static final int DELETE_FR_CODE = 1;
+        private static final int ACCEPT_FR_CODE = 2;
+        private static final int SEND_FR_CODE = 3;
+        private static final int CANCEL_FR_CODE = 4;
+        private int position;
+        private ParseUser otherUser;
+        private String otherUserId;
+        private String otherUserUsername;
+
         private ImageView profileImageView;
         private TextView screennameTextView;
         private TextView usernameTextView;
@@ -90,7 +97,6 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
 
         public ViewHolder(ItemFriendBinding binding) {
             super(binding.getRoot());
-            this.binding = binding;
             profileImageView = binding.profileImageView;
             screennameTextView = binding.screenNameTextView;
             usernameTextView = binding.usernameTextView;
@@ -102,11 +108,15 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
         }
 
         public void bind(ParseUser aUser, int relationStatus) throws Exception {
-            //set add friend button to only users that not in current user's friend list
-            Log.i("bind", aUser.getUsername() + " " + relationStatus);
+            position = getAdapterPosition();
+            otherUser = aUser;
+            otherUserId = aUser.getObjectId();
+            otherUserUsername = aUser.getUsername();
+
+            Log.i("bind", otherUserUsername + " " + relationStatus);
             switch (relationStatus) {
                 case IS_STRANGER:
-                    addFriendButtonListener();
+                    sendFRButtonListener();
                     break;
                 case SENT_FR:
                     pendingTextView.setVisibility(View.VISIBLE);
@@ -122,80 +132,53 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
             if (screenName != null) {
                 screennameTextView.setText(screenName);
             }
-            usernameTextView.setText(aUser.getUsername());
+            usernameTextView.setText(otherUserUsername);
         }
 
-        private void addFriendButtonListener() {
+        private void sendFRButtonListener() {
             addFriendImageView.setVisibility(View.VISIBLE);
             addFriendImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    ParseUser otherUser = resultList.get(position);
-                    showSendFRDialog(otherUser, position);
-                    Log.i(TAG, "onclick " + otherUser.getUsername());
+                    showDialog(SEND_FR_CODE);
+                    Log.i(TAG, "onclick " + otherUserUsername);
                 }
             });
         }
 
-        private void showSendFRDialog(final ParseUser otherUser, final int position){
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-            alertDialog.setTitle("Send Friend Request");
-            alertDialog.setMessage("Want to send friend request to " + otherUser.getUsername() + "?");
-
-            alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    boolean requestSuccess = CurrentUserUtilities.sendFriendRequest(otherUser);
-                    Log.i(TAG, "success: " + requestSuccess);
-                    if(requestSuccess == true){
-                        CurrentUserUtilities.currentUserSentFriendRequest.add(otherUser.getObjectId());
-                        addFriendImageView.setVisibility(View.GONE);
-                        notifyItemChanged(position);
-                    }
-                }
-            });
-
-            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-
-            AlertDialog dialog = alertDialog.create();
-            dialog.show();
-        }
-
-        private void receivedFRButtonsListener(){
+        private void receivedFRButtonsListener() {
             receivedFRButtonsContainer.setVisibility(View.VISIBLE);
             deleteFR.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    ParseUser otherUser = resultList.get(position);
-                    showDeleteFRDialog(otherUser, position);
+                    showDialog(DELETE_FR_CODE);
                 }
             });
         }
 
-        private void showDeleteFRDialog(final ParseUser otherUser, final int position){
+        private void showDialog(final int FRActionCode) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-            alertDialog.setTitle("Delete Request");
-            alertDialog.setMessage("Want to delete friend request from " + otherUser.getUsername() + "?");
+            String title = "";
+            String message = "";
+            switch (FRActionCode) {
+                case SEND_FR_CODE:
+                    title = "Send Friend Request";
+                    message = "Want to send friend request to " + otherUserUsername + "?";
+                    break;
+                case DELETE_FR_CODE:
+                    title = "Delete Friend Request";
+                    message = "Want to delete friend request from " + otherUserUsername + "?";
+                    break;
+            }
 
+            alertDialog.setTitle(title);
+            alertDialog.setMessage(message);
             alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    boolean deleteFRSuccess = CurrentUserUtilities.deleteFriendRequest(otherUser);
-                    Log.i("deleteFR", ""+deleteFRSuccess);
-                    if(deleteFRSuccess == true){
-                        CurrentUserUtilities.currentUserReceivedFriendRequest.remove(otherUser.getObjectId());
-                        notifyItemChanged(position);
-                    }
+                    FRAction(FRActionCode);
                 }
             });
-
             alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -205,6 +188,26 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
 
             AlertDialog dialog = alertDialog.create();
             dialog.show();
+        }
+
+        private void FRAction(int actionCode) {
+            switch (actionCode) {
+                case SEND_FR_CODE:
+                    boolean requestSuccess = CurrentUserUtilities.sendFriendRequest(otherUser);
+                    Log.i(TAG, "success: " + requestSuccess);
+                    if (requestSuccess == true) {
+                        addFriendImageView.setVisibility(View.GONE);
+                        notifyItemChanged(position);
+                    }
+                    break;
+                case DELETE_FR_CODE:
+                    boolean deleteFRSuccess = CurrentUserUtilities.deleteFriendRequest(otherUser);
+                    Log.i("deleteFR", "" + deleteFRSuccess);
+                    if (deleteFRSuccess == true) {
+                        notifyItemChanged(position);
+                    }
+            }
+
         }
     }
 }
