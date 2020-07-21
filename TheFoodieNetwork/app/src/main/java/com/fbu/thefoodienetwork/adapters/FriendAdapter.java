@@ -22,11 +22,11 @@ import com.parse.ParseUser;
 import java.util.List;
 
 public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder> {
-    public static final int IS_STRANGER = 1;
-    public static final int SENT_FR = -1;
-    public static final int RECEIVED_FR = 2;
+    public static final int IS_STRANGER = -1;
+    public static final int SENT_FR = -3;
+    public static final int RECEIVED_FR = -4;
     private static final String TAG = "FriendAdapter";
-    private static final int IS_FRIEND = 0;
+    private static final int IS_FRIEND = -2;
     private Context context;
     private List<ParseUser> resultList;
     private List<String> friendList;
@@ -83,11 +83,10 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
         private static final int CANCEL_FR_CODE = 4;
         private int position;
         private ParseUser otherUser;
-        private String otherUserId;
         private String otherUserUsername;
 
         private ImageView profileImageView;
-        private TextView screennameTextView;
+        private TextView screenNameTextView;
         private TextView usernameTextView;
         private ImageView addFriendImageView;
         private TextView pendingTextView;
@@ -98,7 +97,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
         public ViewHolder(ItemFriendBinding binding) {
             super(binding.getRoot());
             profileImageView = binding.profileImageView;
-            screennameTextView = binding.screenNameTextView;
+            screenNameTextView = binding.screenNameTextView;
             usernameTextView = binding.usernameTextView;
             addFriendImageView = binding.addFriendImageView;
             pendingTextView = binding.pendingTextView;
@@ -110,7 +109,6 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
         public void bind(ParseUser aUser, int relationStatus) throws Exception {
             position = getAdapterPosition();
             otherUser = aUser;
-            otherUserId = aUser.getObjectId();
             otherUserUsername = aUser.getUsername();
 
             Log.i("bind", otherUserUsername + " " + relationStatus);
@@ -129,9 +127,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
             }
 
             String screenName = aUser.get("screenName").toString();
-            if (screenName != null) {
-                screennameTextView.setText(screenName);
-            }
+            screenNameTextView.setText(screenName);
             usernameTextView.setText(otherUserUsername);
         }
 
@@ -226,7 +222,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
         }
 
         private void FRAction(int actionCode) {
-            Boolean successStatus = false;
+            boolean successStatus = false;
             switch (actionCode) {
                 case SEND_FR_CODE:
                     successStatus = CurrentUserUtilities.sendFriendRequest(otherUser);
