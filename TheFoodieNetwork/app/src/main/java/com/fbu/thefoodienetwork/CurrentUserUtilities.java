@@ -8,7 +8,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +60,7 @@ public class CurrentUserUtilities {
             }
         }
 
-        //Delete friend request from FriendRequest class
+        //Delete friend request from otherUser to currentUser from FriendRequest class
         ParseObject result;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendRequest");
         query.whereEqualTo("from", otherUser);
@@ -103,6 +102,29 @@ public class CurrentUserUtilities {
 
         //update currentUser local data
         currentUserReceivedFriendRequest.remove(otherUser.getObjectId());
+        return true;
+    }
+
+    public static boolean cancelFriendRequest(ParseUser otherUser) {
+        //Delete friend request from currentUser to otherUser from FriendRequest class
+        ParseObject result;
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendRequest");
+        query.whereEqualTo("from", currentUser);
+        query.whereEqualTo("to", otherUser);
+        try {
+            result = query.getFirst();
+            result.delete();
+            result.saveInBackground();
+            Log.i("cancelFriendRequest", result.getObjectId());
+        } catch (ParseException e) {
+            if (e != null) {
+                Log.i("acceptFriendRequest", e.toString());
+                return false;
+            }
+        }
+
+        //update currentUser local data
+        currentUserSentFriendRequest.remove(otherUser.getObjectId());
         return true;
     }
 

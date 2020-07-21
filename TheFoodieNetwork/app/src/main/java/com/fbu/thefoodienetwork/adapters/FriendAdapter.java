@@ -91,8 +91,8 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
         private TextView usernameTextView;
         private ImageView addFriendImageView;
         private TextView pendingTextView;
-        private Button acceptFR;
-        private Button deleteFR;
+        private Button acceptFRButton;
+        private Button deleteFRButton;
         private LinearLayout receivedFRButtonsContainer;
 
         public ViewHolder(ItemFriendBinding binding) {
@@ -103,8 +103,8 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
             addFriendImageView = binding.addFriendImageView;
             pendingTextView = binding.pendingTextView;
             receivedFRButtonsContainer = binding.receivedFRButtonsContainer;
-            acceptFR = binding.acceptButton;
-            deleteFR = binding.deleteButton;
+            acceptFRButton = binding.acceptButton;
+            deleteFRButton = binding.deleteButton;
         }
 
         public void bind(ParseUser aUser, int relationStatus) throws Exception {
@@ -148,22 +148,24 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
 
         private void receivedFRButtonsListener() {
             receivedFRButtonsContainer.setVisibility(View.VISIBLE);
-            deleteFR.setOnClickListener(new View.OnClickListener() {
+            deleteFRButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Log.i("delete button", "onclick " + otherUserUsername);
                     showDialog(DELETE_FR_CODE);
                 }
             });
 
-            acceptFR.setOnClickListener(new View.OnClickListener() {
+            acceptFRButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showDialog(ACCEPT_FR_CODE);
+                    Log.i("accept button", "onclick " + otherUserUsername);
+                    //showDialog(ACCEPT_FR_CODE);
                 }
             });
         }
 
-        private void sentFRButtonListener(){
+        private void sentFRButtonListener() {
             pendingTextView.setVisibility(View.VISIBLE);
             pendingTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -172,6 +174,12 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
                     showDialog(CANCEL_FR_CODE);
                 }
             });
+        }
+
+        private void resetButtons() {
+            addFriendImageView.setVisibility(View.GONE);
+            pendingTextView.setVisibility(View.GONE);
+            receivedFRButtonsContainer.setVisibility(View.GONE);
         }
 
         private void showDialog(final int FRActionCode) {
@@ -218,29 +226,30 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
         }
 
         private void FRAction(int actionCode) {
+            Boolean successStatus = false;
             switch (actionCode) {
                 case SEND_FR_CODE:
-                    boolean requestSuccess = CurrentUserUtilities.sendFriendRequest(otherUser);
-                    Log.i(TAG, "success: " + requestSuccess);
-                    if (requestSuccess == true) {
-                        addFriendImageView.setVisibility(View.GONE);
-                        notifyItemChanged(position);
-                    }
+                    successStatus = CurrentUserUtilities.sendFriendRequest(otherUser);
+                    Log.i(TAG, "sendFR: " + successStatus);
                     break;
                 case DELETE_FR_CODE:
-                    boolean deleteFRSuccess = CurrentUserUtilities.deleteFriendRequest(otherUser);
-                    Log.i("deleteFR", "" + deleteFRSuccess);
-                    if (deleteFRSuccess == true) {
-                        notifyItemChanged(position);
-                    }
+                    successStatus = CurrentUserUtilities.deleteFriendRequest(otherUser);
+                    Log.i("deleteFR", "success: " + successStatus);
+                    break;
                 case ACCEPT_FR_CODE:
-                    boolean acceptFRSuccess = CurrentUserUtilities.acceptFriendRequest(otherUser);
-                    Log.i("deleteFR", "" + acceptFRSuccess);
-                    if (acceptFRSuccess == true) {
-                        notifyItemChanged(position);
-                    }
+                    successStatus = CurrentUserUtilities.acceptFriendRequest(otherUser);
+                    Log.i("acceptFR", "success: " + successStatus);
+                    break;
+                case CANCEL_FR_CODE:
+                    successStatus = CurrentUserUtilities.cancelFriendRequest(otherUser);
+                    Log.i("cancelFR", "success: " + successStatus);
+                    break;
             }
 
+            if (successStatus) {
+                resetButtons();
+                notifyItemChanged(position);
+            }
         }
     }
 }
