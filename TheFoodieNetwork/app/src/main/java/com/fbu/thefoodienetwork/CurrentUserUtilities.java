@@ -63,6 +63,7 @@ public class CurrentUserUtilities {
     private void getPendingFriendRequest() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendRequest");
         query.whereEqualTo("to", currentUser);
+        query.whereEqualTo("isDeclined", false);
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
