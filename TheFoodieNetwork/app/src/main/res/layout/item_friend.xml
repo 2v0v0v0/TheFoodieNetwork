@@ -45,7 +45,29 @@
         android:layout_centerVertical="true"
         android:layout_marginEnd="10dp"
         android:text="Pending.."
-        android:textColor="@color/colorPinkAccent"
+        android:textColor="@color/colorBlue"
         android:visibility="gone" />
+    <LinearLayout
+        android:id="@+id/receivedFRButtonsContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="10dp"
+        android:visibility="gone">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:text="Accept"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:text="Decline"/>
+    </LinearLayout>
 
 </RelativeLayout>
