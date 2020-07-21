@@ -154,6 +154,13 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
                     showDialog(DELETE_FR_CODE);
                 }
             });
+
+            acceptFR.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showDialog(ACCEPT_FR_CODE);
+                }
+            });
         }
 
         private void showDialog(final int FRActionCode) {
@@ -168,6 +175,10 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
                 case DELETE_FR_CODE:
                     title = "Delete Friend Request";
                     message = "Want to delete friend request from " + otherUserUsername + "?";
+                    break;
+                case ACCEPT_FR_CODE:
+                    title = "Accept Friend Request";
+                    message = "Want to accept friend request from " + otherUserUsername + "?";
                     break;
             }
 

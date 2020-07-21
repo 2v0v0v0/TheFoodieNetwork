@@ -46,6 +46,22 @@ public class CurrentUserUtilities {
     }
 
     public static boolean acceptFriendRequest(ParseUser otherUser) {
+        ParseObject result = new ParseObject("FriendRequest");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendRequest");
+        query.whereEqualTo("from", otherUser);
+        query.whereEqualTo("to", currentUser);
+        try {
+            result = query.getFirst();
+            result.delete();
+            result.saveInBackground();
+            Log.i("acceptFriendRequest", result.getObjectId());
+        } catch (ParseException e) {
+            if (e != null) {
+                return false;
+            }
+        }
+        currentUserReceivedFriendRequest.remove(otherUser.getObjectId());
+        currentUserFriendList.add(otherUser.getObjectId());
         return true;
     }
 
