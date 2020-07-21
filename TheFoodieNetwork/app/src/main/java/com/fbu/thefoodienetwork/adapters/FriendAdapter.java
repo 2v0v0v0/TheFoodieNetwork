@@ -119,7 +119,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
                     sendFRButtonListener();
                     break;
                 case SENT_FR:
-                    pendingTextView.setVisibility(View.VISIBLE);
+                    sentFRButtonListener();
                     break;
                 case RECEIVED_FR:
                     receivedFRButtonsListener();
@@ -163,10 +163,22 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
             });
         }
 
+        private void sentFRButtonListener(){
+            pendingTextView.setVisibility(View.VISIBLE);
+            pendingTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.i("sentFRButtonListener", "onclick pending of " + otherUserUsername);
+                    showDialog(CANCEL_FR_CODE);
+                }
+            });
+        }
+
         private void showDialog(final int FRActionCode) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
             String title = "";
             String message = "";
+
             switch (FRActionCode) {
                 case SEND_FR_CODE:
                     title = "Send Friend Request";
@@ -180,6 +192,10 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
                     title = "Accept Friend Request";
                     message = "Want to accept friend request from " + otherUserUsername + "?";
                     break;
+                case CANCEL_FR_CODE:
+                    title = "Cancel Friend Request";
+                    message = "Want to cancel pending friend request that sent to " + otherUserUsername + "?";
+                    break;
             }
 
             alertDialog.setTitle(title);
@@ -190,7 +206,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
                     FRAction(FRActionCode);
                 }
             });
-            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
