@@ -4,8 +4,6 @@
     <string name="hint_password">Password</string>
     <string name="login">Login</string>
     <string name="signup">Create an account</string>
-    <string name="sendFRTitle">Send Friend Request</string>
-    <string name="deleteFRTitle">Delete Request</string>
     <string-array name="scopes_array">
         <item>Everyone</item>
         <item>Friends</item>

@@ -35,8 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         onClickLogin();
-        onTouchRegister();
-
+        onClickRegister();
     }
 
     private void onClickLogin() {
@@ -65,16 +64,13 @@ public class LoginActivity extends AppCompatActivity {
                 goMainActivity();
             }
         });
-
     }
 
-    private void onTouchRegister() {
-        binding.SignupTextView.setOnTouchListener(new View.OnTouchListener() {
+    private void onClickRegister() {
+        binding.SignupTextView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                Log.i(TAG, "onTouch sign up");
+            public void onClick(View view) {
                 goSignUpActivity();
-                return false;
             }
         });
     }
@@ -90,6 +86,5 @@ public class LoginActivity extends AppCompatActivity {
     private void goSignUpActivity() {
         Intent i = new Intent(this, SignUpActivity.class);
         startActivity(i);
-        finish();
     }
 }
