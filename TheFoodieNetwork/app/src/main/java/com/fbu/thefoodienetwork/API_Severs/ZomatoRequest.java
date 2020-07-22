@@ -2,6 +2,9 @@ package com.fbu.thefoodienetwork.API_Severs;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.fbu.thefoodienetwork.BuildConfig;
 import com.fbu.thefoodienetwork.models.Location;
 import com.fbu.thefoodienetwork.models.Restaurant;
@@ -69,39 +72,52 @@ public class ZomatoRequest {
         return locationList;
     }
 
-    public  Location getLocationByGeoPoint(double lat, double lon){
-        final Location[] location = {};
+    public Location getLocationByGeoPoint(double lat, double lon, final geoLocationCallbacks callbacks){
+        final Location[] location = new Location[1];
         urlBuilder = HttpUrl.parse(BASE_URL + GEO_CODE).newBuilder();
         urlBuilder.addQueryParameter("apikey", apiKey);
-        urlBuilder.addQueryParameter("lat", String.valueOf(lat)); ////max number of results to display
-        urlBuilder.addQueryParameter("lon", String.valueOf(lon)); //search keyword
+        urlBuilder.addQueryParameter("lat", String.valueOf(lat));
+        urlBuilder.addQueryParameter("lon", String.valueOf(lon));
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder()
                 .url(url)
                 .build();
+
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String responseData = response.body().string();
-                try {
-                    JSONObject json = new JSONObject(responseData);
-                    JSONObject locationJSONObject = json.getJSONObject("location");
-                    location[0] = new Location(locationJSONObject);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if(response.isSuccessful()){
+                    String responseData = response.body().string();
+                    try {
+                        JSONObject json = new JSONObject(responseData);
+                        JSONObject locationJSONObject = json.getJSONObject("location");
+                        location[0] = new Location(locationJSONObject);
+                        callbacks.onSuccess(location[0]);
+                        Log.i(TAG, location[0].toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 //TODO
+                Log.i(TAG, "onFailure");
             }
         });
+
         return location[0];
     }
 
-    public List<Restaurant> getRetaurants(Location location, String query, int start, int count) {
+    public interface geoLocationCallbacks {
+        void onSuccess(Location location);
+        void onFailure();
+    }
+
+
+    public List<Restaurant> getRestaurants(Location location, String query, int start, int count) {
         final List<Restaurant> restaurantList = new ArrayList<>();
         urlBuilder = HttpUrl.parse(BASE_URL + SEARCH).newBuilder();
         urlBuilder.addQueryParameter("apikey", apiKey);
@@ -139,4 +155,5 @@ public class ZomatoRequest {
         });
         return restaurantList;
     }
+
 }
