@@ -1,6 +1,10 @@
 package com.fbu.thefoodienetwork.activities;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -8,8 +12,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.fbu.thefoodienetwork.API_Severs.ZomatoRequest;
@@ -26,6 +32,8 @@ import java.util.List;
 
 public class SearchActivity extends AppCompatActivity implements LocationAdapter.OnClickLocationListener, RestaurantAdapter.OnClickRestaurantListener {
     private static final String TAG = "SearchActivity";
+    private static final int REQUEST_LOCATION = 100;
+    private static LocationManager locationManager;
     private ActivitySearchBinding binding;
     private ZomatoRequest zomatoRequest = new ZomatoRequest();
     private List<Location> locationList = new ArrayList<>();
@@ -46,6 +54,16 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
     }
 
     private void searchListener() {
+        binding.getMyLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    getLocation();
+                }
+            }
+        });
+
         binding.locationSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -86,7 +104,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         });
     }
 
-    private void composeButtonListener(){
+    private void composeButtonListener() {
         binding.composeFltButton.setVisibility(View.VISIBLE);
         binding.composeFltButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,32 +112,6 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
                 goToComposeFragment();
             }
         });
-    }
-
-    private void performLocationSearch(String keyWord) {
-        this.locationList = zomatoRequest.getLocations(keyWord);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Log.i(TAG, locationList.toString());
-                locationAdapter = new LocationAdapter(SearchActivity.this, locationList);
-                binding.resultsRecyclerView.setAdapter(locationAdapter);
-            }
-        }, 2000);
-    }
-
-    private void performRestaurantSearch(Location location, String keyWord) {
-        this.restaurantList = zomatoRequest.getRetaurants(location, keyWord, 0, 20);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Log.i(TAG, restaurantList.toString());
-                restaurantAdapter = new RestaurantAdapter(SearchActivity.this, restaurantList);
-                binding.resultsRecyclerView.setAdapter(restaurantAdapter);
-                selectedRestaurant = restaurantList.get(0);//set first result as default value
-                composeButtonListener();
-            }
-        }, 2000);
     }
 
     @Override
@@ -149,6 +141,50 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         if (indicator == true) {
             goToRestaurantDetailsActivity();
             return;
+        }
+    }
+
+    private void performLocationSearch(String keyWord) {
+        this.locationList = zomatoRequest.getLocations(keyWord);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.i(TAG, locationList.toString());
+                locationAdapter = new LocationAdapter(SearchActivity.this, locationList);
+                binding.resultsRecyclerView.setAdapter(locationAdapter);
+            }
+        }, 2000);
+    }
+
+    private void performRestaurantSearch(Location location, String keyWord) {
+        this.restaurantList = zomatoRequest.getRetaurants(location, keyWord, 0, 20);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.i(TAG, restaurantList.toString());
+                restaurantAdapter = new RestaurantAdapter(SearchActivity.this, restaurantList);
+                binding.resultsRecyclerView.setAdapter(restaurantAdapter);
+                selectedRestaurant = restaurantList.get(0);//set first result as default value
+                composeButtonListener();
+            }
+        }, 2000);
+    }
+
+    private void getLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                SearchActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                SearchActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+        } else {
+            android.location.Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (locationGPS != null) {
+                double lat = locationGPS.getLatitude();
+                double lon = locationGPS.getLongitude();
+                Toast.makeText(this, "lat: " + lat + " lon: " + lon, Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(this, "Unable to find location.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
