@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO progress bar for waiting for network calls
 public class SearchActivity extends AppCompatActivity implements LocationAdapter.OnClickLocationListener, RestaurantAdapter.OnClickRestaurantListener {
     private static final String TAG = "SearchActivity";
     private static final int REQUEST_LOCATION = 100;
@@ -178,7 +179,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
                 final double lat = locationGPS.getLatitude();
                 final double lon = locationGPS.getLongitude();
                 Log.i(TAG, "lat: " + lat + " lon: " + lon);
-                zomatoRequest.getLocationByGeoPoint(lat, lon, new ZomatoRequest.geoLocationCallbacks() {
+                zomatoRequest.getLocationByGeoPoint(lat, lon, new ZomatoRequest.GeoLocationCallbacks() {
                     @Override
                     public void onSuccess(Location location) {
                         selectedLocation = location;
@@ -192,9 +193,14 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
                     }
                 });
 
-                if(selectedLocation != null){
-                    setSelectedLocationTitle(selectedLocation.getTitle());
-                }
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(selectedLocation != null){
+                            setSelectedLocationTitle(selectedLocation.getTitle());
+                        }
+                    }
+                }, 2000);
 
             } else {
                 Toast.makeText(this, "Unable to find location.", Toast.LENGTH_SHORT).show();

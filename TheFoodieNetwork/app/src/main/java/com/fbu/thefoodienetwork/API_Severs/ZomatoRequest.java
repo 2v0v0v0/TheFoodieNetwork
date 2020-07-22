@@ -52,15 +52,16 @@ public class ZomatoRequest {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
-                Log.d(TAG, "onResponse");
-                String responseData = response.body().string();
-                try {
-                    JSONObject json = new JSONObject(responseData);
-                    JSONArray locations = json.getJSONArray("location_suggestions");
-                    locationList.addAll(Location.fromJsonArray(locations));
-                    Log.i(TAG, locationList.toString());
-                } catch (JSONException e) {
-                    Log.i(TAG, "error: " + e);
+                if(response.isSuccessful()){
+                    String responseData = response.body().string();
+                    try {
+                        JSONObject json = new JSONObject(responseData);
+                        JSONArray locations = json.getJSONArray("location_suggestions");
+                        locationList.addAll(Location.fromJsonArray(locations));
+                        Log.i(TAG, locationList.toString());
+                    } catch (JSONException e) {
+                        Log.i(TAG, "error: " + e);
+                    }
                 }
             }
 
@@ -72,7 +73,7 @@ public class ZomatoRequest {
         return locationList;
     }
 
-    public Location getLocationByGeoPoint(double lat, double lon, final geoLocationCallbacks callbacks){
+    public void getLocationByGeoPoint(double lat, double lon, final GeoLocationCallbacks callbacks){
         final Location[] location = new Location[1];
         urlBuilder = HttpUrl.parse(BASE_URL + GEO_CODE).newBuilder();
         urlBuilder.addQueryParameter("apikey", apiKey);
@@ -108,15 +109,7 @@ public class ZomatoRequest {
                 callbacks.onFailure(e);
             }
         });
-
-        return location[0];
     }
-
-    public interface geoLocationCallbacks {
-        void onSuccess(Location location);
-        void onFailure(IOException e);
-    }
-
 
     public List<Restaurant> getRestaurants(Location location, String query, int start, int count) {
         final List<Restaurant> restaurantList = new ArrayList<>();
@@ -157,4 +150,8 @@ public class ZomatoRequest {
         return restaurantList;
     }
 
+    public interface GeoLocationCallbacks {
+        void onSuccess(Location location);
+        void onFailure(IOException e);
+    }
 }
