@@ -27,6 +27,7 @@ import com.fbu.thefoodienetwork.models.Restaurant;
 
 import org.parceler.Parcels;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,11 +119,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
     public void onClickLocation(int position) {
         selectedLocation = locationList.get(position);
         String locationTitle = selectedLocation.getTitle();
-        //show selected location as text view
-        binding.locationSearch.getText().clear();
-        binding.locationResultTextView.setText(locationTitle);
-        binding.locationSearch.setVisibility(View.GONE);
-        binding.locationResultTextView.setVisibility(View.VISIBLE);
+        setSelectedLocationTitle(locationTitle);
         //clear recycler view
         Log.i(TAG, "selected: " + locationTitle);
         locationList.clear();
@@ -157,7 +154,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
     }
 
     private void performRestaurantSearch(Location location, String keyWord) {
-        this.restaurantList = zomatoRequest.getRetaurants(location, keyWord, 0, 20);
+        this.restaurantList = zomatoRequest.getRestaurants(location, keyWord, 0, 20);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -178,15 +175,39 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         } else {
             android.location.Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (locationGPS != null) {
-                double lat = locationGPS.getLatitude();
-                double lon = locationGPS.getLongitude();
-                Log.i(TAG,"lat: " + lat + " lon: " + lon);
-                Toast.makeText(this, "lat: " + lat + " lon: " + lon, Toast.LENGTH_SHORT).show();
+                final double lat = locationGPS.getLatitude();
+                final double lon = locationGPS.getLongitude();
+                Log.i(TAG, "lat: " + lat + " lon: " + lon);
+                zomatoRequest.getLocationByGeoPoint(lat, lon, new ZomatoRequest.geoLocationCallbacks() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        selectedLocation = location;
+                        Log.i(TAG, location.toString());
+                    }
+
+                    @Override
+                    public void onFailure(IOException e) {
+                        //TODO user failure handling
+                        Log.i(TAG, "onFailure: " + e);
+                    }
+                });
+
+                if(selectedLocation != null){
+                    setSelectedLocationTitle(selectedLocation.getTitle());
+                }
 
             } else {
                 Toast.makeText(this, "Unable to find location.", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void setSelectedLocationTitle(String locationTitle) {
+        //show selected location as text view
+        binding.locationSearch.getText().clear();
+        binding.locationResultTextView.setText(locationTitle);
+        binding.locationSearch.setVisibility(View.GONE);
+        binding.locationResultTextView.setVisibility(View.VISIBLE);
     }
 
     private void goToRestaurantDetailsActivity() {

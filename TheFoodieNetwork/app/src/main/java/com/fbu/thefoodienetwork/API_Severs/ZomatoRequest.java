@@ -104,7 +104,8 @@ public class ZomatoRequest {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 //TODO
-                Log.i(TAG, "onFailure");
+                Log.i(TAG, "onFailure: " + e);
+                callbacks.onFailure(e);
             }
         });
 
@@ -113,7 +114,7 @@ public class ZomatoRequest {
 
     public interface geoLocationCallbacks {
         void onSuccess(Location location);
-        void onFailure();
+        void onFailure(IOException e);
     }
 
 

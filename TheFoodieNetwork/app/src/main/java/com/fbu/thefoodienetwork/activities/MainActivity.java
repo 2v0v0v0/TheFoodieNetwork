@@ -15,11 +15,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.fbu.thefoodienetwork.API_Severs.ZomatoRequest;
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.databinding.ActivityMainBinding;
 import com.fbu.thefoodienetwork.fragments.ComposeFragment;
 import com.fbu.thefoodienetwork.fragments.GlobeFragment;
 import com.fbu.thefoodienetwork.fragments.HomeFragment;
+import com.fbu.thefoodienetwork.models.Location;
 import com.fbu.thefoodienetwork.models.Restaurant;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseUser;

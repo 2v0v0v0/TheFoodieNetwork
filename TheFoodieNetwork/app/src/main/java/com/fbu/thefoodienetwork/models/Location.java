@@ -31,8 +31,15 @@ public class Location {
         entity_type = jsonObject.getString("entity_type");
         entity_id = jsonObject.getInt("entity_id");
         title = jsonObject.getString("title");
-        latitude = jsonObject.getDouble("latitude");
-        longitude = jsonObject.getDouble("longitude");
+        city_id = jsonObject.getInt("city_id");
+        try {
+            latitude = jsonObject.getDouble("latitude");
+            longitude = jsonObject.getDouble("longitude");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            latitude = Double.parseDouble(jsonObject.getString("latitude"));
+            longitude = Double.parseDouble(jsonObject.getString("longitude"));
+        }
     }
 
     public static List<Location> fromJsonArray(JSONArray locationJsonArray) throws JSONException {
