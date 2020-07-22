@@ -59,7 +59,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
             public void onClick(View view) {
                 locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                 if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    getLocation();
+                    getLocationByLatLon();
                 }
             }
         });
@@ -170,7 +170,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         }, 2000);
     }
 
-    private void getLocation() {
+    private void getLocationByLatLon() {
         if (ActivityCompat.checkSelfPermission(
                 SearchActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 SearchActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -180,6 +180,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
             if (locationGPS != null) {
                 double lat = locationGPS.getLatitude();
                 double lon = locationGPS.getLongitude();
+                Log.i(TAG,"lat: " + lat + " lon: " + lon);
                 Toast.makeText(this, "lat: " + lat + " lon: " + lon, Toast.LENGTH_SHORT).show();
 
             } else {

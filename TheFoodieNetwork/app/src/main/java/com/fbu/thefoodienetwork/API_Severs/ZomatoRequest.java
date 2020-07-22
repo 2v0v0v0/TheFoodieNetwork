@@ -27,6 +27,7 @@ public class ZomatoRequest {
     public static final String LOCATIONS = "locations";
     public static final String LOCATION_DETAILS = "location_details";
     public static final String SEARCH = "search";
+    public static final String GEO_CODE = "geocode";
     public static final String RESTAURANT = "restaurant";
     private static final String TAG = "ZomatoRequest";
     private static final String apiKey = BuildConfig.ZOMATO_KEY;
@@ -49,8 +50,8 @@ public class ZomatoRequest {
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
                 Log.d(TAG, "onResponse");
+                String responseData = response.body().string();
                 try {
-                    String responseData = response.body().string();
                     JSONObject json = new JSONObject(responseData);
                     JSONArray locations = json.getJSONArray("location_suggestions");
                     locationList.addAll(Location.fromJsonArray(locations));
@@ -66,6 +67,38 @@ public class ZomatoRequest {
             }
         });
         return locationList;
+    }
+
+    public  Location getLocationByGeoPoint(double lat, double lon){
+        final Location[] location = {};
+        urlBuilder = HttpUrl.parse(BASE_URL + GEO_CODE).newBuilder();
+        urlBuilder.addQueryParameter("apikey", apiKey);
+        urlBuilder.addQueryParameter("lat", String.valueOf(lat)); ////max number of results to display
+        urlBuilder.addQueryParameter("lon", String.valueOf(lon)); //search keyword
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String responseData = response.body().string();
+                try {
+                    JSONObject json = new JSONObject(responseData);
+                    JSONObject locationJSONObject = json.getJSONObject("location");
+                    location[0] = new Location(locationJSONObject);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                //TODO
+            }
+        });
+        return location[0];
     }
 
     public List<Restaurant> getRetaurants(Location location, String query, int start, int count) {
