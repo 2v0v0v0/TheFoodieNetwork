@@ -51,17 +51,17 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         binding = ActivitySearchBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        searchListener();
+        setSearchListener();
         binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    private void searchListener() {
+    private void setSearchListener() {
         binding.getMyLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                 if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    getLocationByLatLon();
+                    getGPSLocation();
                 }
             }
         });
@@ -142,6 +142,14 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         }
     }
 
+    private void setSelectedLocationTitle(String locationTitle) {
+        //show selected location as text view
+        binding.locationSearch.getText().clear();
+        binding.locationResultTextView.setText(locationTitle);
+        binding.locationSearch.setVisibility(View.GONE);
+        binding.locationResultTextView.setVisibility(View.VISIBLE);
+    }
+
     private void performLocationSearch(String keyWord) {
         this.locationList = zomatoRequest.getLocations(keyWord);
         new Handler().postDelayed(new Runnable() {
@@ -168,7 +176,8 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         }, 2000);
     }
 
-    private void getLocationByLatLon() {
+    private void getGPSLocation() {
+        //ask for user permission
         if (ActivityCompat.checkSelfPermission(
                 SearchActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 SearchActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -179,6 +188,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
                 final double lat = locationGPS.getLatitude();
                 final double lon = locationGPS.getLongitude();
                 Log.i(TAG, "lat: " + lat + " lon: " + lon);
+                //use geopoint to find location entities on Zomato API
                 zomatoRequest.getLocationByGeoPoint(lat, lon, new ZomatoRequest.GeoLocationCallbacks() {
                     @Override
                     public void onSuccess(Location location) {
@@ -188,15 +198,14 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
 
                     @Override
                     public void onFailure(IOException e) {
-                        //TODO user failure handling
-                        Log.i(TAG, "onFailure: " + e);
+                        Toast.makeText(SearchActivity.this, "Error: " + e, Toast.LENGTH_SHORT).show();
                     }
                 });
-
+                //Wait for api results
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if(selectedLocation != null){
+                        if (selectedLocation != null) {
                             setSelectedLocationTitle(selectedLocation.getTitle());
                         }
                     }
@@ -206,14 +215,6 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
                 Toast.makeText(this, "Unable to find location.", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    private void setSelectedLocationTitle(String locationTitle) {
-        //show selected location as text view
-        binding.locationSearch.getText().clear();
-        binding.locationResultTextView.setText(locationTitle);
-        binding.locationSearch.setVisibility(View.GONE);
-        binding.locationResultTextView.setVisibility(View.VISIBLE);
     }
 
     private void goToRestaurantDetailsActivity() {
