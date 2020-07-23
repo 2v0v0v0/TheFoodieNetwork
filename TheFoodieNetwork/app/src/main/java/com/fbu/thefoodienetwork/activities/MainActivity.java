@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 logoutUser();
                 return true;
             case R.id.menu_profile:
-                //TODO: navigate to user profile
+                goToProfile();
                 return true;
             case R.id.menu_bookmark:
                 return true;
@@ -118,6 +118,11 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(i);
         finish();
+    }
+
+    private void goToProfile(){
+        Intent searchFriend = new Intent(MainActivity.this, ProfileActivity.class);
+        startActivity(searchFriend);
     }
 
     @Override
