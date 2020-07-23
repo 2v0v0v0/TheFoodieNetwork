@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.fbu.thefoodienetwork">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -39,6 +40,17 @@
             </intent-filter>
         </receiver>
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.com.vansuita.pickimage.provider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/picker_provider_paths" />
+        </provider>
+
         <activity android:name=".activities.SearchFriendActivity" />
         <activity android:name=".activities.RestaurantDetailsActivity" />
         <activity android:name=".activities.SignUpActivity" />
@@ -51,6 +63,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.MainActivity" />
+
     </application>
 
 </manifest>
