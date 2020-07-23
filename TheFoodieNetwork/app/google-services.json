@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "648639764003",
+    "firebase_url": "https://the-foodie-network.firebaseio.com",
+    "project_id": "the-foodie-network",
+    "storage_bucket": "the-foodie-network.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648639764003:android:219404939e81d2405c4396",
+        "android_client_info": {
+          "package_name": "com.fbu.thefoodienetwork"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648639764003-8490aemk7aplrnt51qvp34m45muebeos.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAD8CuRZENaJRURhZwjXJG4V7LKVMq83o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "648639764003-8490aemk7aplrnt51qvp34m45muebeos.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
