@@ -13,6 +13,7 @@ import com.fbu.thefoodienetwork.CurrentUserUtilities;
 import com.fbu.thefoodienetwork.databinding.ActivityLoginBinding;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {
@@ -61,6 +62,8 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                     return;
                 }
+                ParseInstallation.getCurrentInstallation().put("user", user);
+                ParseInstallation.getCurrentInstallation().saveInBackground();
                 goMainActivity();
             }
         });

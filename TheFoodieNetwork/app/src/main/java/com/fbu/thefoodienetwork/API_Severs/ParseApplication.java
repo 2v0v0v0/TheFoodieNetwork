@@ -6,6 +6,7 @@ import com.fbu.thefoodienetwork.BuildConfig;
 import com.fbu.thefoodienetwork.models.ParseRestaurant;
 import com.fbu.thefoodienetwork.models.ParseReview;
 import com.parse.Parse;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 
 public class ParseApplication extends Application {
@@ -23,5 +24,7 @@ public class ParseApplication extends Application {
                 .applicationId("the-foodie-network")
                 .clientKey(clientKey)
                 .server("https://the-foodie-network.herokuapp.com/parse").build());
+
+       ParseInstallation.getCurrentInstallation().saveInBackground();
     }
 }

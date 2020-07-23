@@ -15,15 +15,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.fbu.thefoodienetwork.API_Severs.ZomatoRequest;
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.databinding.ActivityMainBinding;
 import com.fbu.thefoodienetwork.fragments.ComposeFragment;
 import com.fbu.thefoodienetwork.fragments.GlobeFragment;
 import com.fbu.thefoodienetwork.fragments.HomeFragment;
-import com.fbu.thefoodienetwork.models.Location;
 import com.fbu.thefoodienetwork.models.Restaurant;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 
 import org.parceler.Parcels;
@@ -104,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(searchActivity, SEARCH_CODE);
     }
 
-    private void goToSearchFriend(){
+    private void goToSearchFriend() {
         Intent searchFriend = new Intent(MainActivity.this, SearchFriendActivity.class);
         startActivity(searchFriend);
     }
@@ -112,6 +111,10 @@ public class MainActivity extends AppCompatActivity {
     private void logoutUser() {
         ParseUser.logOut();
         ParseUser currentUser = ParseUser.getCurrentUser();
+
+        ParseInstallation.getCurrentInstallation().remove("user");
+        ParseInstallation.getCurrentInstallation().saveInBackground();
+
         Intent i = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(i);
         finish();
