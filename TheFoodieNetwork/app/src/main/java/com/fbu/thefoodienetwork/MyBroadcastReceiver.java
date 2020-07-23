@@ -10,7 +10,7 @@ public class MyBroadcastReceiver extends ParsePushBroadcastReceiver {
     private static final String TAG = "MyBroadcastReceiver";
 
     @Override
-    protected void onPushReceive(Context context, Intent intent) {
-        Log.e(TAG, "onPushReceive");
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
     }
 }

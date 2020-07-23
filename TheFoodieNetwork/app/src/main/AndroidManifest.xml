@@ -31,7 +31,7 @@
         </service>
 
         <receiver
-            android:name="com.parse.ParsePushBroadcastReceiver"
+            android:name="com.fbu.thefoodienetwork.MyBroadcastReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
