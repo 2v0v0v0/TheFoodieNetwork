@@ -20,6 +20,7 @@ import com.fbu.thefoodienetwork.databinding.ActivityMainBinding;
 import com.fbu.thefoodienetwork.fragments.ComposeFragment;
 import com.fbu.thefoodienetwork.fragments.GlobeFragment;
 import com.fbu.thefoodienetwork.fragments.HomeFragment;
+import com.fbu.thefoodienetwork.keys.ParcelKeys;
 import com.fbu.thefoodienetwork.models.Restaurant;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseInstallation;
@@ -129,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == SEARCH_CODE) {
-            Restaurant restaurant = (Restaurant) Parcels.unwrap(data.getParcelableExtra("selectedRestaurant"));
+            Restaurant restaurant = (Restaurant) Parcels.unwrap(data.getParcelableExtra(ParcelKeys.selectedRestaurant));
             Log.i(TAG, restaurant.toString());
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ComposeFragment composeFragment = ComposeFragment.newInstance(restaurant);

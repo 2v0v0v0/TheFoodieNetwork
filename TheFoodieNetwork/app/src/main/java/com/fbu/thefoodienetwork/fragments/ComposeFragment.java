@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.databinding.FragmentComposeBinding;
+import com.fbu.thefoodienetwork.keys.ParcelKeys;
 import com.fbu.thefoodienetwork.models.ParseRestaurant;
 import com.fbu.thefoodienetwork.models.ParseReview;
 import com.fbu.thefoodienetwork.models.Restaurant;
@@ -30,7 +31,6 @@ import java.util.List;
 
 public class ComposeFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private static final String TAG = "ComposeFragment";
-    private static final String ARG_RESTAURANT = "selectedRestaurant";
     private FragmentComposeBinding binding;
     private Restaurant mRestaurant;
     private Spinner spinner;
@@ -45,7 +45,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
     public static ComposeFragment newInstance(Restaurant restaurant) {
         ComposeFragment fragment = new ComposeFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_RESTAURANT, Parcels.wrap(restaurant));
+        args.putParcelable(ParcelKeys.selectedRestaurant, Parcels.wrap(restaurant));
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,7 +54,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mRestaurant = (Restaurant) Parcels.unwrap(getArguments().getParcelable(ARG_RESTAURANT));
+            mRestaurant = (Restaurant) Parcels.unwrap(getArguments().getParcelable(ParcelKeys.selectedRestaurant));
         }
     }
 

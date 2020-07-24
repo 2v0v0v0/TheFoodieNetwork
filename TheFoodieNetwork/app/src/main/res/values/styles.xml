@@ -12,17 +12,4 @@
         <item name="colorControlActivated">@color/colorPinkAccent</item>
     </style>
 
-    <style name="AppDialogTheme" parent="Theme.AppCompat.Light.Dialog">
-        <item name="android:windowTitleStyle">@style/DialogWindowTitle</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowIsFloating">false</item>
-    </style>
-
-
-    <style name="DialogWindowTitle" parent="Base.DialogWindowTitle.AppCompat">
-        <item name="android:background">@color/colorPinkAccent</item>
-        <item name="android:gravity">center</item>
-    </style>
-
 </resources>

@@ -22,6 +22,7 @@ import com.fbu.thefoodienetwork.API_Severs.ZomatoRequest;
 import com.fbu.thefoodienetwork.adapters.LocationAdapter;
 import com.fbu.thefoodienetwork.adapters.RestaurantAdapter;
 import com.fbu.thefoodienetwork.databinding.ActivitySearchBinding;
+import com.fbu.thefoodienetwork.keys.ParcelKeys;
 import com.fbu.thefoodienetwork.models.Location;
 import com.fbu.thefoodienetwork.models.Restaurant;
 
@@ -219,13 +220,13 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
 
     private void goToRestaurantDetailsActivity() {
         Intent intent = new Intent(this, RestaurantDetailsActivity.class);
-        intent.putExtra("selectedRestaurant", Parcels.wrap(selectedRestaurant));
+        intent.putExtra(ParcelKeys.selectedRestaurant, Parcels.wrap(selectedRestaurant));
         startActivity(intent);
     }
 
     private void goToComposeFragment() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("selectedRestaurant", Parcels.wrap(selectedRestaurant));
+        intent.putExtra(ParcelKeys.selectedRestaurant, Parcels.wrap(selectedRestaurant));
         setResult(RESULT_OK, intent);
         finish();
     }
