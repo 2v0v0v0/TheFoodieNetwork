@@ -56,6 +56,8 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+
+    //Click listener
     private void setSearchListener() {
         binding.getMyLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,6 +145,8 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         }
     }
 
+
+    //actions
     private void setSelectedLocationTitle(String locationTitle) {
         //show selected location as text view
         binding.locationSearch.getText().clear();
