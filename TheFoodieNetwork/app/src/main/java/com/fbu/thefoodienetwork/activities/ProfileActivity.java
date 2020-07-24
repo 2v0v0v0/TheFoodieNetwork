@@ -29,8 +29,8 @@ public class ProfileActivity extends AppCompatActivity {
     private final static String TAG = "ProfileActivity";
     private ActivityProfileBinding binding;
     private ParseUser user = ParseUser.getCurrentUser();
-    protected ReviewAdapter reviewAdapter;
-    protected List<ParseReview> allReviews;
+    private ReviewAdapter reviewAdapter;
+    private List<ParseReview> allReviews;
     private LinearLayoutManager layoutManager;
     private RecyclerView reviewRecyclerView;
 
