@@ -6,21 +6,10 @@
     android:orientation="vertical"
     tools:context=".activities.ProfileActivity">
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="300dp"
-        android:layout_height="300dp" />
-
     <Button
-        android:id="@+id/button"
+        android:id="@+id/editButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="choose image" />
-    <Button
-        android:id="@+id/uploadButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="upload"
-        android:visibility="gone"/>
+        android:text="edit profile"/>
 
 </LinearLayout>
