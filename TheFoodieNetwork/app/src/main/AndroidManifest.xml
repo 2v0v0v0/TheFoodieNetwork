@@ -16,8 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.EditProfileActivity"></activity>
-        <activity android:name=".activities.ProfileActivity" />
 
         <service
             android:name="com.parse.fcm.ParseFirebaseInstanceIdService"
@@ -53,11 +51,25 @@
                 android:resource="@xml/picker_provider_paths" />
         </provider>
 
-        <activity android:name=".activities.SearchFriendActivity" />
+        <activity
+            android:name=".activities.EditProfileActivity"
+            android:label="Edit Profile" />
+        <activity
+            android:name=".activities.ProfileActivity"
+            android:label="Profile" />
+        <activity
+            android:name=".activities.SearchFriendActivity"
+            android:label="Search for People" />
         <activity android:name=".activities.RestaurantDetailsActivity" />
-        <activity android:name=".activities.SignUpActivity" />
-        <activity android:name=".activities.SearchActivity" />
-        <activity android:name=".activities.LoginActivity">
+        <activity
+            android:name=".activities.SignUpActivity"
+            android:label="Sign Up" />
+        <activity
+            android:name=".activities.SearchActivity"
+            android:label="Search for Restaurants" />
+        <activity
+            android:name=".activities.LoginActivity"
+            android:label="Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

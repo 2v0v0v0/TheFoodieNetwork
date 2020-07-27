@@ -22,6 +22,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
         Restaurant restaurant = (Restaurant) Parcels.unwrap(getIntent().getParcelableExtra("selectedRestaurant"));
+        setTitle(restaurant.getName());
         Log.i(TAG, restaurant.toString());
     }
 }
