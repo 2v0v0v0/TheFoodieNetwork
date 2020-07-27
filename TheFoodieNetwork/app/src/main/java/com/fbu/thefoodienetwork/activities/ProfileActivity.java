@@ -48,6 +48,18 @@ public class ProfileActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         reviewRecyclerView.setLayoutManager(layoutManager);
 
+        loadData();
+
+    }
+
+    @Override
+    protected void onResume() {
+        Log.i(TAG, "resume");
+        loadData();
+        super.onResume();
+    }
+
+    private void loadData() {
         queryReviews();
 
         binding.editButton.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +95,6 @@ public class ProfileActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e(TAG, "Error: " + e);
         }
-
     }
 
     private void goEditProfileActivity() {

@@ -43,6 +43,7 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
         super.onCreate(savedInstanceState);
         binding = ActivityEditProfileBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
+
         profileImageView = binding.profileImageView;
         imageButton = binding.chooseImageTextView;
         saveButton = binding.saveFloatingActionButton;
@@ -124,6 +125,7 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                         //if success
                         if (e == null) {
                             Toast.makeText(EditProfileActivity.this, getString(R.string.imageSaveSuccess), Toast.LENGTH_LONG).show();
+                            currentUser.fetchInBackground();
                             return;
                         }
                         //if fail
@@ -154,6 +156,7 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                         //if success
                         if (e == null) {
                             Toast.makeText(EditProfileActivity.this, getString(R.string.imageSaveSuccess), Toast.LENGTH_SHORT).show();
+                            currentUser.fetchInBackground();
                             return;
                         }
                         //If fail
