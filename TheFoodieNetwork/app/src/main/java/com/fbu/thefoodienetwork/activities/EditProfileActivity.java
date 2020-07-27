@@ -1,13 +1,13 @@
 package com.fbu.thefoodienetwork.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.databinding.ActivityEditProfileBinding;
@@ -70,11 +70,11 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(pickType == EPickType.CAMERA){
+                if (pickType == EPickType.CAMERA) {
                     saveImageFromCamera(new File(imageResult.getPath()));
                     return;
                 }
-                if(pickType == EPickType.GALLERY){
+                if (pickType == EPickType.GALLERY) {
                     saveImageFromGallery(imageResult.getBitmap());
                 }
             }

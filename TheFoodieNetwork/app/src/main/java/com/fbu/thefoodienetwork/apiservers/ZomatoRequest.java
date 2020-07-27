@@ -1,11 +1,9 @@
-package com.fbu.thefoodienetwork.API_Severs;
+package com.fbu.thefoodienetwork.apiservers;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.fbu.thefoodienetwork.BuildConfig;
+import com.fbu.thefoodienetwork.keys.ZomatoKeys;
 import com.fbu.thefoodienetwork.models.Location;
 import com.fbu.thefoodienetwork.models.Restaurant;
 
@@ -33,17 +31,19 @@ public class ZomatoRequest {
     public static final String GEO_CODE = "geocode";
     public static final String RESTAURANT = "restaurant";
     private static final String TAG = "ZomatoRequest";
-    private static final String apiKey = BuildConfig.ZOMATO_KEY;
+    private static final String API_KEY = BuildConfig.ZOMATO_KEY;
     private static final String BASE_URL = "https://developers.zomato.com/api/v2.1/";
+
+
     private OkHttpClient client = new OkHttpClient();
     private HttpUrl.Builder urlBuilder;
 
     public List<Location> getLocations(String query) {
         final List<Location> locationList = new ArrayList<>();
         urlBuilder = HttpUrl.parse(BASE_URL + LOCATIONS).newBuilder();
-        urlBuilder.addQueryParameter("apikey", apiKey);
-        urlBuilder.addQueryParameter("count", "10"); ////max number of results to display
-        urlBuilder.addQueryParameter("query", query); //search keyword
+        urlBuilder.addQueryParameter(ZomatoKeys.API_KEY, API_KEY);
+        urlBuilder.addQueryParameter(ZomatoKeys.COUNT, "10"); ////max number of results to display
+        urlBuilder.addQueryParameter(ZomatoKeys.QUERY, query); //search keyword
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder()
@@ -52,11 +52,11 @@ public class ZomatoRequest {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     String responseData = response.body().string();
                     try {
                         JSONObject json = new JSONObject(responseData);
-                        JSONArray locations = json.getJSONArray("location_suggestions");
+                        JSONArray locations = json.getJSONArray(ZomatoKeys.LOCATION_SUGGESTIONS);
                         locationList.addAll(Location.fromJsonArray(locations));
                         Log.i(TAG, locationList.toString());
                     } catch (JSONException e) {
@@ -73,12 +73,12 @@ public class ZomatoRequest {
         return locationList;
     }
 
-    public void getLocationByGeoPoint(double lat, double lon, final GeoLocationCallbacks callbacks){
+    public void getLocationByGeoPoint(double lat, double lon, final GeoLocationCallbacks callbacks) {
         final Location[] location = new Location[1];
         urlBuilder = HttpUrl.parse(BASE_URL + GEO_CODE).newBuilder();
-        urlBuilder.addQueryParameter("apikey", apiKey);
-        urlBuilder.addQueryParameter("lat", String.valueOf(lat));
-        urlBuilder.addQueryParameter("lon", String.valueOf(lon));
+        urlBuilder.addQueryParameter(ZomatoKeys.API_KEY, API_KEY);
+        urlBuilder.addQueryParameter(ZomatoKeys.LAT, String.valueOf(lat));
+        urlBuilder.addQueryParameter(ZomatoKeys.LON, String.valueOf(lon));
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder()
@@ -88,11 +88,11 @@ public class ZomatoRequest {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     String responseData = response.body().string();
                     try {
                         JSONObject json = new JSONObject(responseData);
-                        JSONObject locationJSONObject = json.getJSONObject("location");
+                        JSONObject locationJSONObject = json.getJSONObject(ZomatoKeys.LOCATION);
                         location[0] = new Location(locationJSONObject);
                         callbacks.onSuccess(location[0]);
                         Log.i(TAG, location[0].toString());
@@ -114,12 +114,12 @@ public class ZomatoRequest {
     public List<Restaurant> getRestaurants(Location location, String query, int start, int count) {
         final List<Restaurant> restaurantList = new ArrayList<>();
         urlBuilder = HttpUrl.parse(BASE_URL + SEARCH).newBuilder();
-        urlBuilder.addQueryParameter("apikey", apiKey);
-        urlBuilder.addQueryParameter("lat", String.valueOf(location.getLatitude()));
-        urlBuilder.addQueryParameter("lon", String.valueOf(location.getLongitude()));
-        urlBuilder.addQueryParameter("q", query); //search keyword
-        urlBuilder.addQueryParameter("start", String.valueOf(start)); //fetch results after offset
-        urlBuilder.addQueryParameter("count", String.valueOf(count)); //max number of results to display
+        urlBuilder.addQueryParameter(ZomatoKeys.API_KEY, API_KEY);
+        urlBuilder.addQueryParameter(ZomatoKeys.LAT, String.valueOf(location.getLatitude()));
+        urlBuilder.addQueryParameter(ZomatoKeys.LON, String.valueOf(location.getLongitude()));
+        urlBuilder.addQueryParameter(ZomatoKeys.Q, query); //search keyword
+        urlBuilder.addQueryParameter(ZomatoKeys.START, String.valueOf(start)); //fetch results after offset
+        urlBuilder.addQueryParameter(ZomatoKeys.COUNT, String.valueOf(count)); //max number of results to display
 
         String url = urlBuilder.build().toString();
 
@@ -133,7 +133,7 @@ public class ZomatoRequest {
                 try {
                     String responseData = response.body().string();
                     JSONObject json = new JSONObject(responseData);
-                    JSONArray restaurants = json.getJSONArray("restaurants");
+                    JSONArray restaurants = json.getJSONArray(ZomatoKeys.RESTAURANTS);
                     restaurantList.addAll(Restaurant.fromJsonArray(restaurants));
                     Log.i(TAG, restaurants.toString());
                     Log.i(TAG, restaurantList.toString());
@@ -152,6 +152,7 @@ public class ZomatoRequest {
 
     public interface GeoLocationCallbacks {
         void onSuccess(Location location);
+
         void onFailure(IOException e);
     }
 }

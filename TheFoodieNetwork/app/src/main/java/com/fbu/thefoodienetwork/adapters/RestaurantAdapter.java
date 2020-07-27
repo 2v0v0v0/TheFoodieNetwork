@@ -79,6 +79,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 
     public interface OnClickRestaurantListener {
         void onClickRestaurant(int position);
+
         void onClickMoreInfo(boolean indicator);//check if the user select the restaurant or click on more info button
     }
 

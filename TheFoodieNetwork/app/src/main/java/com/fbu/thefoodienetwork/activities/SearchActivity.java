@@ -18,9 +18,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.fbu.thefoodienetwork.API_Severs.ZomatoRequest;
 import com.fbu.thefoodienetwork.adapters.LocationAdapter;
 import com.fbu.thefoodienetwork.adapters.RestaurantAdapter;
+import com.fbu.thefoodienetwork.apiservers.ZomatoRequest;
 import com.fbu.thefoodienetwork.databinding.ActivitySearchBinding;
 import com.fbu.thefoodienetwork.keys.ParcelKeys;
 import com.fbu.thefoodienetwork.models.Location;
@@ -63,9 +63,11 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
             @Override
             public void onClick(View view) {
                 locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
                 if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     getGPSLocation();
                 }
+
             }
         });
 
@@ -74,7 +76,9 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     String keyWord = binding.locationSearch.getText().toString();
+
                     Log.i(TAG, keyWord);
+
                     performLocationSearch(keyWord);
                     return true;
                 }
@@ -86,12 +90,15 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+
                     if (selectedLocation == null) {
                         binding.locationSearch.setError("Select a location first.");
                         return true;
                     }
+
                     String keyWord = binding.restaurantSearch.getText().toString();
                     Log.i(TAG, keyWord);
+
                     performRestaurantSearch(selectedLocation, keyWord);
                     return true;
                 }
@@ -109,7 +116,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         });
     }
 
-    private void composeButtonListener() {
+    private void setComposeButtonListener() {
         binding.composeFltButton.setVisibility(View.VISIBLE);
         binding.composeFltButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,10 +129,13 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
     @Override
     public void onClickLocation(int position) {
         selectedLocation = locationList.get(position);
+
         String locationTitle = selectedLocation.getTitle();
+
         setSelectedLocationTitle(locationTitle);
-        //clear recycler view
         Log.i(TAG, "selected: " + locationTitle);
+
+        //clear recycler view
         locationList.clear();
         locationAdapter.notifyDataSetChanged();
     }
@@ -133,15 +143,16 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
     @Override
     public void onClickRestaurant(int position) {
         selectedRestaurant = restaurantList.get(position);
+
         String restaurantName = selectedRestaurant.getName();
+
         Log.i(TAG, "selected: " + restaurantName);
     }
 
     @Override
     public void onClickMoreInfo(boolean indicator) {
-        if (indicator == true) {
+        if (indicator) {
             goToRestaurantDetailsActivity();
-            return;
         }
     }
 
@@ -151,6 +162,8 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         //show selected location as text view
         binding.locationSearch.getText().clear();
         binding.locationResultTextView.setText(locationTitle);
+
+        //Change visibility
         binding.locationSearch.setVisibility(View.GONE);
         binding.locationResultTextView.setVisibility(View.VISIBLE);
     }
@@ -161,8 +174,10 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
             @Override
             public void run() {
                 Log.i(TAG, locationList.toString());
+
                 locationAdapter = new LocationAdapter(SearchActivity.this, locationList);
                 binding.resultsRecyclerView.setAdapter(locationAdapter);
+
             }
         }, 2000);
     }
@@ -172,29 +187,38 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+
                 Log.i(TAG, restaurantList.toString());
+
                 restaurantAdapter = new RestaurantAdapter(SearchActivity.this, restaurantList);
                 binding.resultsRecyclerView.setAdapter(restaurantAdapter);
                 selectedRestaurant = restaurantList.get(0);//set first result as default value
-                composeButtonListener();
+
+                setComposeButtonListener();
             }
         }, 2000);
     }
 
     private void getGPSLocation() {
         //ask for user permission
-        if (ActivityCompat.checkSelfPermission(
-                SearchActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                SearchActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(SearchActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(SearchActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+
         } else {
+
             android.location.Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
             if (locationGPS != null) {
+
                 final double lat = locationGPS.getLatitude();
                 final double lon = locationGPS.getLongitude();
                 Log.i(TAG, "lat: " + lat + " lon: " + lon);
+
                 //use geopoint to find location entities on Zomato API
                 zomatoRequest.getLocationByGeoPoint(lat, lon, new ZomatoRequest.GeoLocationCallbacks() {
+
                     @Override
                     public void onSuccess(Location location) {
                         selectedLocation = location;
@@ -205,7 +229,9 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
                     public void onFailure(IOException e) {
                         Toast.makeText(SearchActivity.this, "Error: " + e, Toast.LENGTH_SHORT).show();
                     }
+
                 });
+
                 //Wait for api results
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -229,9 +255,9 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
     }
 
     private void goToComposeFragment() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(ParcelKeys.selectedRestaurant, Parcels.wrap(selectedRestaurant));
-        setResult(RESULT_OK, intent);
+        Intent composeIntent = new Intent(this, MainActivity.class);
+        composeIntent.putExtra(ParcelKeys.selectedRestaurant, Parcels.wrap(selectedRestaurant));
+        setResult(RESULT_OK, composeIntent);
         finish();
     }
 }

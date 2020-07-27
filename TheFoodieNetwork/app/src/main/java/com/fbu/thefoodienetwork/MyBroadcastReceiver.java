@@ -2,7 +2,6 @@ package com.fbu.thefoodienetwork;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.parse.ParsePushBroadcastReceiver;
 

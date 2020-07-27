@@ -1,4 +1,4 @@
-package com.fbu.thefoodienetwork.API_Severs;
+package com.fbu.thefoodienetwork.apiservers;
 
 import android.app.Application;
 
@@ -10,7 +10,6 @@ import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 
 public class ParseApplication extends Application {
-    private static final String clientKey = BuildConfig.HEROKU_KEY;
 
     @Override
     public void onCreate() {
@@ -22,9 +21,9 @@ public class ParseApplication extends Application {
         // Initalize Parse
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId("the-foodie-network")
-                .clientKey(clientKey)
+                .clientKey(BuildConfig.HEROKU_KEY)
                 .server("https://the-foodie-network.herokuapp.com/parse").build());
 
-       ParseInstallation.getCurrentInstallation().saveInBackground();
+        ParseInstallation.getCurrentInstallation().saveInBackground();
     }
 }

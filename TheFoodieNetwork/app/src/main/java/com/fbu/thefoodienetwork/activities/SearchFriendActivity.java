@@ -15,7 +15,6 @@ import com.fbu.thefoodienetwork.adapters.FriendAdapter;
 import com.fbu.thefoodienetwork.databinding.ActivitySearchFriendBinding;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -24,7 +23,7 @@ import java.util.List;
 
 public class SearchFriendActivity extends AppCompatActivity {
     private final static String TAG = "SearchFriend";
-    private final static String modifier = "i";
+    private final static String MODIFIER = "i";
     private final static String USERNAME_KEY = "username";
     private final static String SCREEN_NAME_KEY = "screenName";
     private ParseUser currentUser = ParseUser.getCurrentUser();
@@ -41,7 +40,7 @@ public class SearchFriendActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        searchListener();
+        setSearchListener();
 
         currentUserFriendList = CurrentUserUtilities.currentUserFriendList;
         currentUserReceivedFriendRequest = CurrentUserUtilities.currentUserReceivedFriendRequest;
@@ -49,7 +48,7 @@ public class SearchFriendActivity extends AppCompatActivity {
         resultList = new ArrayList<>();
     }
 
-    private void searchListener() {
+    private void setSearchListener() {
         binding.searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
@@ -68,10 +67,10 @@ public class SearchFriendActivity extends AppCompatActivity {
 
     private void searchForUsernameAndScreenName(final String keyword) {
         ParseQuery<ParseUser> queryByUsername = ParseUser.getQuery();
-        queryByUsername.whereMatches(USERNAME_KEY, keyword, modifier);
+        queryByUsername.whereMatches(USERNAME_KEY, keyword, MODIFIER);
 
         ParseQuery<ParseUser> queryByScreenName = ParseUser.getQuery();
-        queryByScreenName.whereMatches(SCREEN_NAME_KEY, keyword, modifier);
+        queryByScreenName.whereMatches(SCREEN_NAME_KEY, keyword, MODIFIER);
 
         List<ParseQuery<ParseUser>> queries = new ArrayList<>();
         queries.add(queryByUsername);

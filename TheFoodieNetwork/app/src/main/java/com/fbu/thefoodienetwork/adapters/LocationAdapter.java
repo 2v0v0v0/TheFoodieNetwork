@@ -53,13 +53,13 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         });
     }
 
-    public interface OnClickLocationListener {
-        void onClickLocation(int position);
-    }
-
     @Override
     public int getItemCount() {
         return locationList.size();
+    }
+
+    public interface OnClickLocationListener {
+        void onClickLocation(int position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

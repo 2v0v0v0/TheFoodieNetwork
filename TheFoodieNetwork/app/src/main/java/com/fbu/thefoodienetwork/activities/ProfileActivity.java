@@ -70,7 +70,7 @@ public class ProfileActivity extends AppCompatActivity {
             try {
                 binding.bioTextView.setText(user.getString(UserKeys.bio));
             } catch (Exception e) {
-                Log.i(TAG, "error:"+e.toString());
+                Log.i(TAG, "error:" + e.toString());
             }
 
             ParseFile image = user.getParseFile(UserKeys.profileImage);

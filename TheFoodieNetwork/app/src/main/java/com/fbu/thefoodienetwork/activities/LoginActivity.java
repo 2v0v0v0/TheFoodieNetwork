@@ -3,7 +3,6 @@ package com.fbu.thefoodienetwork.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -18,11 +17,10 @@ import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
+    public CurrentUserUtilities currentUserUtilities;
     private ActivityLoginBinding binding;
     private String username;
     private String password;
-    public CurrentUserUtilities currentUserUtilities;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,13 +81,13 @@ public class LoginActivity extends AppCompatActivity {
         Log.i(TAG, ParseUser.getCurrentUser().getUsername());
         //TODO: change back to main
         //For testing purpose only
-        Intent i = new Intent(this, ProfileActivity.class);
-        startActivity(i);
+        Intent mainIntent = new Intent(this, ProfileActivity.class);
+        startActivity(mainIntent);
         finish();
     }
 
     private void goSignUpActivity() {
-        Intent i = new Intent(this, SignUpActivity.class);
-        startActivity(i);
+        Intent signUpIntent = new Intent(this, SignUpActivity.class);
+        startActivity(signUpIntent);
     }
 }

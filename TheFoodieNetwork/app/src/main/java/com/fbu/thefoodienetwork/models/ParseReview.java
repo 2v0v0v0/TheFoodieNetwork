@@ -21,47 +21,47 @@ public class ParseReview extends ParseObject {
     public ParseReview() {
     }
 
+    public ParseUser getAuthor() {
+        return getParseUser(AUTHOR_KEY);
+    }
+
     public void setAuthor(ParseUser author) {
         put(AUTHOR_KEY, author);
     }
 
-    public ParseUser getAuthor() {
-        return getParseUser(AUTHOR_KEY);
+    public ParseRestaurant getRestaurant() {
+        return (ParseRestaurant) getParseObject(RESTAURANT_KEY);
     }
 
     public void setRestaurant(ParseRestaurant restaurant) {
         put(RESTAURANT_KEY, restaurant);
     }
 
-    public ParseRestaurant getRestaurant(){
-        return (ParseRestaurant) getParseObject(RESTAURANT_KEY);
+    public float getRating() {
+        return (float) getDouble(RATING_KEY);
     }
 
     public void setRating(float rating) {
         put(RATING_KEY, rating);
     }
 
-    public float getRating() {
-        return (float)getDouble(RATING_KEY);
+    public String getText() {
+        return getString(TEXT_KEY);
     }
 
     public void setText(String text) {
         put(TEXT_KEY, text);
     }
 
-    public String getText() {
-        return getString(TEXT_KEY);
-    }
-
-    public void setGlobal(boolean shareWithEveryone){
-        put(GLOBAL_KEY, shareWithEveryone);
-    }
-
-    public boolean getGlobal(){
+    public boolean getGlobal() {
         return getBoolean(GLOBAL_KEY);
     }
 
-    public Date getCreatedAt(){
+    public void setGlobal(boolean shareWithEveryone) {
+        put(GLOBAL_KEY, shareWithEveryone);
+    }
+
+    public Date getCreatedAt() {
         return getDate(CREATED_AT_KEY);
     }
 }

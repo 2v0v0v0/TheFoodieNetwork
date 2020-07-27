@@ -116,14 +116,14 @@ public class MainActivity extends AppCompatActivity {
         ParseInstallation.getCurrentInstallation().remove("user");
         ParseInstallation.getCurrentInstallation().saveInBackground();
 
-        Intent i = new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(i);
+        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(loginIntent);
         finish();
     }
 
-    private void goToProfile(){
-        Intent searchFriend = new Intent(MainActivity.this, ProfileActivity.class);
-        startActivity(searchFriend);
+    private void goToProfile() {
+        Intent profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
+        startActivity(profileIntent);
     }
 
     @Override

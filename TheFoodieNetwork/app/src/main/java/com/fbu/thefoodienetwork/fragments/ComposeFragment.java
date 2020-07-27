@@ -31,11 +31,11 @@ import java.util.List;
 
 public class ComposeFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private static final String TAG = "ComposeFragment";
+    private static final int EVERYONE = 0;
+    private static final int FRIENDS = 1;
     private FragmentComposeBinding binding;
     private Restaurant mRestaurant;
     private Spinner spinner;
-    private static final int EVERYONE = 0;
-    private static final int FRIENDS = 1;
     private boolean shareWithEveryone = true;
 
     public ComposeFragment() {
@@ -97,7 +97,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
         //TODO: set up some message
     }
 
-    private void scopeSpinnerSetUp(){
+    private void scopeSpinnerSetUp() {
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.scopes_array, android.R.layout.simple_spinner_item);
@@ -182,12 +182,8 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-        if(position == EVERYONE){
-            shareWithEveryone = true;
-        }else {
-            shareWithEveryone = false;
-        }
-        Log.i(TAG, position+" "+adapterView.getItemAtPosition(position));
+        shareWithEveryone = position == EVERYONE;
+        Log.i(TAG, position + " " + adapterView.getItemAtPosition(position));
     }
 
     @Override

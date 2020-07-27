@@ -1,20 +1,17 @@
 package com.fbu.thefoodienetwork.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.adapters.ReviewAdapter;
 import com.fbu.thefoodienetwork.databinding.FragmentGlobeBinding;
 import com.fbu.thefoodienetwork.models.ParseReview;
@@ -27,9 +24,10 @@ import java.util.List;
 
 public class GlobeFragment extends Fragment {
     private static final String TAG = "GlobeFragment";
-    FragmentGlobeBinding binding;
+    private static final int REVIEW_LIMIT = 10;
     protected ReviewAdapter reviewAdapter;
     protected List<ParseReview> allReviews;
+    FragmentGlobeBinding binding;
     private LinearLayoutManager layoutManager;
     private RecyclerView reviewRecyclerView;
 
@@ -45,7 +43,6 @@ public class GlobeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         binding = FragmentGlobeBinding.inflate(getLayoutInflater(), container, false);
         View view = binding.getRoot();
         reviewRecyclerView = binding.reviewRecyclerView;
@@ -69,7 +66,7 @@ public class GlobeFragment extends Fragment {
         query.include(ParseReview.AUTHOR_KEY);
         query.include(ParseReview.RESTAURANT_KEY);
         query.whereEqualTo(ParseReview.GLOBAL_KEY, true);
-        query.setLimit(10);
+        query.setLimit(REVIEW_LIMIT);
         query.addDescendingOrder(ParseReview.CREATED_AT_KEY);
         query.findInBackground(new FindCallback<ParseReview>() {
             @Override
