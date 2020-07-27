@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.databinding.ActivityEditProfileBinding;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -33,8 +35,8 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
     private ActivityEditProfileBinding binding;
     private ParseUser currentUser = ParseUser.getCurrentUser();
     private ImageView profileImageView;
-    private Button imageButton;
-    private Button saveButton;
+    private TextView imageButton;
+    private FloatingActionButton saveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +44,8 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
         binding = ActivityEditProfileBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         profileImageView = binding.profileImageView;
-        imageButton = binding.imageButton;
-        saveButton = binding.saveButton;
+        imageButton = binding.chooseImageTextView;
+        saveButton = binding.saveFloatingActionButton;
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +65,7 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        //TODO show alert dialog "discard changes"
         if(item.getItemId() == R.id.menu_cancel){
             finish();
             return true;
