@@ -31,16 +31,17 @@
                     android:layout_gravity="center">
                     <ImageView
                         android:id="@+id/profileImage"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         tools:srcCompat="@tools:sample/avatars" />
 
-                    <Button
-                        android:id="@+id/button2"
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/floatingActionButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right|bottom"
-                        android:text="Button" />
+                        android:clickable="true"
+                        app:srcCompat="@drawable/add" />
                 </RelativeLayout>
 
 
