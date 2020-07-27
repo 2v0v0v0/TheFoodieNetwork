@@ -1,7 +1,10 @@
 package com.fbu.thefoodienetwork.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,10 +15,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.databinding.ActivityEditProfileBinding;
+import com.fbu.thefoodienetwork.keys.UserKeys;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -55,6 +61,36 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
             }
         });
         setContentView(view);
+
+        loadData();
+
+        saveEditedData(null, null);
+    }
+
+    private void loadData(){
+
+        binding.usernameTextView.setText("@"+currentUser.getUsername());
+
+        try {
+
+            if (currentUser.getString(UserKeys.screenName) != null || !(currentUser.getString(UserKeys.screenName).trim().equals("")) ) {
+                binding.screenNameEditText.setText(currentUser.get(UserKeys.screenName).toString());
+            }
+
+            if (currentUser.getString(UserKeys.bio) != null || !(currentUser.getString(UserKeys.bio).trim().equals("")) ) {
+                binding.bioEditText.setText(currentUser.get(UserKeys.bio).toString());
+            }
+
+            ParseFile image = currentUser.getParseFile(UserKeys.profileImage);
+            if (image != null) {
+                Glide.with(this).load(image.getUrl()).centerCrop().circleCrop().into(profileImageView);
+            } else {
+                Glide.with(this).load(R.drawable.launcher1).circleCrop().into(profileImageView);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error: " + e);
+        }
     }
 
     @Override
@@ -66,7 +102,6 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        //TODO show alert dialog "discard changes"
         if(item.getItemId() == R.id.menu_cancel){
             finish();
             return true;
@@ -80,7 +115,7 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
 
             profileImageView.setImageBitmap(imageResult.getBitmap());
 
-            uploadImage(imageResult, imageResult.getPickType());
+            saveEditedData(imageResult, imageResult.getPickType());
 
         } else {
             //Handle possible errors
@@ -89,11 +124,36 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
         }
     }
 
-    private void uploadImage(final PickResult imageResult, final EPickType pickType) {
-        saveButton.setVisibility(View.VISIBLE);
+    private void saveEditedData(@Nullable final PickResult imageResult, @Nullable final EPickType pickType) {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String newBio = String.valueOf(binding.bioEditText.getText());
+                if(!newBio.equals(currentUser.get(UserKeys.bio))){
+                    currentUser.put(UserKeys.bio, newBio);
+                }
+
+                String newScreenName = String.valueOf(binding.screenNameEditText.getText());
+                if(!newScreenName.equals(currentUser.get(UserKeys.screenName))){
+                    currentUser.put(UserKeys.screenName, newScreenName);
+                }
+
+                if(imageResult == null){
+                    currentUser.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            //if success
+                            if (e == null) {
+                                Toast.makeText(EditProfileActivity.this, getString(R.string.saveSuccess), Toast.LENGTH_LONG).show();
+                                currentUser.fetchInBackground();
+                                return;
+                            }
+                            //if fail
+                            Toast.makeText(EditProfileActivity.this, getString(R.string.saveFail), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+
                 if (pickType == EPickType.CAMERA) {
                     saveImageFromCamera(new File(imageResult.getPath()));
                     return;
@@ -124,12 +184,12 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                     public void done(ParseException e) {
                         //if success
                         if (e == null) {
-                            Toast.makeText(EditProfileActivity.this, getString(R.string.imageSaveSuccess), Toast.LENGTH_LONG).show();
+                            Toast.makeText(EditProfileActivity.this, getString(R.string.saveSuccess), Toast.LENGTH_LONG).show();
                             currentUser.fetchInBackground();
                             return;
                         }
                         //if fail
-                        Toast.makeText(EditProfileActivity.this, getString(R.string.imageSaveFail), Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditProfileActivity.this, getString(R.string.saveFail), Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -155,12 +215,12 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                     public void done(ParseException e) {
                         //if success
                         if (e == null) {
-                            Toast.makeText(EditProfileActivity.this, getString(R.string.imageSaveSuccess), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditProfileActivity.this, getString(R.string.saveSuccess), Toast.LENGTH_LONG).show();
                             currentUser.fetchInBackground();
                             return;
                         }
-                        //If fail
-                        Toast.makeText(EditProfileActivity.this, getString(R.string.imageSaveFail), Toast.LENGTH_SHORT).show();
+                        //if fail
+                        Toast.makeText(EditProfileActivity.this, getString(R.string.saveFail), Toast.LENGTH_LONG).show();
                     }
 
                 });
@@ -170,4 +230,5 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
         });
 
     }
+
 }

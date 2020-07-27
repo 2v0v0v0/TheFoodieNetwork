@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPinkGray"
+    android:background="@color/white"
     tools:context=".activities.EditProfileActivity">
 
     <LinearLayout
@@ -13,64 +13,96 @@
         android:orientation="vertical"
         android:padding="8dp">
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="800dp"
-                android:layout_margin="10dp"
-                android:layout_gravity="center"
-                app:cardPreventCornerOverlap="true">
-                <ImageView
-                    android:id="@+id/profileImageView"
-                    android:layout_width="160dp"
-                    android:layout_height="160dp"
-                    android:scaleType="centerCrop"
-                    tools:srcCompat="@tools:sample/avatars" />
-            </androidx.cardview.widget.CardView>
-            <TextView
-                android:id="@+id/chooseImageTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:layout_gravity="center"
-                android:textColor="@color/colorPinkAccent"
-                android:text="Change profile image"/>
-
-
         <TextView
-            android:id="@+id/textViewScreenName"
+            android:id="@+id/usernameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/colorBlue"
             android:textSize="20sp"
-            android:textStyle="bold"
-            tools:text="TextView" />
-
-        <TextView
-            android:id="@+id/textViewUsername"
+            tools:text="username" />
+        <!--edit profile image-->
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            tools:text="TextView" />
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="800dp"
+            app:cardPreventCornerOverlap="true">
+
+            <ImageView
+                android:id="@+id/profileImageView"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:scaleType="centerCrop"
+                tools:srcCompat="@tools:sample/avatars" />
+        </androidx.cardview.widget.CardView>
+
 
         <TextView
-            android:id="@+id/bioTextView"
-            android:layout_width="match_parent"
+            android:id="@+id/chooseImageTextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/profileImage"
-            android:layout_marginTop="10dp"
-            tools:text="@tools:sample/lorem" />
+            android:layout_gravity="center"
+            android:text="Change profile image"
+            android:textColor="@color/colorPinkAccent"
+            android:textSize="24sp" />
+
+        <!--edit other text information-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="10dp"
+            android:background="@color/colorPinkGray"
+            android:elevation="10dp"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Screen Name" />
+
+            <EditText
+                android:id="@+id/screenNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:drawableRight="@drawable/ic_edit"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:visibility="visible" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bio" />
+
+            <EditText
+                android:id="@+id/bioEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:drawableRight="@drawable/ic_edit"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:visibility="visible" />
+
+        </LinearLayout>
 
 
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/saveFloatingActionButton"
-        android:backgroundTint="@color/colorBlue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="10dp"
+        android:backgroundTint="@color/colorBlue"
         android:clickable="true"
         app:srcCompat="@drawable/ic_check" />
 

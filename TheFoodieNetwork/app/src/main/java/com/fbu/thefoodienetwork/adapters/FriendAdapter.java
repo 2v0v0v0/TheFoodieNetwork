@@ -156,7 +156,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
                 @Override
                 public void onClick(View view) {
                     Log.i("accept button", "onclick " + otherUserUsername);
-                    //showDialog(ACCEPT_FR_CODE);
+                    showDialog(ACCEPT_FR_CODE);
                 }
             });
         }
