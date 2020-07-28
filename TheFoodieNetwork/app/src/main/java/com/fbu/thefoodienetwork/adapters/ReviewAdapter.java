@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.databinding.ItemReviewBinding;
+import com.fbu.thefoodienetwork.keys.UserKeys;
 import com.fbu.thefoodienetwork.models.ParseRestaurant;
 import com.fbu.thefoodienetwork.models.ParseReview;
 import com.parse.ParseException;
@@ -64,7 +65,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             //Author
             ParseUser author = review.getAuthor();
             binding.usernameTextView.setText(author.getUsername());
-            ParseFile profileImage = author.getParseFile("profileImage");
+            ParseFile profileImage = author.getParseFile(UserKeys.profileImage);
             if (profileImage != null) {
                 Glide.with(context).load(profileImage.getUrl()).centerCrop().circleCrop().into(binding.userProfilePic);
             }else {
@@ -74,6 +75,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             //Review
             binding.ratingBar.setRating(review.getRating());
             binding.reviewTextView.setText(review.getText());
+            binding.recommendTextView.setText(String.format("Recommend: %s", review.getRecommend() ? "NO" : "YES"));
 
             //Restaurant
             ParseRestaurant restaurant = review.getRestaurant();

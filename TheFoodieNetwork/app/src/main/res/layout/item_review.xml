@@ -63,6 +63,12 @@
             tools:rating="5"
             android:layout_below="@+id/reviewTextView"/>
 
+        <TextView
+            android:id="@+id/recommendTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ratingBar"/>
+
     </RelativeLayout>
 
     <RelativeLayout
