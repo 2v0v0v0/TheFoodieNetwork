@@ -18,13 +18,13 @@
         app:showAsAction="always">
         <menu>
             <item
-                android:id="@+id/menu_friend_requests"
-                android:icon="@drawable/ic_baseline_people_alt_24"
-                android:title="Profile" />
-            <item
                 android:id="@+id/menu_profile"
                 android:icon="@drawable/ic_baseline_person_24"
                 android:title="Profile" />
+            <item
+                android:id="@+id/menu_friend_requests"
+                android:icon="@drawable/ic_baseline_people_alt_24"
+                android:title="Friends" />
             <item
                 android:id="@+id/menu_bookmark"
                 android:icon="@drawable/ic_baseline_bookmark_24"

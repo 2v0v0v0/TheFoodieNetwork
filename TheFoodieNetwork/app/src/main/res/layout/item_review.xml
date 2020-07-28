@@ -5,9 +5,9 @@
     android:layout_height="wrap_content"
     android:layout_margin="20dp"
     android:background="@color/white"
-    android:padding="10dp"
     android:elevation="20dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <RelativeLayout
         android:id="@+id/authorPannel"
@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            tools:text="3h"/>
+            tools:text="3h" />
 
     </RelativeLayout>
 
@@ -42,22 +42,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <TextView
+            android:id="@+id/reviewTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <RatingBar
             android:id="@+id/ratingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            style="?android:attr/ratingBarStyleIndicator"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:transformPivotX="0dp"
             android:isIndicator="true"
             android:numStars="5"
             android:rating="0"
             android:stepSize="0.5"
-            android:theme="@style/RatingBar" />
-
-        <TextView
-            android:id="@+id/reviewTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ratingBar" />
+            android:theme="@style/RatingBar"
+            tools:rating="5"
+            android:layout_below="@+id/reviewTextView"/>
 
     </RelativeLayout>
 
@@ -65,14 +69,14 @@
         android:id="@+id/restaurantPannel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:background="@drawable/bg_shape">
+        android:background="@drawable/bg_shape"
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/restaurantName"
             android:layout_width="match_parent"
-            android:textStyle="bold"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/restaurantLocation"
