@@ -125,7 +125,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
 
                 float reviewRating = binding.ratingBar.getRating();
                 ParseUser author = ParseUser.getCurrentUser();
-                saveReview(mRestaurant, author, reviewText, reviewRating, shareWithEveryone);
+                saveReview(mRestaurant, author, reviewText, reviewRating, recommended, shareWithEveryone);
             }
         });
     }
@@ -144,10 +144,11 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
         });
     }
 
-    private void saveReview(Restaurant selectedRestaurant, ParseUser author, String text, float rating, boolean shareWithEveryone) {
+    private void saveReview(Restaurant selectedRestaurant, ParseUser author, String text, float rating, boolean recommend, boolean shareWithEveryone) {
         ParseReview review = new ParseReview();
         review.setAuthor(author);
         review.setRating(rating);
+        review.setRecommend(recommend);
         review.setText(text);
         review.setGlobal(shareWithEveryone);
         checkRestaurantExistAndSave(selectedRestaurant, review);

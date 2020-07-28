@@ -17,6 +17,7 @@ public class ParseReview extends ParseObject {
     public static final String RATING_KEY = "rating";
     public static final String GLOBAL_KEY = "isGlobal";
     public static final String TEXT_KEY = "reviewText";
+    public static final String RECOMMEND_KEY = "recommend";
 
     public ParseReview() {
     }
@@ -43,6 +44,14 @@ public class ParseReview extends ParseObject {
 
     public void setRating(float rating) {
         put(RATING_KEY, rating);
+    }
+
+    public boolean getRecommend() {
+        return getBoolean(RECOMMEND_KEY);
+    }
+
+    public void setRecommend(boolean recommend) {
+        put(RECOMMEND_KEY, recommend);
     }
 
     public String getText() {
