@@ -70,7 +70,7 @@ public class ParseReview extends ParseObject {
         put(GLOBAL_KEY, shareWithEveryone);
     }
 
-    public Date getCreatedAt() {
-        return getDate(CREATED_AT_KEY);
+    public Date getTime() {
+        return getCreatedAt();
     }
 }

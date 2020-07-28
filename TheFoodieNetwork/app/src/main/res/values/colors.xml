@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorMain">#ebe3ec</color>
     <color name="colorBlue">#0626c4</color>
     <color name="colorGreen">#10BC8B</color>
     <color name="colorPastelGreen">#5EE1BC</color>
-    <color name="colorMain">#ebe3ec</color>
     <color name="colorPinkAccent">#fb5cf3</color>
     <color name="colorLightBlue">#cce3f3</color>
     <color name="colorLilac">#8b99dd</color>

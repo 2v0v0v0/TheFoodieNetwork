@@ -14,6 +14,7 @@ import com.fbu.thefoodienetwork.databinding.ItemReviewBinding;
 import com.fbu.thefoodienetwork.keys.UserKeys;
 import com.fbu.thefoodienetwork.models.ParseRestaurant;
 import com.fbu.thefoodienetwork.models.ParseReview;
+import com.fbu.thefoodienetwork.models.RelativeTime;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -70,6 +71,13 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
                 Glide.with(context).load(profileImage.getUrl()).centerCrop().circleCrop().into(binding.userProfilePic);
             }else {
                 Glide.with(context).load(R.drawable.placeholder).centerCrop().circleCrop().into(binding.userProfilePic);
+            }
+
+            //Timestamp
+            try {
+                binding.timeTextView.setText(RelativeTime.getRelativeTimeAgo(review.getTime()));
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
             //Review
