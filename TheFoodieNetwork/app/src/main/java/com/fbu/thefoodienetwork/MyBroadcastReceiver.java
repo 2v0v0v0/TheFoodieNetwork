@@ -11,5 +11,6 @@ public class MyBroadcastReceiver extends ParsePushBroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
+
     }
 }

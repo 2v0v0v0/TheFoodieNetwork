@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            app:cardCornerRadius="800dp"
+            app:cardCornerRadius="80dp"
             app:cardPreventCornerOverlap="true">
 
             <ImageView

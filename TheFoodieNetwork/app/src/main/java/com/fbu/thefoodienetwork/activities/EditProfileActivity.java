@@ -1,7 +1,5 @@
 package com.fbu.thefoodienetwork.activities;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -85,7 +82,7 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
             if (image != null) {
                 Glide.with(this).load(image.getUrl()).centerCrop().circleCrop().into(profileImageView);
             } else {
-                Glide.with(this).load(R.drawable.launcher1).circleCrop().into(profileImageView);
+                Glide.with(this).load(R.drawable.placeholder).circleCrop().into(profileImageView);
             }
 
         } catch (Exception e) {

@@ -8,10 +8,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.databinding.ItemReviewBinding;
 import com.fbu.thefoodienetwork.models.ParseRestaurant;
 import com.fbu.thefoodienetwork.models.ParseReview;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 import java.util.List;
@@ -61,6 +64,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             //Author
             ParseUser author = review.getAuthor();
             binding.usernameTextView.setText(author.getUsername());
+            ParseFile profileImage = author.getParseFile("profileImage");
+            if (profileImage != null) {
+                Glide.with(context).load(profileImage.getUrl()).centerCrop().circleCrop().into(binding.userProfilePic);
+            }else {
+                Glide.with(context).load(R.drawable.placeholder).centerCrop().circleCrop().into(binding.userProfilePic);
+            }
 
             //Review
             binding.ratingBar.setRating(review.getRating());

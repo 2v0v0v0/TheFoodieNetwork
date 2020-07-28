@@ -89,7 +89,7 @@ public class ProfileActivity extends AppCompatActivity {
             if (image != null) {
                 Glide.with(this).load(image.getUrl()).centerCrop().circleCrop().into(binding.profileImage);
             } else {
-                Glide.with(this).load(R.drawable.launcher1).circleCrop().into(binding.profileImage);
+                Glide.with(this).load(R.drawable.placeholder).circleCrop().into(binding.profileImage);
             }
 
         } catch (Exception e) {
