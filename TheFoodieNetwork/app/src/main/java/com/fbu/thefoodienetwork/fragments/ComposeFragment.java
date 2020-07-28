@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
     private static final String TAG = "ComposeFragment";
     private static final int EVERYONE = 0;
     private static final int FRIENDS = 1;
+    private boolean recommended = true;
     private FragmentComposeBinding binding;
     private Restaurant mRestaurant;
     private Spinner spinner;
@@ -85,19 +87,21 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
                     binding.ratingTextView.setText(String.valueOf(ratingBar.getRating()));
                 }
             });
-            submitButtonListener();
+            setSubmitButtonListener();
             spinner.setEnabled(true);
-            scopeSpinnerSetUp();
+            setScopeSpinner();
+            setRecommendRadioGroupListener();
         } else {
             binding.ratingBar.setEnabled(false);
             binding.ratingBar.setIsIndicator(true);
             binding.reviewEditText.setEnabled(false);
+            binding.recommendRadioGroup.setEnabled(false);
             spinner.setEnabled(false);
         }
         //TODO: set up some message
     }
 
-    private void scopeSpinnerSetUp() {
+    private void setScopeSpinner() {
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.scopes_array, android.R.layout.simple_spinner_item);
@@ -108,7 +112,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
         spinner.setOnItemSelectedListener(this);
     }
 
-    private void submitButtonListener() {
+    private void setSubmitButtonListener() {
         binding.submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,6 +126,20 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
                 float reviewRating = binding.ratingBar.getRating();
                 ParseUser author = ParseUser.getCurrentUser();
                 saveReview(mRestaurant, author, reviewText, reviewRating, shareWithEveryone);
+            }
+        });
+    }
+
+    private void setRecommendRadioGroupListener(){
+        binding.recommendRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                if(i == binding.noRadioButton.getId()){
+                    recommended = false;
+                }
+                if(i == binding.yesRadioButton.getId()){
+                    recommended = true;
+                }
             }
         });
     }
