@@ -103,7 +103,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             //Review
             binding.ratingBar.setRating(review.getRating());
             binding.reviewTextView.setText(review.getText());
-            binding.recommendTextView.setText(String.format("Recommend: %s", review.getRecommend() ? "NO" : "YES"));
+            binding.recommendTextView.setText(String.format("Recommend: %s", review.getRecommend() ? "YES" : "NO"));
 
             //Restaurant
             ParseRestaurant restaurant = review.getRestaurant();
@@ -111,6 +111,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             binding.restaurantLocation.setText(restaurant.getAddress());
 
             //Button state
+            if (review.isBookmarked){
+                bookmarkButton.setSelected(true);
+            }
             setButtonListener();
         }
 

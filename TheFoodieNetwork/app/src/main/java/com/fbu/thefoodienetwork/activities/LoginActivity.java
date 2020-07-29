@@ -78,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void goMainActivity() {
         currentUserUtilities = new CurrentUserUtilities();
+
         Log.i(TAG, ParseUser.getCurrentUser().getUsername());
         //TODO: change back to main
         //For testing purpose only

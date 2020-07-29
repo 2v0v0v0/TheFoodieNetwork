@@ -104,11 +104,13 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void queryReviews() {
         ParseQuery<ParseReview> query = ParseQuery.getQuery(ParseReview.class);
+
         query.include(ParseReview.AUTHOR_KEY);
         query.include(ParseReview.RESTAURANT_KEY);
         query.whereEqualTo(ParseReview.AUTHOR_KEY, user);
         query.setLimit(10);
         query.addDescendingOrder(ParseReview.CREATED_AT_KEY);
+
         query.findInBackground(new FindCallback<ParseReview>() {
             @Override
             public void done(List<ParseReview> reviewList, ParseException e) {

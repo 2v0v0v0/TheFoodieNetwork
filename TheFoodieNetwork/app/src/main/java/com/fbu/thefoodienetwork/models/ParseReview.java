@@ -18,6 +18,7 @@ public class ParseReview extends ParseObject {
     public static final String GLOBAL_KEY = "isGlobal";
     public static final String TEXT_KEY = "reviewText";
     public static final String RECOMMEND_KEY = "recommend";
+    public static boolean isBookmarked = false;
 
     public ParseReview() {
     }
@@ -73,4 +74,9 @@ public class ParseReview extends ParseObject {
     public Date getTime() {
         return getCreatedAt();
     }
+
+    public void setBookmark(boolean mark) {
+        isBookmarked = mark;
+    }
+
 }
