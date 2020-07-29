@@ -7,6 +7,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fbu.thefoodienetwork.databinding.ActivityRestaurantDetailsBinding;
+import com.fbu.thefoodienetwork.keys.ParcelKeys;
 import com.fbu.thefoodienetwork.models.Restaurant;
 
 import org.parceler.Parcels;
@@ -21,7 +22,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         binding = ActivityRestaurantDetailsBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        Restaurant restaurant = (Restaurant) Parcels.unwrap(getIntent().getParcelableExtra("selectedRestaurant"));
+        Restaurant restaurant = (Restaurant) Parcels.unwrap(getIntent().getParcelableExtra(ParcelKeys.SELECTED_RESTAURANT));
         setTitle(restaurant.getName());
         Log.i(TAG, restaurant.toString());
     }

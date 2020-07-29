@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == SEARCH_CODE) {
-            Restaurant restaurant = (Restaurant) Parcels.unwrap(data.getParcelableExtra(ParcelKeys.selectedRestaurant));
+            Restaurant restaurant = (Restaurant) Parcels.unwrap(data.getParcelableExtra(ParcelKeys.SELECTED_RESTAURANT));
             Log.i(TAG, restaurant.toString());
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ComposeFragment composeFragment = ComposeFragment.newInstance(restaurant);

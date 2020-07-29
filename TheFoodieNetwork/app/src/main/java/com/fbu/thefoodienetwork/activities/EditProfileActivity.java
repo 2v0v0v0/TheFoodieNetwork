@@ -70,15 +70,15 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
 
         try {
 
-            if (currentUser.getString(UserKeys.screenName) != null || !(currentUser.getString(UserKeys.screenName).trim().equals("")) ) {
-                binding.screenNameEditText.setText(currentUser.get(UserKeys.screenName).toString());
+            if (currentUser.getString(UserKeys.SCREEN_NAME) != null || !(currentUser.getString(UserKeys.SCREEN_NAME).trim().equals("")) ) {
+                binding.screenNameEditText.setText(currentUser.get(UserKeys.SCREEN_NAME).toString());
             }
 
-            if (currentUser.getString(UserKeys.bio) != null || !(currentUser.getString(UserKeys.bio).trim().equals("")) ) {
-                binding.bioEditText.setText(currentUser.get(UserKeys.bio).toString());
+            if (currentUser.getString(UserKeys.BIO) != null || !(currentUser.getString(UserKeys.BIO).trim().equals("")) ) {
+                binding.bioEditText.setText(currentUser.get(UserKeys.BIO).toString());
             }
 
-            ParseFile image = currentUser.getParseFile(UserKeys.profileImage);
+            ParseFile image = currentUser.getParseFile(UserKeys.PROFILE_IMAGE);
             if (image != null) {
                 Glide.with(this).load(image.getUrl()).centerCrop().circleCrop().into(profileImageView);
             } else {
@@ -126,13 +126,13 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
             @Override
             public void onClick(View view) {
                 String newBio = String.valueOf(binding.bioEditText.getText());
-                if(!newBio.equals(currentUser.get(UserKeys.bio))){
-                    currentUser.put(UserKeys.bio, newBio);
+                if(!newBio.equals(currentUser.get(UserKeys.BIO))){
+                    currentUser.put(UserKeys.BIO, newBio);
                 }
 
                 String newScreenName = String.valueOf(binding.screenNameEditText.getText());
-                if(!newScreenName.equals(currentUser.get(UserKeys.screenName))){
-                    currentUser.put(UserKeys.screenName, newScreenName);
+                if(!newScreenName.equals(currentUser.get(UserKeys.SCREEN_NAME))){
+                    currentUser.put(UserKeys.SCREEN_NAME, newScreenName);
                 }
 
                 if(imageResult == null){

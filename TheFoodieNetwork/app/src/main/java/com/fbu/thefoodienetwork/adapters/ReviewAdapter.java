@@ -86,7 +86,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             //Author
             ParseUser author = review.getAuthor();
             binding.usernameTextView.setText(author.getUsername());
-            ParseFile profileImage = author.getParseFile(UserKeys.profileImage);
+            ParseFile profileImage = author.getParseFile(UserKeys.PROFILE_IMAGE);
             if (profileImage != null) {
                 Glide.with(context).load(profileImage.getUrl()).centerCrop().circleCrop().into(binding.userProfilePic);
             } else {

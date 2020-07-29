@@ -56,7 +56,7 @@ public class CurrentUserUtilities {
 
     public static boolean acceptFriendRequest(ParseUser otherUser) {
         //Add otherUser to currentUser friends relation
-        ParseRelation<ParseUser> relation = currentUser.getRelation(UserKeys.friends);
+        ParseRelation<ParseUser> relation = currentUser.getRelation(UserKeys.FRIENDS);
         relation.add(otherUser);
         try {
             currentUser.save();
@@ -140,7 +140,7 @@ public class CurrentUserUtilities {
     }
 
     private static void getFriendList() {
-        ParseRelation relation = currentUser.getRelation(UserKeys.friends);
+        ParseRelation relation = currentUser.getRelation(UserKeys.FRIENDS);
         ParseQuery query = relation.getQuery();
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> results, ParseException e) {

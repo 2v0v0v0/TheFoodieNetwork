@@ -47,7 +47,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
     public static ComposeFragment newInstance(Restaurant restaurant) {
         ComposeFragment fragment = new ComposeFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ParcelKeys.selectedRestaurant, Parcels.wrap(restaurant));
+        args.putParcelable(ParcelKeys.SELECTED_RESTAURANT, Parcels.wrap(restaurant));
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,7 +56,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mRestaurant = (Restaurant) Parcels.unwrap(getArguments().getParcelable(ParcelKeys.selectedRestaurant));
+            mRestaurant = (Restaurant) Parcels.unwrap(getArguments().getParcelable(ParcelKeys.SELECTED_RESTAURANT));
         }
     }
 

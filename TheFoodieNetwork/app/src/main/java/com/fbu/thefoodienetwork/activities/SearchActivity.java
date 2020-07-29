@@ -250,13 +250,13 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
 
     private void goToRestaurantDetailsActivity() {
         Intent intent = new Intent(this, RestaurantDetailsActivity.class);
-        intent.putExtra(ParcelKeys.selectedRestaurant, Parcels.wrap(selectedRestaurant));
+        intent.putExtra(ParcelKeys.SELECTED_RESTAURANT, Parcels.wrap(selectedRestaurant));
         startActivity(intent);
     }
 
     private void goToComposeFragment() {
         Intent composeIntent = new Intent(this, MainActivity.class);
-        composeIntent.putExtra(ParcelKeys.selectedRestaurant, Parcels.wrap(selectedRestaurant));
+        composeIntent.putExtra(ParcelKeys.SELECTED_RESTAURANT, Parcels.wrap(selectedRestaurant));
         setResult(RESULT_OK, composeIntent);
         finish();
     }

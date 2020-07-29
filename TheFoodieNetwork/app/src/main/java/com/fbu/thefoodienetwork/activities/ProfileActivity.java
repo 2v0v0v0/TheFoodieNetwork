@@ -71,21 +71,21 @@ public class ProfileActivity extends AppCompatActivity {
 
         try {
 
-            if (user.getString(UserKeys.screenName) == null || user.getString(UserKeys.screenName).trim().equals("")) {
+            if (user.getString(UserKeys.SCREEN_NAME) == null || user.getString(UserKeys.SCREEN_NAME).trim().equals("")) {
                 binding.textViewScreenName.setText(user.getUsername());
             } else {
-                binding.textViewScreenName.setText(user.getString(UserKeys.screenName));
+                binding.textViewScreenName.setText(user.getString(UserKeys.SCREEN_NAME));
                 binding.textViewUsername.setText(user.getUsername());
             }
 
 
             try {
-                binding.bioTextView.setText(user.getString(UserKeys.bio));
+                binding.bioTextView.setText(user.getString(UserKeys.BIO));
             } catch (Exception e) {
                 Log.i(TAG, "error:" + e.toString());
             }
 
-            ParseFile image = user.getParseFile(UserKeys.profileImage);
+            ParseFile image = user.getParseFile(UserKeys.PROFILE_IMAGE);
             if (image != null) {
                 Glide.with(this).load(image.getUrl()).centerCrop().circleCrop().into(binding.profileImage);
             } else {
