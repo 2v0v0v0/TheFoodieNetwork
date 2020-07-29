@@ -19,20 +19,11 @@ import java.util.List;
 
 public class BookmarkActivity extends AppCompatActivity {
     private final static String TAG = "BookmarkActivity";
+    public static List<ParseReview> bookmarkList = new ArrayList<>();
+    private static ParseUser currentUser = ParseUser.getCurrentUser();
     private ActivityBookmarkBinding binding;
-    private ParseUser currentUser = ParseUser.getCurrentUser();
-    private List<ParseReview> bookmarkList = new ArrayList<>();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityBookmarkBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-
-
-    }
-
-    private void queryBookmarks(){
+    public static void queryBookmarks() {
         ParseRelation relation = currentUser.getRelation("bookmarked");
         ParseQuery query = relation.getQuery();
         query.findInBackground(new FindCallback<ParseReview>() {
@@ -41,12 +32,21 @@ public class BookmarkActivity extends AppCompatActivity {
                     Log.i(TAG, "error: " + e);
                 } else {
                     for (ParseReview review : results) {
-                        Log.i("bookmark", review.getText());
+                        Log.i(TAG, review.getText());
                         bookmarkList.add(review);
                     }
                 }
             }
         });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ActivityBookmarkBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+
+
     }
 
 }
