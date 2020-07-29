@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.fbu.thefoodienetwork.MyBounceInterpolator;
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.databinding.ItemReviewBinding;
 import com.fbu.thefoodienetwork.keys.UserKeys;
@@ -63,6 +64,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         private ImageView heartButton;
         private ImageView bookmarkButton;
         private Animation animation;
+        private MyBounceInterpolator interpolator;
+        private static final double AMPLITUDE = 0.2;
+        private static final double FREQUENCY = 20;
 
         public ViewHolder(ItemReviewBinding binding) {
             super(binding.getRoot());
@@ -70,6 +74,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             heartButton = binding.heartImageView;
             bookmarkButton = binding.bookmarkImageView;
             animation = AnimationUtils.loadAnimation(context, R.anim.bounce);
+            interpolator = new MyBounceInterpolator(AMPLITUDE, FREQUENCY);
+            animation.setInterpolator(interpolator);
         }
 
         public void bind(ParseReview review) throws ParseException {
@@ -104,23 +110,32 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             heartButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    bookmarkButton.clearAnimation();
                     heartButton.startAnimation(animation);
+
                     if(heartButton.isSelected()){
                         heartButton.setSelected(false);
                     }else {
                         heartButton.setSelected(true);
                     }
+
                 }
             });
 
             bookmarkButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    heartButton.clearAnimation();
+                    bookmarkButton.startAnimation(animation);
+
                     if(bookmarkButton.isSelected()){
                         bookmarkButton.setSelected(false);
                     }else {
                         bookmarkButton.setSelected(true);
                     }
+
                 }
             });
         }

@@ -14,4 +14,8 @@
     <color name="colorPinkGray">#dcd4e4</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
+    <color name="gray">#747377</color>
+
+    <color name="bookmarkYellow">#FFEB3B</color>
+    <color name="heartPink">#F378A1</color>
 </resources>

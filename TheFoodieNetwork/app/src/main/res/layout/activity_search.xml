@@ -71,6 +71,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
         android:contentDescription="submit"
-        android:src="@android:drawable/ic_menu_edit"
-        android:visibility="gone" />
+        android:src="@drawable/ic_edit"
+        android:tint="@color/gray"
+        android:visibility="visible" />
 </RelativeLayout>
