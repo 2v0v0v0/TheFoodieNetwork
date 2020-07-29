@@ -3,7 +3,11 @@ package com.fbu.thefoodienetwork.adapters;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,10 +60,16 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final ItemReviewBinding binding;
+        private ImageView heartButton;
+        private ImageView bookmarkButton;
+        private Animation animation;
 
         public ViewHolder(ItemReviewBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+            heartButton = binding.heartImageView;
+            bookmarkButton = binding.bookmarkImageView;
+            animation = AnimationUtils.loadAnimation(context, R.anim.bounce);
         }
 
         public void bind(ParseReview review) throws ParseException {
@@ -89,6 +99,30 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             ParseRestaurant restaurant = review.getRestaurant();
             binding.restaurantName.setText(restaurant.getName());
             binding.restaurantLocation.setText(restaurant.getAddress());
+
+            //Button listeners
+            heartButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    heartButton.startAnimation(animation);
+                    if(heartButton.isSelected()){
+                        heartButton.setSelected(false);
+                    }else {
+                        heartButton.setSelected(true);
+                    }
+                }
+            });
+
+            bookmarkButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(bookmarkButton.isSelected()){
+                        bookmarkButton.setSelected(false);
+                    }else {
+                        bookmarkButton.setSelected(true);
+                    }
+                }
+            });
         }
 
     }
