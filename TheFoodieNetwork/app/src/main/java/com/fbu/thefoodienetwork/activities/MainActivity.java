@@ -93,11 +93,13 @@ public class MainActivity extends AppCompatActivity {
                 goToProfile();
                 return true;
             case R.id.menu_bookmark:
+                goToBookmark();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
     private void goToSearchActivity() {
         Intent searchActivity = new Intent(MainActivity.this, SearchActivity.class);
@@ -126,6 +128,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(profileIntent);
     }
 
+    private void goToBookmark() {
+        Intent bookmarkIntent = new Intent(MainActivity.this, BookmarkActivity.class);
+        startActivity(bookmarkIntent);
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -139,4 +147,5 @@ public class MainActivity extends AppCompatActivity {
             ft.commit();
         }
     }
+
 }

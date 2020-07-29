@@ -71,14 +71,18 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         public ViewHolder(ItemReviewBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+
             heartButton = binding.heartImageView;
             bookmarkButton = binding.bookmarkImageView;
+
+            //animation
             animation = AnimationUtils.loadAnimation(context, R.anim.bounce);
             interpolator = new MyBounceInterpolator(AMPLITUDE, FREQUENCY);
             animation.setInterpolator(interpolator);
         }
 
         public void bind(ParseReview review) throws ParseException {
+
             //Author
             ParseUser author = review.getAuthor();
             binding.usernameTextView.setText(author.getUsername());
