@@ -60,13 +60,13 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        private static final double AMPLITUDE = 0.2;
+        private static final double FREQUENCY = 20;
         private final ItemReviewBinding binding;
         private ImageView heartButton;
         private ImageView bookmarkButton;
         private Animation animation;
         private MyBounceInterpolator interpolator;
-        private static final double AMPLITUDE = 0.2;
-        private static final double FREQUENCY = 20;
 
         public ViewHolder(ItemReviewBinding binding) {
             super(binding.getRoot());
@@ -85,7 +85,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             ParseFile profileImage = author.getParseFile(UserKeys.profileImage);
             if (profileImage != null) {
                 Glide.with(context).load(profileImage.getUrl()).centerCrop().circleCrop().into(binding.userProfilePic);
-            }else {
+            } else {
                 Glide.with(context).load(R.drawable.placeholder).centerCrop().circleCrop().into(binding.userProfilePic);
             }
 
@@ -106,7 +106,13 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             binding.restaurantName.setText(restaurant.getName());
             binding.restaurantLocation.setText(restaurant.getAddress());
 
-            //Button listeners
+            //Button state
+            setButtonListener();
+        }
+
+        private void setButtonListener() {
+
+            //heart button
             heartButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -114,15 +120,16 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
                     bookmarkButton.clearAnimation();
                     heartButton.startAnimation(animation);
 
-                    if(heartButton.isSelected()){
+                    if (heartButton.isSelected()) {
                         heartButton.setSelected(false);
-                    }else {
+                    } else {
                         heartButton.setSelected(true);
                     }
 
                 }
             });
 
+            //bookmark button
             bookmarkButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -130,9 +137,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
                     heartButton.clearAnimation();
                     bookmarkButton.startAnimation(animation);
 
-                    if(bookmarkButton.isSelected()){
+                    if (bookmarkButton.isSelected()) {
                         bookmarkButton.setSelected(false);
-                    }else {
+                    } else {
                         bookmarkButton.setSelected(true);
                     }
 
