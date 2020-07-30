@@ -34,7 +34,7 @@ public class BookmarkActivity extends AppCompatActivity {
     private static ParseRelation relation;
 
     public static void queryBookmarks() {
-        relation = currentUser.getRelation("bookmarked");
+        relation = currentUser.getRelation(UserKeys.BOOKMARK);
         ParseQuery query = relation.getQuery();
         query.include(ParseReview.AUTHOR_KEY);
         query.include(ParseReview.RESTAURANT_KEY);

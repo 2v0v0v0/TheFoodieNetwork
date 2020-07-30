@@ -7,4 +7,5 @@ public interface UserKeys {
     String FRIENDS = "friends";
     String PROFILE_IMAGE = "profileImage";
     String BOOKMARK = "bookmarked";
+    String OBJECT_ID = "objectId";
 }

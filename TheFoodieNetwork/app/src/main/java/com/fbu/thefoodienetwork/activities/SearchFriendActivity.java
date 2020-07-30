@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.fbu.thefoodienetwork.CurrentUserUtilities;
 import com.fbu.thefoodienetwork.adapters.FriendAdapter;
 import com.fbu.thefoodienetwork.databinding.ActivitySearchFriendBinding;
+import com.fbu.thefoodienetwork.keys.UserKeys;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -24,8 +25,6 @@ import java.util.List;
 public class SearchFriendActivity extends AppCompatActivity {
     private final static String TAG = "SearchFriend";
     private final static String MODIFIER = "i";
-    private final static String USERNAME_KEY = "username";
-    private final static String SCREEN_NAME_KEY = "screenName";
     private ParseUser currentUser = ParseUser.getCurrentUser();
     private List<ParseUser> resultList;
     private List<String> currentUserFriendList;
@@ -67,17 +66,17 @@ public class SearchFriendActivity extends AppCompatActivity {
 
     private void searchForUsernameAndScreenName(final String keyword) {
         ParseQuery<ParseUser> queryByUsername = ParseUser.getQuery();
-        queryByUsername.whereMatches(USERNAME_KEY, keyword, MODIFIER);
+        queryByUsername.whereMatches(UserKeys.USERNAME, keyword, MODIFIER);
 
         ParseQuery<ParseUser> queryByScreenName = ParseUser.getQuery();
-        queryByScreenName.whereMatches(SCREEN_NAME_KEY, keyword, MODIFIER);
+        queryByScreenName.whereMatches(UserKeys.SCREEN_NAME, keyword, MODIFIER);
 
         List<ParseQuery<ParseUser>> queries = new ArrayList<>();
         queries.add(queryByUsername);
         queries.add(queryByScreenName);
 
         ParseQuery<ParseUser> mainQuery = ParseQuery.or(queries);
-        mainQuery.whereNotEqualTo("objectId", currentUser.getObjectId());
+        mainQuery.whereNotEqualTo(UserKeys.OBJECT_ID, currentUser.getObjectId());
         mainQuery.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> results, ParseException e) {
@@ -86,7 +85,7 @@ public class SearchFriendActivity extends AppCompatActivity {
                     return;
                 }
                 for (ParseUser user : results) {
-                    Log.i(TAG, "result: " + user.getUsername() + " " + user.get(SCREEN_NAME_KEY));
+                    Log.i(TAG, "result: " + user.getUsername() + " " + user.get(UserKeys.USERNAME));
                 }
                 resultList.addAll(results);
                 binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
