@@ -1,8 +1,10 @@
 package com.fbu.thefoodienetwork.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,12 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fbu.thefoodienetwork.adapters.ReviewAdapter;
 import com.fbu.thefoodienetwork.databinding.ActivityBookmarkBinding;
+import com.fbu.thefoodienetwork.keys.UserKeys;
 import com.fbu.thefoodienetwork.models.ParseReview;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +31,10 @@ public class BookmarkActivity extends AppCompatActivity {
     private ActivityBookmarkBinding binding;
     private static ReviewAdapter reviewAdapter;
     private RecyclerView reviewRecyclerView;
+    private static ParseRelation relation;
 
     public static void queryBookmarks() {
-        ParseRelation relation = currentUser.getRelation("bookmarked");
+        relation = currentUser.getRelation("bookmarked");
         ParseQuery query = relation.getQuery();
         query.include(ParseReview.AUTHOR_KEY);
         query.include(ParseReview.RESTAURANT_KEY);
@@ -69,12 +74,40 @@ public class BookmarkActivity extends AppCompatActivity {
 
     }
 
-    public static void removeBookmark (ParseReview review){
+    public static void removeBookmark (final Context context, ParseReview review){
         bookmarkList.remove(review);
+
+        relation.remove(review);
+
+        currentUser.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null){
+                    Toast.makeText(context, "error: " + e, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Toast.makeText(context, "remove", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    public static void addBookmark (ParseReview review){
+    public static void addBookmark (final Context context, ParseReview review){
         bookmarkList.add(review);
+
+        relation.add(review);
+
+        currentUser.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null){
+                    Toast.makeText(context, "error: " + e, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Toast.makeText(context, "save", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
+
 
 }

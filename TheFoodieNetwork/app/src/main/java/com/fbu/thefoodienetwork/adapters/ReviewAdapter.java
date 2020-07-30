@@ -153,12 +153,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
                         //remove bookmark
                         bookmarkButton.setSelected(false);
                         selectedReview.setBookmark(false);
-                        BookmarkActivity.removeBookmark(selectedReview);
+                        BookmarkActivity.removeBookmark(context, selectedReview);
                     } else {
                         //add bookmark
                         bookmarkButton.setSelected(true);
                         selectedReview.setBookmark(true);
-                        BookmarkActivity.addBookmark(selectedReview);
+                        BookmarkActivity.addBookmark(context, selectedReview);
                     }
 
                     notifyDataSetChanged();

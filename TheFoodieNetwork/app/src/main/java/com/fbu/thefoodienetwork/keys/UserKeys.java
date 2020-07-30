@@ -6,4 +6,5 @@ public interface UserKeys {
     String SCREEN_NAME = "screenName";
     String FRIENDS = "friends";
     String PROFILE_IMAGE = "profileImage";
+    String BOOKMARK = "bookmarked";
 }
