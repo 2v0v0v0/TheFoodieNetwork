@@ -1,5 +1,6 @@
 package com.fbu.thefoodienetwork.models;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.parse.ParseClassName;
@@ -101,5 +102,11 @@ public class ParseReview extends ParseObject {
         }
 
         return false;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return this.getObjectId();
     }
 }

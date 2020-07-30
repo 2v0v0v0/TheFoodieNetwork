@@ -29,7 +29,6 @@ public class GlobeFragment extends Fragment {
     protected ReviewAdapter reviewAdapter;
     protected List<ParseReview> allReviews;
     FragmentGlobeBinding binding;
-    private LinearLayoutManager layoutManager;
     private RecyclerView reviewRecyclerView;
 
     public GlobeFragment() {
@@ -53,22 +52,24 @@ public class GlobeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         allReviews = new ArrayList<>();
         reviewAdapter = new ReviewAdapter(getContext(), allReviews);
         reviewRecyclerView.setAdapter(reviewAdapter);
-        layoutManager = new LinearLayoutManager(getContext());
-        reviewRecyclerView.setLayoutManager(layoutManager);
+        reviewRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         queryReviews();
     }
 
     private void queryReviews() {
         ParseQuery<ParseReview> query = ParseQuery.getQuery(ParseReview.class);
+
         query.include(ParseReview.AUTHOR_KEY);
         query.include(ParseReview.RESTAURANT_KEY);
         query.whereEqualTo(ParseReview.GLOBAL_KEY, true);
         query.setLimit(REVIEW_LIMIT);
         query.addDescendingOrder(ParseReview.CREATED_AT_KEY);
+
         query.findInBackground(new FindCallback<ParseReview>() {
             @Override
             public void done(List<ParseReview> reviewList, ParseException e) {
@@ -77,13 +78,12 @@ public class GlobeFragment extends Fragment {
                     return;
                 }
 
-
-
                 for (ParseReview review : reviewList) {
 
                     if(BookmarkActivity.bookmarkList.contains(review)){
                         review.setBookmark(true);
                     }
+
                     Log.i(TAG, "Post: " + review.getText() + ", username: " + review.getAuthor().getUsername() + " saved: " + review.getBookmark());
                 }
                 allReviews.addAll(reviewList);

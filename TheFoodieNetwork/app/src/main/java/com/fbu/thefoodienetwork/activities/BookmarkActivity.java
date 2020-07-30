@@ -23,10 +23,9 @@ import java.util.List;
 public class BookmarkActivity extends AppCompatActivity {
     private final static String TAG = "BookmarkActivity";
     public static List<ParseReview> bookmarkList = new ArrayList<>();
-    public static List<String> bookmarkIdList = new ArrayList<>();
     private static ParseUser currentUser = ParseUser.getCurrentUser();
     private ActivityBookmarkBinding binding;
-    private ReviewAdapter reviewAdapter;
+    private static ReviewAdapter reviewAdapter;
     private RecyclerView reviewRecyclerView;
 
     public static void queryBookmarks() {
@@ -43,7 +42,6 @@ public class BookmarkActivity extends AppCompatActivity {
                     for (ParseReview review : results) {
                         Log.i(TAG, review.getObjectId());
                         review.setBookmark(true);
-                        bookmarkIdList.add(review.getObjectId());
                     }
 
                     bookmarkList.addAll(results);
@@ -69,7 +67,14 @@ public class BookmarkActivity extends AppCompatActivity {
 
         reviewRecyclerView.setLayoutManager(new LinearLayoutManager(BookmarkActivity.this));
 
+    }
 
+    public static void removeBookmark (ParseReview review){
+        bookmarkList.remove(review);
+    }
+
+    public static void addBookmark (ParseReview review){
+        bookmarkList.add(review);
     }
 
 }

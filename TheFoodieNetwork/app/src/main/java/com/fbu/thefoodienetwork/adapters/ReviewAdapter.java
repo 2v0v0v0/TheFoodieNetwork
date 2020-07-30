@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.fbu.thefoodienetwork.MyBounceInterpolator;
 import com.fbu.thefoodienetwork.R;
+import com.fbu.thefoodienetwork.activities.BookmarkActivity;
 import com.fbu.thefoodienetwork.databinding.ItemReviewBinding;
 import com.fbu.thefoodienetwork.keys.UserKeys;
 import com.fbu.thefoodienetwork.models.ParseRestaurant;
@@ -121,6 +122,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         }
 
         private void setButtonListener() {
+            final ParseReview selectedReview = reviewsList.get(getAdapterPosition());
 
             //heart button
             heartButton.setOnClickListener(new View.OnClickListener() {
@@ -148,10 +150,19 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
                     bookmarkButton.startAnimation(animation);
 
                     if (bookmarkButton.isSelected()) {
+                        //remove bookmark
                         bookmarkButton.setSelected(false);
+                        selectedReview.setBookmark(false);
+                        BookmarkActivity.removeBookmark(selectedReview);
                     } else {
+                        //add bookmark
                         bookmarkButton.setSelected(true);
+                        selectedReview.setBookmark(true);
+                        BookmarkActivity.addBookmark(selectedReview);
                     }
+
+                    notifyDataSetChanged();
+                    Log.i(TAG, BookmarkActivity.bookmarkList.toString());
 
                 }
             });
