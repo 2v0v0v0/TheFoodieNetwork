@@ -1,11 +1,21 @@
 package com.fbu.thefoodienetwork.models;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.fbu.thefoodienetwork.CurrentUserUtilities;
+import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.parceler.Parcel;
 
@@ -14,6 +24,7 @@ import java.util.Date;
 @ParseClassName("Review")
 @Parcel(analyze = ParseReview.class)
 public class ParseReview extends ParseObject {
+    private static final String TAG = "ParseReview";
     public static final String CREATED_AT_KEY = "createdAt";
     public static final String AUTHOR_KEY = "author";
     public static final String RESTAURANT_KEY = "restaurant";
@@ -21,7 +32,12 @@ public class ParseReview extends ParseObject {
     public static final String GLOBAL_KEY = "isGlobal";
     public static final String TEXT_KEY = "reviewText";
     public static final String RECOMMEND_KEY = "recommend";
+    public static final String HEART_COUNT_KEY = "heartCount";
+    public static final String HEART_RELATION_KEY = "heart";
     public boolean isBookmarked = false;
+    public boolean isHearted = false;
+    public int heartCount = 0;
+    private ParseRelation heartRelation;
 
     public ParseReview() {
     }
@@ -85,6 +101,61 @@ public class ParseReview extends ParseObject {
     public void setBookmark(boolean mark) {
         isBookmarked = mark;
     }
+
+    public void increaseHeartCount() {
+        heartCount += 1;
+        isHearted = true;
+        heartRelation.add(CurrentUserUtilities.currentUser);
+        setHeartCount();
+    }
+
+    public void decreaseHeartCount() {
+        heartCount -= 1;
+        isHearted = false;
+        heartRelation.remove(CurrentUserUtilities.currentUser);
+        setHeartCount();
+    }
+
+    public void setHeartCount(){
+        put(HEART_COUNT_KEY, heartCount);
+        this.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.i(TAG, "error" +e);
+                    return;
+                }
+                Log.i(TAG, "success saving");
+            }
+        });
+    }
+
+    public int getHeartCount() {
+        heartCount = getInt(HEART_COUNT_KEY);
+        return heartCount;
+    }
+
+    public boolean isHearted(){
+        return isHearted;
+    }
+
+    public void getHeartRelation() {
+        heartRelation = this.getRelation(HEART_RELATION_KEY);
+        ParseQuery query = heartRelation.getQuery();
+
+        query.equals(ParseUser.getCurrentUser());
+
+        try {
+            ParseUser user = (ParseUser) query.getFirst();
+            if (user != null){
+                isHearted = true;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     @Override
     public boolean equals(@Nullable Object obj) {
