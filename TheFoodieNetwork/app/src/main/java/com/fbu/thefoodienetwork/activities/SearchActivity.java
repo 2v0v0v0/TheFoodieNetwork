@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.fbu.thefoodienetwork.OnSwipeTouchListener;
 import com.fbu.thefoodienetwork.adapters.LocationAdapter;
 import com.fbu.thefoodienetwork.adapters.RestaurantAdapter;
 import com.fbu.thefoodienetwork.apiservers.ZomatoRequest;
@@ -54,6 +55,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         setContentView(view);
         setSearchListener();
         binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        setSwipeListener(binding.resultsRecyclerView);
     }
 
 
@@ -260,5 +262,37 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         composeIntent.putExtra(ParcelKeys.SELECTED_RESTAURANT, Parcels.wrap(selectedRestaurant));
         setResult(RESULT_OK, composeIntent);
         finish();
+    }
+
+    private void setSwipeListener(View view){
+        view.setOnTouchListener(new OnSwipeTouchListener(this) {
+            @Override
+            public void onSwipeDown() {
+                //TODO swipe down to refresh
+                Toast.makeText(SearchActivity.this, "refresh", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSwipeLeft() {
+                Toast.makeText(SearchActivity.this, "Search for People", Toast.LENGTH_SHORT).show();
+                goToSearchFriend();
+            }
+
+            @Override
+            public void onSwipeRight() {
+                Toast.makeText(SearchActivity.this, "Home", Toast.LENGTH_SHORT).show();
+                goToMain();
+            }
+        });
+    }
+
+    private void goToMain() {
+        Intent mainIntent = new Intent(SearchActivity.this, MainActivity.class);
+        startActivity(mainIntent);
+    }
+
+    private void goToSearchFriend() {
+        Intent searchFriend = new Intent(SearchActivity.this, SearchFriendActivity.class);
+        startActivity(searchFriend);
     }
 }

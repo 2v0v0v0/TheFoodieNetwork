@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
 
         setContentView(view);
-        setSwipeListener(view);
+        setSwipeListener(binding.containerFrameLayout);
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNavigation.setSelectedItemId(R.id.action_home);
     }
 
-    public void setSwipeListener(View view){
+    private void setSwipeListener(View view){
         view.setOnTouchListener(new OnSwipeTouchListener(this) {
             @Override
             public void onSwipeDown() {
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSwipeLeft() {
                 Toast.makeText(MainActivity.this, "Search for Restaurant", Toast.LENGTH_SHORT).show();
-                goToSearchActivity();
+                goToSearchRestaurant();
             }
 
             @Override
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_search:
-                goToSearchActivity();
+                goToSearchRestaurant();
                 return true;
             case R.id.menu_search_friend:
                 goToSearchFriend();
@@ -127,14 +127,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void goToSearchActivity() {
-        Intent searchActivity = new Intent(MainActivity.this, SearchActivity.class);
-        startActivityForResult(searchActivity, SEARCH_CODE);
+    private void goToSearchRestaurant() {
+        Intent searchRestaurantIntent = new Intent(MainActivity.this, SearchActivity.class);
+        startActivityForResult(searchRestaurantIntent, SEARCH_CODE);
     }
 
     private void goToSearchFriend() {
         Intent searchFriend = new Intent(MainActivity.this, SearchFriendActivity.class);
         startActivity(searchFriend);
+    }
+
+    private void goToProfile() {
+        Intent profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
+        startActivity(profileIntent);
+    }
+
+    private void goToBookmark() {
+        Intent bookmarkIntent = new Intent(MainActivity.this, BookmarkActivity.class);
+        startActivity(bookmarkIntent);
     }
 
     private void logoutUser() {
@@ -147,16 +157,6 @@ public class MainActivity extends AppCompatActivity {
         Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(loginIntent);
         finish();
-    }
-
-    private void goToProfile() {
-        Intent profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
-        startActivity(profileIntent);
-    }
-
-    private void goToBookmark() {
-        Intent bookmarkIntent = new Intent(MainActivity.this, BookmarkActivity.class);
-        startActivity(bookmarkIntent);
     }
 
 

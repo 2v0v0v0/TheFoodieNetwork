@@ -1,16 +1,19 @@
 package com.fbu.thefoodienetwork.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.fbu.thefoodienetwork.CurrentUserUtilities;
+import com.fbu.thefoodienetwork.OnSwipeTouchListener;
 import com.fbu.thefoodienetwork.adapters.FriendAdapter;
 import com.fbu.thefoodienetwork.databinding.ActivitySearchFriendBinding;
 import com.fbu.thefoodienetwork.keys.UserKeys;
@@ -40,12 +43,46 @@ public class SearchFriendActivity extends AppCompatActivity {
         setContentView(view);
 
         setSearchListener();
+        setSwipeListener(binding.resultsRecyclerView);
 
         currentUserFriendList = CurrentUserUtilities.currentUserFriendList;
         currentUserReceivedFriendRequest = CurrentUserUtilities.currentUserReceivedFriendRequest;
 
         resultList = new ArrayList<>();
     }
+
+    private void setSwipeListener(View view){
+        view.setOnTouchListener(new OnSwipeTouchListener(this) {
+            @Override
+            public void onSwipeDown() {
+                //TODO swipe down to refresh
+                Toast.makeText(SearchFriendActivity.this, "refresh", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSwipeLeft() {
+                Toast.makeText(SearchFriendActivity.this, "Home", Toast.LENGTH_SHORT).show();
+                goToMain();
+            }
+
+            @Override
+            public void onSwipeRight() {
+                Toast.makeText(SearchFriendActivity.this, "Search for Restaurant", Toast.LENGTH_SHORT).show();
+                goToSearchRestaurant();
+            }
+        });
+    }
+
+    private void goToMain() {
+        Intent mainIntent = new Intent(SearchFriendActivity.this, MainActivity.class);
+        startActivity(mainIntent);
+    }
+
+    private void goToSearchRestaurant() {
+        Intent searchRestaurantIntent = new Intent(SearchFriendActivity.this, SearchActivity.class);
+        startActivity(searchRestaurantIntent);
+    }
+
 
     private void setSearchListener() {
         binding.searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
