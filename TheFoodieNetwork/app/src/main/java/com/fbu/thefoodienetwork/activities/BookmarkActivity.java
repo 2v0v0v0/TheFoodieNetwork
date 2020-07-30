@@ -47,7 +47,6 @@ public class BookmarkActivity extends AppCompatActivity {
                     Log.i(TAG, "error: " + e);
                 } else {
                     for (ParseReview review : results) {
-                        Log.i(TAG, review.getObjectId());
                         review.setBookmark(true);
                     }
 

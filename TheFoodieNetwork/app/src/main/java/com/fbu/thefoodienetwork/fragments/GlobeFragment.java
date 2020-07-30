@@ -80,11 +80,14 @@ public class GlobeFragment extends Fragment {
 
                 for (ParseReview review : reviewList) {
 
+                    review.getHeartRelation();
+
                     if(BookmarkActivity.bookmarkList.contains(review)){
                         review.setBookmark(true);
                     }
 
-                    Log.i(TAG, "Post: " + review.getText() + ", username: " + review.getAuthor().getUsername() + " saved: " + review.getBookmark());
+                    Log.i(TAG, "Post: " + review.getText() + ", username: " + review.getAuthor().getUsername()
+                            + " saved: " + review.getBookmark());
                 }
                 allReviews.addAll(reviewList);
                 reviewAdapter.notifyDataSetChanged();

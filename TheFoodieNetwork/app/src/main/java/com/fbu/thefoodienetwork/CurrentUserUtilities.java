@@ -20,7 +20,7 @@ public class CurrentUserUtilities {
     public static List<String> currentUserFriendList;
     public static List<String> currentUserReceivedFriendRequest;
     public static List<String> currentUserSentFriendRequest;
-    private static ParseUser currentUser;
+    public static ParseUser currentUser;
 
     public CurrentUserUtilities() {
         currentUser = ParseUser.getCurrentUser();
