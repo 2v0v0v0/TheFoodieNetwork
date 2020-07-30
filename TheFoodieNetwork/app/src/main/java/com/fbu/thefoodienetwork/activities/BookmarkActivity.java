@@ -23,12 +23,13 @@ import java.util.List;
 public class BookmarkActivity extends AppCompatActivity {
     private final static String TAG = "BookmarkActivity";
     public static List<ParseReview> bookmarkList = new ArrayList<>();
+    public static List<String> bookmarkIdList = new ArrayList<>();
     private static ParseUser currentUser = ParseUser.getCurrentUser();
     private ActivityBookmarkBinding binding;
     private ReviewAdapter reviewAdapter;
     private RecyclerView reviewRecyclerView;
 
-    public void queryBookmarks() {
+    public static void queryBookmarks() {
         ParseRelation relation = currentUser.getRelation("bookmarked");
         ParseQuery query = relation.getQuery();
         query.include(ParseReview.AUTHOR_KEY);
@@ -42,10 +43,10 @@ public class BookmarkActivity extends AppCompatActivity {
                     for (ParseReview review : results) {
                         Log.i(TAG, review.getObjectId());
                         review.setBookmark(true);
+                        bookmarkIdList.add(review.getObjectId());
                     }
 
                     bookmarkList.addAll(results);
-                    reviewAdapter.notifyDataSetChanged();
                     Log.i(TAG, bookmarkList.toString());
 
                 }
@@ -61,14 +62,13 @@ public class BookmarkActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        queryBookmarks();
-
         reviewRecyclerView = binding.bookmarkRecyclerView;
 
         reviewAdapter = new ReviewAdapter(BookmarkActivity.this, bookmarkList);
         reviewRecyclerView.setAdapter(reviewAdapter);
 
         reviewRecyclerView.setLayoutManager(new LinearLayoutManager(BookmarkActivity.this));
+
 
     }
 

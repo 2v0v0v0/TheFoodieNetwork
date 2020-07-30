@@ -29,6 +29,8 @@ public class CurrentUserUtilities {
         currentUserReceivedFriendRequest = new ArrayList<>();
         currentUserSentFriendRequest = new ArrayList<>();
 
+        BookmarkActivity.queryBookmarks();
+
         getFriendList();
         getPendingFriendRequest();
         getSentFriendRequest();

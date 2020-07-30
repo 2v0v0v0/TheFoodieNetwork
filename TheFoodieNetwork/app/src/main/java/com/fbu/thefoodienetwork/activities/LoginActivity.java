@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.i(TAG, ParseUser.getCurrentUser().getUsername());
         //TODO: change back to main
         //For testing purpose only
-        Intent mainIntent = new Intent(this, BookmarkActivity.class);
+        Intent mainIntent = new Intent(this, MainActivity.class);
         startActivity(mainIntent);
         finish();
     }

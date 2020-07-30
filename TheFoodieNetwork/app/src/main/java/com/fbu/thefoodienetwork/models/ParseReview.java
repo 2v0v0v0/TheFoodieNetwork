@@ -1,5 +1,7 @@
 package com.fbu.thefoodienetwork.models;
 
+import androidx.annotation.Nullable;
+
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -18,7 +20,7 @@ public class ParseReview extends ParseObject {
     public static final String GLOBAL_KEY = "isGlobal";
     public static final String TEXT_KEY = "reviewText";
     public static final String RECOMMEND_KEY = "recommend";
-    public static boolean isBookmarked = false;
+    public boolean isBookmarked = false;
 
     public ParseReview() {
     }
@@ -75,8 +77,29 @@ public class ParseReview extends ParseObject {
         return getCreatedAt();
     }
 
+    public boolean getBookmark() {
+        return isBookmarked;
+    }
+
     public void setBookmark(boolean mark) {
         isBookmarked = mark;
     }
 
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+
+        ParseReview other = (ParseReview) obj;
+
+        if (other.getObjectId().equals(this.getObjectId())) {
+            return true;
+        }
+
+        return false;
+    }
 }

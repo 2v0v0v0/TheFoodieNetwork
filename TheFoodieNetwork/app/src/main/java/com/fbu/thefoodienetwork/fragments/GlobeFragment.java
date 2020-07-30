@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fbu.thefoodienetwork.activities.BookmarkActivity;
 import com.fbu.thefoodienetwork.adapters.ReviewAdapter;
 import com.fbu.thefoodienetwork.databinding.FragmentGlobeBinding;
 import com.fbu.thefoodienetwork.models.ParseReview;
@@ -76,8 +77,14 @@ public class GlobeFragment extends Fragment {
                     return;
                 }
 
+
+
                 for (ParseReview review : reviewList) {
-                    Log.i(TAG, "Post: " + review.getText() + ", username: " + review.getAuthor().getUsername());
+
+                    if(BookmarkActivity.bookmarkList.contains(review)){
+                        review.setBookmark(true);
+                    }
+                    Log.i(TAG, "Post: " + review.getText() + ", username: " + review.getAuthor().getUsername() + " saved: " + review.getBookmark());
                 }
                 allReviews.addAll(reviewList);
                 reviewAdapter.notifyDataSetChanged();

@@ -111,9 +111,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             binding.restaurantLocation.setText(restaurant.getAddress());
 
             //Button state
-            if (review.isBookmarked){
+            if (review.getBookmark()){
                 bookmarkButton.setSelected(true);
+            } else {
+                bookmarkButton.setSelected(false);
             }
+
             setButtonListener();
         }
 
