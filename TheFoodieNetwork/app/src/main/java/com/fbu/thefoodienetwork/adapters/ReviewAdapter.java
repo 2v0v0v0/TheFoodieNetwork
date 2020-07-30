@@ -143,10 +143,10 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
                     if (heartButton.isSelected()) {
                         heartButton.setSelected(false);
-                        selectedReview.decreaseHeartCount();
+                        selectedReview.decreaseHeart();
                     } else {
                         heartButton.setSelected(true);
-                        selectedReview.increaseHeartCount();
+                        selectedReview.increaseHeart();
                     }
 
                     notifyItemChanged(getAdapterPosition());
