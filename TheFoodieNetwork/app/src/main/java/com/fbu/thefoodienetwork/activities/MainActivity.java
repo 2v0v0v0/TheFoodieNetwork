@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.fbu.thefoodienetwork.OnSwipeTouchListener;
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.databinding.ActivityMainBinding;
 import com.fbu.thefoodienetwork.fragments.ComposeFragment;
@@ -41,7 +43,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
+
         setContentView(view);
+        setSwipeListener(view);
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -69,6 +73,31 @@ public class MainActivity extends AppCompatActivity {
         // Set default selection
         binding.bottomNavigation.setSelectedItemId(R.id.action_home);
     }
+
+    private void setSwipeListener(View view){
+        view.setOnTouchListener(new OnSwipeTouchListener(this) {
+            @Override
+            public void onSwipeDown() {
+                Toast.makeText(MainActivity.this, "Down", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSwipeLeft() {
+                Toast.makeText(MainActivity.this, "Left", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSwipeUp() {
+                Toast.makeText(MainActivity.this, "Up", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSwipeRight() {
+                Toast.makeText(MainActivity.this, "Right", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

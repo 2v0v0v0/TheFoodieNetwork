@@ -28,10 +28,10 @@ public class BookmarkActivity extends AppCompatActivity {
     private final static String TAG = "BookmarkActivity";
     public static List<ParseReview> bookmarkList = new ArrayList<>();
     private static ParseUser currentUser = ParseUser.getCurrentUser();
-    private ActivityBookmarkBinding binding;
     private static ReviewAdapter reviewAdapter;
-    private RecyclerView reviewRecyclerView;
     private static ParseRelation relation;
+    private ActivityBookmarkBinding binding;
+    private RecyclerView reviewRecyclerView;
 
     public static void queryBookmarks() {
         relation = currentUser.getRelation(UserKeys.BOOKMARK);
@@ -57,6 +57,40 @@ public class BookmarkActivity extends AppCompatActivity {
         });
     }
 
+    public static void removeBookmark(final Context context, ParseReview review) {
+        bookmarkList.remove(review);
+
+        relation.remove(review);
+
+        currentUser.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Toast.makeText(context, "error: " + e, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Toast.makeText(context, "remove", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public static void addBookmark(final Context context, ParseReview review) {
+        bookmarkList.add(review);
+
+        relation.add(review);
+
+        currentUser.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Toast.makeText(context, "error: " + e, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Toast.makeText(context, "save", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,41 +105,6 @@ public class BookmarkActivity extends AppCompatActivity {
         reviewRecyclerView.setAdapter(reviewAdapter);
 
         reviewRecyclerView.setLayoutManager(new LinearLayoutManager(BookmarkActivity.this));
-
-    }
-
-    public static void removeBookmark (final Context context, ParseReview review){
-        bookmarkList.remove(review);
-
-        relation.remove(review);
-
-        currentUser.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null){
-                    Toast.makeText(context, "error: " + e, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Toast.makeText(context, "remove", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    public static void addBookmark (final Context context, ParseReview review){
-        bookmarkList.add(review);
-
-        relation.add(review);
-
-        currentUser.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null){
-                    Toast.makeText(context, "error: " + e, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Toast.makeText(context, "save", Toast.LENGTH_SHORT).show();
-            }
-        });
 
     }
 
