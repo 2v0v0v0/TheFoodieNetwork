@@ -74,30 +74,27 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNavigation.setSelectedItemId(R.id.action_home);
     }
 
-    private void setSwipeListener(View view){
+    public void setSwipeListener(View view){
         view.setOnTouchListener(new OnSwipeTouchListener(this) {
             @Override
             public void onSwipeDown() {
-                Toast.makeText(MainActivity.this, "Down", Toast.LENGTH_SHORT).show();
+                //TODO swipe down to refresh
+                Toast.makeText(MainActivity.this, "refresh", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onSwipeLeft() {
-                Toast.makeText(MainActivity.this, "Left", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onSwipeUp() {
-                Toast.makeText(MainActivity.this, "Up", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Search for Restaurant", Toast.LENGTH_SHORT).show();
+                goToSearchActivity();
             }
 
             @Override
             public void onSwipeRight() {
-                Toast.makeText(MainActivity.this, "Right", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Search for People", Toast.LENGTH_SHORT).show();
+                goToSearchFriend();
             }
         });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

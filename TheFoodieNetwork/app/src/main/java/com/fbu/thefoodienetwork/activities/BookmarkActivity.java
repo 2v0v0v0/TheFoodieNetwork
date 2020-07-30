@@ -1,6 +1,7 @@
 package com.fbu.thefoodienetwork.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fbu.thefoodienetwork.OnSwipeTouchListener;
 import com.fbu.thefoodienetwork.adapters.ReviewAdapter;
 import com.fbu.thefoodienetwork.databinding.ActivityBookmarkBinding;
 import com.fbu.thefoodienetwork.keys.UserKeys;
@@ -97,16 +99,29 @@ public class BookmarkActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityBookmarkBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
+
         setContentView(view);
 
         reviewRecyclerView = binding.bookmarkRecyclerView;
 
         reviewAdapter = new ReviewAdapter(BookmarkActivity.this, bookmarkList);
+
         reviewRecyclerView.setAdapter(reviewAdapter);
 
         reviewRecyclerView.setLayoutManager(new LinearLayoutManager(BookmarkActivity.this));
 
+        setSwipeListener(reviewRecyclerView);
     }
 
+    private void setSwipeListener(View view){
+        view.setOnTouchListener(new OnSwipeTouchListener(this) {
+            @Override
+            public void onSwipeDown() {
+                Toast.makeText(BookmarkActivity.this, "Home", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+        });
+    }
 
 }

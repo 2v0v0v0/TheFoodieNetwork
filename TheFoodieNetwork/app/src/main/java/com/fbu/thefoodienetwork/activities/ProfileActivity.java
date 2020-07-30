@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.fbu.thefoodienetwork.OnSwipeTouchListener;
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.adapters.ReviewAdapter;
 import com.fbu.thefoodienetwork.databinding.ActivityProfileBinding;
@@ -39,6 +41,8 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityProfileBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
+
+        setSwipeListener(view);
         setContentView(view);
 
         reviewRecyclerView = binding.postsRecyclerView;
@@ -57,6 +61,17 @@ public class ProfileActivity extends AppCompatActivity {
         Log.i(TAG, "resume");
         loadData();
         super.onResume();
+    }
+
+    private void setSwipeListener(View view){
+        view.setOnTouchListener(new OnSwipeTouchListener(this) {
+            @Override
+            public void onSwipeDown() {
+                Toast.makeText(ProfileActivity.this, "Home", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+        });
     }
 
     private void loadData() {

@@ -57,6 +57,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
     }
 
 
+
     //Click listener
     private void setSearchListener() {
         binding.getMyLocationButton.setOnClickListener(new View.OnClickListener() {
