@@ -111,12 +111,21 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             binding.restaurantName.setText(restaurant.getName());
             binding.restaurantLocation.setText(restaurant.getAddress());
 
+
             //Button state
             if (review.getBookmark()) {
                 bookmarkButton.setSelected(true);
             } else {
                 bookmarkButton.setSelected(false);
             }
+
+            if (review.isHearted()) {
+                heartButton.setSelected(true);
+            } else {
+                heartButton.setSelected(false);
+            }
+
+            binding.heartCounterTextView.setText(String.format("%d", review.getHeartCount()));
 
             setButtonListener();
         }
@@ -134,9 +143,13 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
                     if (heartButton.isSelected()) {
                         heartButton.setSelected(false);
+                        selectedReview.decreaseHeartCount();
                     } else {
                         heartButton.setSelected(true);
+                        selectedReview.increaseHeartCount();
                     }
+
+                    notifyItemChanged(getAdapterPosition());
 
                 }
             });
