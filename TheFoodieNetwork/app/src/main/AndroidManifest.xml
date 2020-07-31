@@ -16,7 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.FriendListActivity"></activity>
 
         <service
             android:name="com.parse.fcm.ParseFirebaseInstanceIdService"
@@ -55,22 +54,32 @@
         <activity
             android:name=".activities.EditProfileActivity"
             android:label="Edit Profile" />
+
         <activity
             android:name=".activities.ProfileActivity"
             android:label="Profile" />
+
         <activity
             android:name=".activities.SearchFriendActivity"
             android:label="Search for People" />
+
         <activity android:name=".activities.RestaurantDetailsActivity" />
+
         <activity
             android:name=".activities.SignUpActivity"
             android:label="Sign Up" />
+
         <activity
             android:name=".activities.SearchActivity"
             android:label="Search for Restaurants" />
+
         <activity
             android:name=".activities.BookmarkActivity"
             android:label="Bookmark" />
+
+        <activity android:name=".activities.FriendListActivity"
+            android:label="Friends"/>
+
         <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -78,6 +87,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".activities.MainActivity" />
 
         <meta-data
