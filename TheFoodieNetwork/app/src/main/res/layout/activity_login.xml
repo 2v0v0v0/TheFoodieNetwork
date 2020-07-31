@@ -52,6 +52,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorBlue"
             android:text="@string/login"
+            android:elevation="20dp"
             android:textColor="@color/white" />
 
         <TextView

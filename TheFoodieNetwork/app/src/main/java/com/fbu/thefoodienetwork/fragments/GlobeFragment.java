@@ -62,6 +62,8 @@ public class GlobeFragment extends Fragment {
     }
 
     private void queryReviews() {
+        binding.progressBar.setVisibility(View.VISIBLE);
+
         ParseQuery<ParseReview> query = ParseQuery.getQuery(ParseReview.class);
 
         query.include(ParseReview.AUTHOR_KEY);
@@ -73,6 +75,9 @@ public class GlobeFragment extends Fragment {
         query.findInBackground(new FindCallback<ParseReview>() {
             @Override
             public void done(List<ParseReview> reviewList, ParseException e) {
+
+                binding.progressBar.setVisibility(View.GONE);
+
                 if (e != null) {
                     Log.e(TAG, "Issue with getting reviews");
                     return;

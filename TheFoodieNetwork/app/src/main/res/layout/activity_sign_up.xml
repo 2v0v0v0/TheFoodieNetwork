@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:background="@color/colorPink"
+        android:background="@color/colorLightBlue"
         android:padding="100dp"
         android:visibility="gone"
         app:SpinKit_Color="@color/white" />
@@ -81,6 +81,7 @@
             android:background="@drawable/sign_up_button"
             android:paddingHorizontal="18dp"
             android:text="@string/signup"
+            android:elevation="20dp"
             android:textColor="@color/white" />
 
     </LinearLayout>
