@@ -167,6 +167,7 @@ public class CurrentUserUtilities {
 
         query.whereEqualTo(FriendRequestKeys.TO, currentUser);
         query.whereEqualTo(FriendRequestKeys.IS_DECLINED, false);
+        query.include(FriendRequestKeys.FROM);
 
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -176,16 +177,10 @@ public class CurrentUserUtilities {
                     return;
                 }
                 for (ParseObject friendRequest : requests) {
-                    try {
-
-                        ParseUser user = friendRequest.fetchIfNeeded().getParseUser(FriendRequestKeys.FROM);
-                        String userID = user.fetchIfNeeded().getObjectId();
-                        currentUserReceivedFriendRequest.add(userID);
-
-                        Log.i(TAG, "received: " + userID);
-                    } catch (ParseException ex) {
-                        ex.printStackTrace();
-                    }
+                    ParseUser user = friendRequest.getParseUser(FriendRequestKeys.FROM);
+                    String userID = user.getObjectId();
+                    currentUserReceivedFriendRequest.add(userID);
+                    Log.i(TAG, "received: " + userID);
                 }
             }
         });

@@ -20,6 +20,7 @@ import com.fbu.thefoodienetwork.fragments.ComposeFragment;
 import com.fbu.thefoodienetwork.fragments.FriendsFragment;
 import com.fbu.thefoodienetwork.fragments.GlobeFragment;
 import com.fbu.thefoodienetwork.fragments.HomeFragment;
+import com.fbu.thefoodienetwork.fragments.RequestsFragment;
 import com.fbu.thefoodienetwork.keys.UserKeys;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.FindCallback;
@@ -54,7 +55,7 @@ public class FriendListActivity extends AppCompatActivity {
                 Fragment fragment;
                 switch (item.getItemId()) {
                     case R.id.action_requests:
-                        fragment = new HomeFragment();
+                        fragment = new RequestsFragment();
                         Log.i(TAG, "menu item: " + "requests");
                         break;
                     default:
@@ -69,25 +70,4 @@ public class FriendListActivity extends AppCompatActivity {
         // Set default selection
         binding.tabsNavigation.setSelectedItemId(R.id.action_home);
     }
-
-    /*private void queryFriend() {
-        ParseRelation relation = CurrentUserUtilities.currentUser.getRelation(UserKeys.FRIENDS);
-        ParseQuery query = relation.getQuery();
-        query.findInBackground(new FindCallback<ParseUser>() {
-            public void done(List<ParseUser> results, ParseException e) {
-
-                if (e != null) {
-                    Log.i(TAG, "error: " + e);
-                    return;
-                }
-
-                friendList.addAll(results);
-                Log.i(TAG, friendList.toString());
-
-                binding.friendRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                friendAdapter = new FriendAdapter(FriendListActivity.this, friendList);
-                binding.friendRecyclerView.setAdapter(friendAdapter);
-            }
-        });
-    }*/
 }

@@ -10,17 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.fbu.thefoodienetwork.CurrentUserUtilities;
-import com.fbu.thefoodienetwork.activities.BookmarkActivity;
-import com.fbu.thefoodienetwork.activities.FriendListActivity;
 import com.fbu.thefoodienetwork.adapters.FriendAdapter;
-import com.fbu.thefoodienetwork.adapters.ReviewAdapter;
 import com.fbu.thefoodienetwork.databinding.FragmentFriendsBinding;
-import com.fbu.thefoodienetwork.databinding.FragmentGlobeBinding;
 import com.fbu.thefoodienetwork.keys.UserKeys;
-import com.fbu.thefoodienetwork.models.ParseReview;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
