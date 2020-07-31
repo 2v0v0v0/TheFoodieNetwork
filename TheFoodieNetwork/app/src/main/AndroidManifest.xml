@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activities.FriendListActivity"></activity>
 
         <service
             android:name="com.parse.fcm.ParseFirebaseInstanceIdService"

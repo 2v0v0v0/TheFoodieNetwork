@@ -25,8 +25,10 @@ import com.fbu.thefoodienetwork.fragments.HomeFragment;
 import com.fbu.thefoodienetwork.keys.ParcelKeys;
 import com.fbu.thefoodienetwork.models.Restaurant;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
@@ -121,6 +123,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_bookmark:
                 goToBookmark();
                 return true;
+            case R.id.menu_friend_list:
+                goToFriendList();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -147,16 +152,25 @@ public class MainActivity extends AppCompatActivity {
         startActivity(bookmarkIntent);
     }
 
+    private void goToFriendList() {
+        Intent friendListIntent = new Intent(MainActivity.this, FriendListActivity.class);
+        startActivity(friendListIntent);
+    }
+
     private void logoutUser() {
         ParseUser.logOut();
         ParseUser currentUser = ParseUser.getCurrentUser();
 
-        ParseInstallation.getCurrentInstallation().remove("user");
-        ParseInstallation.getCurrentInstallation().saveInBackground();
-
         Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(loginIntent);
-        finish();
+
+        ParseInstallation.getCurrentInstallation().remove("user");
+        ParseInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                finish();
+            }
+        });
     }
 
 

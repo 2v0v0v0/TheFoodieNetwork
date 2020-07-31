@@ -22,13 +22,13 @@
                 android:icon="@drawable/ic_baseline_person_24"
                 android:title="Profile" />
             <item
-                android:id="@+id/menu_friend_requests"
-                android:icon="@drawable/ic_baseline_people_alt_24"
-                android:title="Friends" />
-            <item
                 android:id="@+id/menu_bookmark"
                 android:icon="@drawable/ic_baseline_bookmark_24"
                 android:title="Bookmark"/>
+            <item
+                android:id="@+id/menu_friend_list"
+                android:icon="@drawable/ic_baseline_people_alt_24"
+                android:title="Friend List" />
             <item
                 android:id="@+id/menu_logout"
                 android:icon="@drawable/ic_baseline_exit_to_app_24"
