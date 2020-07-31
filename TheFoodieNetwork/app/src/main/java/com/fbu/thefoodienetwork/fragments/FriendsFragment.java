@@ -28,7 +28,7 @@ public class FriendsFragment extends Fragment {
     private static final String TAG = "FriendsFragment";
     private FragmentFriendsBinding binding;
     private FriendAdapter friendAdapter;
-    private List<ParseUser> friendList = new ArrayList<>();
+    private List<ParseUser> friendList;
 
     public FriendsFragment() {
         // Required empty public constructor
@@ -52,27 +52,10 @@ public class FriendsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        queryFriend();
+        friendList = CurrentUserUtilities.friendParseUserList;
+        binding.friendRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        friendAdapter = new FriendAdapter(getContext(), friendList);
+        binding.friendRecyclerView.setAdapter(friendAdapter);
     }
 
-    private void queryFriend() {
-        ParseRelation relation = CurrentUserUtilities.currentUser.getRelation(UserKeys.FRIENDS);
-        ParseQuery query = relation.getQuery();
-        query.findInBackground(new FindCallback<ParseUser>() {
-            public void done(List<ParseUser> results, ParseException e) {
-
-                if (e != null) {
-                    Log.i(TAG, "error: " + e);
-                    return;
-                }
-
-                friendList.addAll(results);
-                Log.i(TAG, friendList.toString());
-
-                binding.friendRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                friendAdapter = new FriendAdapter(getContext(), friendList);
-                binding.friendRecyclerView.setAdapter(friendAdapter);
-            }
-        });
-    }
 }
