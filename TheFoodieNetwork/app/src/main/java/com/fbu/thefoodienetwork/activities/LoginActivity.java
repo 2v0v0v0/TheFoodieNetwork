@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.fbu.thefoodienetwork.CurrentUserUtilities;
 import com.fbu.thefoodienetwork.databinding.ActivityLoginBinding;
 import com.parse.LogInCallback;
@@ -29,12 +31,31 @@ public class LoginActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        setLogoAnimation();
+
         if (ParseUser.getCurrentUser() != null) {
             goMainActivity();
         }
 
         onClickLogin();
         onClickRegister();
+    }
+
+    private void setLogoAnimation(){
+        YoYo.with(Techniques.Wobble)
+                .duration(600)
+                .repeat(1)
+                .playOn(binding.logo);
+        //Wobble on click
+        binding.logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                YoYo.with(Techniques.Wobble)
+                        .duration(600)
+                        .repeat(1)
+                        .playOn(binding.logo);
+            }
+        });
     }
 
     private void onClickLogin() {
