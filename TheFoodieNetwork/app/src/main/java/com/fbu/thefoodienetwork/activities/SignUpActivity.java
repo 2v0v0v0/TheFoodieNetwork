@@ -22,9 +22,10 @@ public class SignUpActivity extends AppCompatActivity {
     private static final int PASS_UNMATCH = -1;
     private static final int PASS_INVALID_LENGTH = 1;
     private static final int PASS_VALID = 0;
+    private ActivitySignUpBinding binding;
 
-    private static EditText usernameEditText;
-    private static EditText emailEditText;
+    private EditText usernameEditText;
+    private EditText emailEditText;
 
     private static boolean isValidEmail(CharSequence target) {
         if (target == null) {
@@ -46,7 +47,7 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final ActivitySignUpBinding binding = ActivitySignUpBinding.inflate(getLayoutInflater());
+        binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
         usernameEditText = findViewById(R.id.usernameEditText);
@@ -85,6 +86,8 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void signUp(String email, String screenname, String username, String password) {
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.sigupButton.setEnabled(false);
         ParseUser user = new ParseUser();
         user.setUsername(username);
         user.setPassword(password);
@@ -100,6 +103,8 @@ public class SignUpActivity extends AppCompatActivity {
 
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {
+                binding.progressBar.setVisibility(View.GONE);
+                binding.sigupButton.setEnabled(true);
                 if (e == null) {
                     Log.i(TAG, "Sign up successful");
                     goLoginActivity();

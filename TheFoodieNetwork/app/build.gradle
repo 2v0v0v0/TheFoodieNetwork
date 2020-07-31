@@ -61,4 +61,6 @@ dependencies {
     compile 'com.android.support:support-compat:25.1.1'
     compile 'com.daimajia.easing:library:2.0@aar'
     compile 'com.daimajia.androidanimations:library:2.3@aar'
+
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 }

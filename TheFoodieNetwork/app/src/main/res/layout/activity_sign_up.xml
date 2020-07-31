@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/sign-up-layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.fbu.thefoodienetwork.activities.SignUpActivity">
+
+    <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/progressBar"
+        style="@style/SpinKitView.Large.ThreeBounce"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="@color/colorPink"
+        android:padding="100dp"
+        android:visibility="gone"
+        app:SpinKit_Color="@color/white" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,47 +24,64 @@
         android:layout_margin="16dp"
         android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginVertical="10dp"
+            android:src="@drawable/ic_serve" />
 
         <EditText
+            android:id="@+id/emailEditText"
+            style="@style/loginEditTextBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/emailEditText"
             android:hint="Email"
             android:inputType="textEmailAddress" />
 
         <EditText
+            android:id="@+id/fullNameEditText"
+            style="@style/loginEditTextBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/fullNameEditText"
             android:hint="Full Name"
             android:inputType="textPersonName" />
 
         <EditText
+            android:id="@+id/usernameEditText"
+            style="@style/loginEditTextBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/usernameEditText"
             android:hint="Username (Required)"
-            android:inputType="textPersonName"/>
+            android:inputType="textPersonName" />
 
         <EditText
+            android:id="@+id/passwordEditText"
+            style="@style/loginEditTextBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/passwordEditText"
             android:hint="Password (Required)"
             android:inputType="textPassword" />
 
         <EditText
+            android:id="@+id/confirmPasswordEditText"
+            style="@style/loginEditTextBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/confirmPasswordEditText"
             android:hint="Confirm Password (Required)"
-            android:inputType="textPassword"/>
+            android:inputType="textPassword" />
 
         <Button
+            android:id="@+id/sigupButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/sigupButton"
-            android:text="@string/signup" />
+            android:layout_gravity="center"
+            android:layout_marginVertical="20dp"
+            android:background="@drawable/sign_up_button"
+            android:paddingHorizontal="18dp"
+            android:text="@string/signup"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 
