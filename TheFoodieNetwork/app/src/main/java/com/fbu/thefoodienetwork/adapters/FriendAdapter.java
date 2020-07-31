@@ -15,8 +15,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.fbu.thefoodienetwork.CurrentUserUtilities;
+import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.databinding.ItemFriendBinding;
+import com.fbu.thefoodienetwork.keys.UserKeys;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 import java.util.List;
@@ -128,7 +132,14 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
 
             String screenName = aUser.get("screenName").toString();
             screenNameTextView.setText(screenName);
-            usernameTextView.setText(otherUserUsername);
+            usernameTextView.setText("@"+otherUserUsername);
+
+            ParseFile image = aUser.getParseFile(UserKeys.PROFILE_IMAGE);
+            if (image != null) {
+                Glide.with(context).load(image.getUrl()).centerCrop().circleCrop().into(profileImageView);
+            } else {
+                Glide.with(context).load(R.drawable.placeholder).circleCrop().into(profileImageView);
+            }
         }
 
         private void sendFRButtonListener() {

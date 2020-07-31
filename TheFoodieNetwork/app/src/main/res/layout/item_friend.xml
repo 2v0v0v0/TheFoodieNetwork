@@ -2,13 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
 
     <ImageView
         android:id="@+id/profileImageView"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@mipmap/launcher1" />
+        android:layout_marginEnd="10dp"/>
 
     <TextView
         android:id="@+id/screenNameTextView"
