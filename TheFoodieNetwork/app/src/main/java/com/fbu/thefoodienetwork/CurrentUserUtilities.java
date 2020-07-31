@@ -148,13 +148,16 @@ public class CurrentUserUtilities {
         ParseQuery query = relation.getQuery();
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> results, ParseException e) {
+
                 if (e != null) {
                     Log.i(TAG, "error: " + e);
-                } else {
-                    for (ParseUser user : results) {
-                        currentUserFriendList.add(user.getObjectId());
-                    }
+                    return;
                 }
+
+                for (ParseUser user : results) {
+                    currentUserFriendList.add(user.getObjectId());
+                }
+
             }
         });
     }
