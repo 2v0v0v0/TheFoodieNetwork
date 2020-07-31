@@ -20,6 +20,9 @@ public class CurrentUserUtilities {
     public static List<String> currentUserFriendList;
     public static List<String> currentUserReceivedFriendRequest;
     public static List<String> currentUserSentFriendRequest;
+
+    public static List<ParseUser> friendParseUserList;
+    public static List<ParseUser> requestParseUserList;
     public static ParseUser currentUser;
 
     public CurrentUserUtilities() {
@@ -28,6 +31,9 @@ public class CurrentUserUtilities {
         currentUserFriendList = new ArrayList<>();
         currentUserReceivedFriendRequest = new ArrayList<>();
         currentUserSentFriendRequest = new ArrayList<>();
+
+        requestParseUserList = new ArrayList<>();
+        friendParseUserList = new ArrayList<>();
 
         BookmarkActivity.queryBookmarks();
 
@@ -138,6 +144,7 @@ public class CurrentUserUtilities {
 
         //update currentUser local data
         currentUserReceivedFriendRequest.remove(otherUser.getObjectId());
+        requestParseUserList.remove(otherUser);
         return true;
     }
 
@@ -157,6 +164,8 @@ public class CurrentUserUtilities {
                 for (ParseUser user : results) {
                     currentUserFriendList.add(user.getObjectId());
                 }
+
+                friendParseUserList.addAll(results);
 
             }
         });
@@ -179,9 +188,12 @@ public class CurrentUserUtilities {
                 for (ParseObject friendRequest : requests) {
                     ParseUser user = friendRequest.getParseUser(FriendRequestKeys.FROM);
                     String userID = user.getObjectId();
+                    requestParseUserList.add(user);
                     currentUserReceivedFriendRequest.add(userID);
                     Log.i(TAG, "received: " + userID);
                 }
+
+                Log.i(TAG, "list: " + requestParseUserList.toString());
             }
         });
     }

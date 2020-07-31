@@ -32,7 +32,7 @@ public class RequestsFragment extends Fragment {
     private FragmentRequestsBinding binding;
     private ParseUser currentUser = ParseUser.getCurrentUser();
     private FriendAdapter friendAdapter;
-    private List<ParseUser> requestList = new ArrayList<>();
+    private List<ParseUser> requestList;
 
     public RequestsFragment() {
         // Required empty public constructor
@@ -54,34 +54,10 @@ public class RequestsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        queryRequests();
+        requestList = CurrentUserUtilities.requestParseUserList;
+        binding.friendRequestsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        friendAdapter = new FriendAdapter(getContext(), requestList);
+        binding.friendRequestsRecyclerView.setAdapter(friendAdapter);
     }
 
-    private void queryRequests() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(FriendRequestKeys.PARSE_KEY);
-
-        query.whereEqualTo(FriendRequestKeys.TO, currentUser);
-        query.whereEqualTo(FriendRequestKeys.IS_DECLINED, false);
-        query.include(FriendRequestKeys.FROM);
-
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> requests, ParseException e) {
-                if (e != null) {
-                    Log.i(TAG, "error: " + e);
-                    return;
-                }
-                for (ParseObject friendRequest : requests) {
-                    ParseUser user = friendRequest.getParseUser(FriendRequestKeys.FROM);
-                    requestList.add(user);
-                    Log.i(TAG, user.getUsername());
-                }
-
-                binding.friendRequestsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                friendAdapter = new FriendAdapter(getContext(), requestList);
-                binding.friendRequestsRecyclerView.setAdapter(friendAdapter);
-
-            }
-        });
-    }
 }
