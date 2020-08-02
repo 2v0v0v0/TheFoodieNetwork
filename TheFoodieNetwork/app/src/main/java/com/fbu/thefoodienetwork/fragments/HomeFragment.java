@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fbu.thefoodienetwork.CurrentUserUtilities;
 import com.fbu.thefoodienetwork.activities.BookmarkActivity;
 import com.fbu.thefoodienetwork.adapters.ReviewAdapter;
 import com.fbu.thefoodienetwork.databinding.FragmentGlobeBinding;
@@ -20,6 +21,7 @@ import com.fbu.thefoodienetwork.models.ParseReview;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,13 +65,20 @@ public class HomeFragment extends Fragment {
     }
 
     private void queryReviews() {
+        //TODO wait for CurrentUserUtilities done with querying
+
+        List<ParseUser> currentUserAndFriends = CurrentUserUtilities.friendParseUserList;
+        currentUserAndFriends.add(CurrentUserUtilities.currentUser);
+
         binding.progressBar.setVisibility(View.VISIBLE);
 
         ParseQuery<ParseReview> query = ParseQuery.getQuery(ParseReview.class);
 
         query.include(ParseReview.AUTHOR_KEY);
         query.include(ParseReview.RESTAURANT_KEY);
-        query.whereEqualTo(ParseReview.GLOBAL_KEY, true);
+        query.whereContainedIn(ParseReview.AUTHOR_KEY, currentUserAndFriends);
+        query.whereEqualTo(ParseReview.GLOBAL_KEY, false);
+
         query.setLimit(REVIEW_LIMIT);
         query.addDescendingOrder(ParseReview.CREATED_AT_KEY);
 
