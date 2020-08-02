@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GlobeFragment extends Fragment {
-    private static final String TAG = "GlobeFragment";
+    private final String TAG = "GlobeFragment";
     private static final int REVIEW_LIMIT = 10;
     protected ReviewAdapter reviewAdapter;
     protected List<ParseReview> allReviews;

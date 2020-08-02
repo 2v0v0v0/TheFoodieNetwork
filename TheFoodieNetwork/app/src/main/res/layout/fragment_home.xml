@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/home_gradient"
     tools:context=".fragments.HomeFragment">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/reviewRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/progressBar"
+        style="@style/SpinKitView.Large.ThreeBounce"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:text="Coming Soon" />
+        android:layout_gravity="center"
+        android:padding="100dp"
+        android:visibility="visible"
+        app:SpinKit_Color="@color/white" />
 
-</FrameLayout>
+</RelativeLayout>

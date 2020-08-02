@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradiant"
+    android:background="@drawable/globe_gradient"
     tools:context=".fragments.GlobeFragment">
 
     <androidx.recyclerview.widget.RecyclerView
