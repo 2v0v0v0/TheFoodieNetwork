@@ -6,6 +6,7 @@
     <string name="signup"><u>Create an account</u></string>
     <string name="saveSuccess">Profile save was success!</string>
     <string name="saveFail">Error while saving profile</string>
+    <string name="noRequests">No Requests</string>
     <string name="welcomeMessage">Welcome to the Foodie Network!</string>
     <string-array name="scopes_array">
         <item>Everyone</item>

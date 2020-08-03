@@ -51,6 +51,8 @@ public class FriendsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         List<ParseUser> friendList = CurrentUserUtilities.getInstance().getFriendParseUserList();
+        friendList.remove(CurrentUserUtilities.getInstance().getCurrentUser());
+
         binding.friendRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         FriendAdapter friendAdapter = new FriendAdapter(getContext(), friendList);
         binding.friendRecyclerView.setAdapter(friendAdapter);
