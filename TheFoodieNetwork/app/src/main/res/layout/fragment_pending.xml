@@ -5,10 +5,18 @@
     android:layout_height="match_parent"
     tools:context=".fragments.PendingFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/pendingRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <TextView
+        android:id="@+id/noPendingText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:textSize="30sp"
+        android:text="@string/noPendingRequests"
+        android:gravity="center"
+        android:visibility="gone"/>
 
 </FrameLayout>
