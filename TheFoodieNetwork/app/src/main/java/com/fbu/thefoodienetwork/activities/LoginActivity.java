@@ -19,7 +19,6 @@ import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
-    public CurrentUserUtilities currentUserUtilities;
     private ActivityLoginBinding binding;
     private String username;
     private String password;
@@ -81,8 +80,12 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 ParseInstallation.getCurrentInstallation().put("user", user);
                 ParseInstallation.getCurrentInstallation().saveInBackground();
+
+                //TODO wait for CurrentUserUtilities done with querying
+                CurrentUserUtilities.getInstance();
                 goMainActivity();
             }
         });
@@ -98,9 +101,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void goMainActivity() {
-        //TODO wait for CurrentUserUtilities done with querying
-        currentUserUtilities = new CurrentUserUtilities();
-
         Log.i(TAG, ParseUser.getCurrentUser().getUsername());
         //TODO: change back to main
         //For testing purpose only

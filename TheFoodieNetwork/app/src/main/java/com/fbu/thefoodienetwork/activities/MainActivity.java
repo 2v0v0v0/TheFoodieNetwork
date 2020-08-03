@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void goToProfile() {
         Intent profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
-        profileIntent.putExtra(ParcelKeys.SELECTED_USER, Parcels.wrap(CurrentUserUtilities.currentUser));
+        profileIntent.putExtra(ParcelKeys.SELECTED_USER, Parcels.wrap(CurrentUserUtilities.getInstance().getCurrentUser()));
         startActivity(profileIntent);
     }
 
@@ -162,6 +162,8 @@ public class MainActivity extends AppCompatActivity {
     private void logoutUser() {
         ParseUser.logOut();
         ParseUser currentUser = ParseUser.getCurrentUser();
+
+        CurrentUserUtilities.getInstance().cleanUp();
 
         Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(loginIntent);
@@ -180,10 +182,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == SEARCH_CODE) {
+
             Restaurant restaurant = (Restaurant) Parcels.unwrap(data.getParcelableExtra(ParcelKeys.SELECTED_RESTAURANT));
             Log.i(TAG, restaurant.toString());
+
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ComposeFragment composeFragment = ComposeFragment.newInstance(restaurant);
+
             binding.bottomNavigation.setSelectedItemId(R.id.action_compose);
             ft.replace(R.id.containerFrameLayout, composeFragment);
             ft.commit();

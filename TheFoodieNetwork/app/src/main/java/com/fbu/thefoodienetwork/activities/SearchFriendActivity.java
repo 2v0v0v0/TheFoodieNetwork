@@ -45,8 +45,8 @@ public class SearchFriendActivity extends AppCompatActivity {
         setSearchListener();
         setSwipeListener(binding.resultsRecyclerView);
 
-        currentUserFriendList = CurrentUserUtilities.currentUserFriendList;
-        currentUserReceivedFriendRequest = CurrentUserUtilities.currentUserReceivedFriendRequest;
+        currentUserFriendList = CurrentUserUtilities.getInstance().getCurrentUserFriendList();
+        currentUserReceivedFriendRequest = CurrentUserUtilities.getInstance().getCurrentUserReceivedFriendRequest();
 
         resultList = new ArrayList<>();
     }

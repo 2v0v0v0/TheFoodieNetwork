@@ -54,7 +54,7 @@ public class RequestsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        requestList = CurrentUserUtilities.requestParseUserList;
+        requestList = CurrentUserUtilities.getInstance().getRequestParseUserList();
         binding.friendRequestsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         friendAdapter = new FriendAdapter(getContext(), requestList);
         binding.friendRequestsRecyclerView.setAdapter(friendAdapter);

@@ -48,7 +48,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         user = (ParseUser) Parcels.unwrap(getIntent().getParcelableExtra(ParcelKeys.SELECTED_USER));
 
-        if(!CurrentUserUtilities.currentUser.getObjectId().equals(user.getObjectId())){
+        if(!CurrentUserUtilities.getInstance().getCurrentUser().getObjectId().equals(user.getObjectId())){
             isCurrentUser = false;
         }
 
@@ -148,7 +148,7 @@ public class ProfileActivity extends AppCompatActivity {
         query.include(ParseReview.AUTHOR_KEY);
         query.include(ParseReview.RESTAURANT_KEY);
 
-        if(!isCurrentUser && !CurrentUserUtilities.currentUserFriendList.contains(user.getObjectId())){
+        if(!isCurrentUser && !CurrentUserUtilities.getInstance().getCurrentUserFriendList().contains(user.getObjectId())){
             query.whereEqualTo(ParseReview.GLOBAL_KEY, true);
         }
 

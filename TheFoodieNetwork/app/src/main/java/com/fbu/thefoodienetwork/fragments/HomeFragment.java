@@ -66,8 +66,8 @@ public class HomeFragment extends Fragment {
 
     private void queryReviews() {
 
-        List<ParseUser> currentUserAndFriends = CurrentUserUtilities.friendParseUserList;
-        currentUserAndFriends.add(CurrentUserUtilities.currentUser);
+        List<ParseUser> currentUserAndFriends = CurrentUserUtilities.getInstance().getFriendParseUserList();
+        currentUserAndFriends.add(CurrentUserUtilities.getInstance().getCurrentUser());
 
         binding.progressBar.setVisibility(View.VISIBLE);
 

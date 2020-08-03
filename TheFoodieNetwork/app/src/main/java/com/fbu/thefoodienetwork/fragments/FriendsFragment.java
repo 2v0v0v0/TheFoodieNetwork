@@ -27,8 +27,6 @@ import java.util.List;
 public class FriendsFragment extends Fragment {
     private static final String TAG = "FriendsFragment";
     private FragmentFriendsBinding binding;
-    private FriendAdapter friendAdapter;
-    private List<ParseUser> friendList;
 
     public FriendsFragment() {
         // Required empty public constructor
@@ -52,9 +50,9 @@ public class FriendsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        friendList = CurrentUserUtilities.friendParseUserList;
+        List<ParseUser> friendList = CurrentUserUtilities.getInstance().getFriendParseUserList();
         binding.friendRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        friendAdapter = new FriendAdapter(getContext(), friendList);
+        FriendAdapter friendAdapter = new FriendAdapter(getContext(), friendList);
         binding.friendRecyclerView.setAdapter(friendAdapter);
     }
 

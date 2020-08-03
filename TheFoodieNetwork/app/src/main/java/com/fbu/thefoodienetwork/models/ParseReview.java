@@ -105,14 +105,14 @@ public class ParseReview extends ParseObject {
     public void increaseHeart() {
         heartCount += 1;
         isHearted = true;
-        heartRelation.add(CurrentUserUtilities.currentUser);
+        heartRelation.add(CurrentUserUtilities.getInstance().getCurrentUser());
         setHeartCount();
     }
 
     public void decreaseHeart() {
         heartCount -= 1;
         isHearted = false;
-        heartRelation.remove(CurrentUserUtilities.currentUser);
+        heartRelation.remove(CurrentUserUtilities.getInstance().getCurrentUser());
         setHeartCount();
     }
 

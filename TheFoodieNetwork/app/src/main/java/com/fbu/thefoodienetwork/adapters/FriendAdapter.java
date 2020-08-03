@@ -46,9 +46,9 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
     public FriendAdapter(Context context, List<ParseUser> resultList) {
         this.context = context;
         this.resultList = resultList;
-        this.friendList = CurrentUserUtilities.currentUserFriendList;
-        this.sentFRList = CurrentUserUtilities.currentUserSentFriendRequest;
-        this.receivedFRList = CurrentUserUtilities.currentUserReceivedFriendRequest;
+        this.friendList = CurrentUserUtilities.getInstance().getCurrentUserFriendList();
+        this.sentFRList = CurrentUserUtilities.getInstance().getCurrentUserSentFriendRequest();
+        this.receivedFRList = CurrentUserUtilities.getInstance().getCurrentUserReceivedFriendRequest();
     }
 
     @NonNull
@@ -249,19 +249,19 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
             boolean successStatus = false;
             switch (actionCode) {
                 case SEND_FR_CODE:
-                    successStatus = CurrentUserUtilities.sendFriendRequest(otherUser);
+                    successStatus = CurrentUserUtilities.getInstance().sendFriendRequest(otherUser);
                     Log.i(TAG, "sendFR: " + successStatus);
                     break;
                 case DELETE_FR_CODE:
-                    successStatus = CurrentUserUtilities.deleteFriendRequest(otherUser);
+                    successStatus = CurrentUserUtilities.getInstance().deleteFriendRequest(otherUser);
                     Log.i("deleteFR", "success: " + successStatus);
                     break;
                 case ACCEPT_FR_CODE:
-                    successStatus = CurrentUserUtilities.acceptFriendRequest(otherUser);
+                    successStatus = CurrentUserUtilities.getInstance().acceptFriendRequest(otherUser);
                     Log.i("acceptFR", "success: " + successStatus);
                     break;
                 case CANCEL_FR_CODE:
-                    successStatus = CurrentUserUtilities.cancelFriendRequest(otherUser);
+                    successStatus = CurrentUserUtilities.getInstance().cancelFriendRequest(otherUser);
                     Log.i("cancelFR", "success: " + successStatus);
                     break;
             }
