@@ -130,7 +130,8 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
                     break;
             }
 
-            String screenName = aUser.get("screenName").toString();
+            String screenName = "";
+            screenName = aUser.get(UserKeys.SCREEN_NAME).toString();
             screenNameTextView.setText(screenName);
             usernameTextView.setText("@"+otherUserUsername);
 

@@ -18,13 +18,23 @@
             android:id="@+id/userProfilePic"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_marginEnd="10dp"
             tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/screenNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:textStyle="bold"
+            android:layout_toEndOf="@+id/userProfilePic"
+            tools:text="Screen name" />
 
         <TextView
             android:id="@+id/usernameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_below="@+id/screenNameTextView"
             android:layout_toEndOf="@+id/userProfilePic"
             tools:text="username" />
 

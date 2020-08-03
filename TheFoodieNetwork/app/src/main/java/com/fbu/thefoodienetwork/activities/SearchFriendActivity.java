@@ -53,11 +53,6 @@ public class SearchFriendActivity extends AppCompatActivity {
 
     private void setSwipeListener(View view){
         view.setOnTouchListener(new OnSwipeTouchListener(this) {
-            @Override
-            public void onSwipeDown() {
-                //TODO swipe down to refresh
-                Toast.makeText(SearchFriendActivity.this, "refresh", Toast.LENGTH_SHORT).show();
-            }
 
             @Override
             public void onSwipeLeft() {
