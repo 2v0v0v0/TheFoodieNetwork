@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.databinding.ActivityFriendListBinding;
 import com.fbu.thefoodienetwork.fragments.FriendsFragment;
+import com.fbu.thefoodienetwork.fragments.PendingFragment;
 import com.fbu.thefoodienetwork.fragments.RequestsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -38,11 +39,12 @@ public class FriendListActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.action_requests:
                         fragment = new RequestsFragment();
-                        Log.i(TAG, "menu item: " + "requests");
+                        break;
+                    case R.id.action_pending:
+                        fragment = new PendingFragment();
                         break;
                     default:
                         fragment = new FriendsFragment();
-                        Log.i(TAG, "menu item: " + "friends");
                         break;
                 }
                 fragmentManager.beginTransaction().replace(R.id.friendContainerFrameLayout, fragment).commit();
