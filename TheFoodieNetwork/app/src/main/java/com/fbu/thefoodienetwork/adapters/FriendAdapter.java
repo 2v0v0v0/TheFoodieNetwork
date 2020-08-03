@@ -128,15 +128,16 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
             Log.i("bind", otherUserUsername + " " + relationStatus);
             switch (relationStatus) {
                 case IS_STRANGER:
-                    sendFRButtonListener();
+                    setSendFRButtonListener();
                     break;
                 case SENT_FR:
-                    sentFRButtonListener();
+                    setSentFRButtonListener();
                     break;
                 case RECEIVED_FR:
-                    receivedFRButtonsListener();
+                    setReceivedFRButtonsListener();
                     break;
                 default:
+                    resetButtons();
                     break;
             }
 
@@ -154,8 +155,10 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
         }
 
 
-        private void sendFRButtonListener() {
+        private void setSendFRButtonListener() {
+            resetButtons();
             addFriendImageView.setVisibility(View.VISIBLE);
+
             addFriendImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -165,8 +168,10 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
             });
         }
 
-        private void receivedFRButtonsListener() {
+        private void setReceivedFRButtonsListener() {
+            resetButtons();
             receivedFRButtonsContainer.setVisibility(View.VISIBLE);
+
             deleteFRButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -184,8 +189,10 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
             });
         }
 
-        private void sentFRButtonListener() {
+        private void setSentFRButtonListener() {
+            resetButtons();
             pendingTextView.setVisibility(View.VISIBLE);
+
             pendingTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -247,19 +254,23 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
 
         private void FRAction(int actionCode) {
             boolean successStatus = false;
+
             switch (actionCode) {
                 case SEND_FR_CODE:
                     successStatus = CurrentUserUtilities.getInstance().sendFriendRequest(otherUser);
                     Log.i(TAG, "sendFR: " + successStatus);
                     break;
+
                 case DELETE_FR_CODE:
                     successStatus = CurrentUserUtilities.getInstance().deleteFriendRequest(otherUser);
                     Log.i("deleteFR", "success: " + successStatus);
                     break;
+
                 case ACCEPT_FR_CODE:
                     successStatus = CurrentUserUtilities.getInstance().acceptFriendRequest(otherUser);
                     Log.i("acceptFR", "success: " + successStatus);
                     break;
+
                 case CANCEL_FR_CODE:
                     successStatus = CurrentUserUtilities.getInstance().cancelFriendRequest(otherUser);
                     Log.i("cancelFR", "success: " + successStatus);
@@ -267,8 +278,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
             }
 
             if (successStatus) {
-                resetButtons();
-                notifyItemChanged(position);
+                notifyDataSetChanged();
             }
         }
 

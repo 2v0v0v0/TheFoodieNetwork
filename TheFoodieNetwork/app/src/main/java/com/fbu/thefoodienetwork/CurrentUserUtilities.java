@@ -25,6 +25,7 @@ public class CurrentUserUtilities {
 
     private List<ParseUser> friendParseUserList;
     private List<ParseUser> requestParseUserList;
+    private List<ParseUser> pendingParseUserList;
     private ParseUser currentUser;
 
     private CurrentUserUtilities() {
@@ -36,6 +37,7 @@ public class CurrentUserUtilities {
 
         requestParseUserList = new ArrayList<>();
         friendParseUserList = new ArrayList<>();
+        pendingParseUserList = new ArrayList<>();
 
         BookmarkActivity.queryBookmarks();
 
@@ -62,6 +64,7 @@ public class CurrentUserUtilities {
 
         requestParseUserList = null;
         friendParseUserList = null;
+        pendingParseUserList = null;
     }
 
 
@@ -106,6 +109,8 @@ public class CurrentUserUtilities {
 
         //update currentUser local data
         currentUserSentFriendRequest.remove(otherUser.getObjectId());
+        pendingParseUserList.remove(otherUser);
+
         return true;
     }
 
@@ -227,21 +232,23 @@ public class CurrentUserUtilities {
 
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
-            public void done(List<ParseObject> objects, ParseException e) {
+            public void done(List<ParseObject> results, ParseException e) {
                 if (e != null) {
                     Log.i(TAG, "error: " + e);
                     return;
                 }
-                for (ParseObject object : objects) {
+                for (ParseObject object : results) {
                     try {
                         ParseUser user = object.fetchIfNeeded().getParseUser(FriendRequestKeys.TO);
                         String userID = user.fetchIfNeeded().getObjectId();
                         currentUserSentFriendRequest.add(userID);
+                        pendingParseUserList.add(user);
                         Log.i(TAG, "sent: " + userID);
                     } catch (ParseException ex) {
                         ex.printStackTrace();
                     }
                 }
+
             }
         });
     }
@@ -267,6 +274,10 @@ public class CurrentUserUtilities {
 
     public List<ParseUser> getRequestParseUserList() {
         return requestParseUserList;
+    }
+
+    public List<ParseUser> getPendingParseUserList() {
+        return pendingParseUserList;
     }
 
     public ParseUser getCurrentUser() {

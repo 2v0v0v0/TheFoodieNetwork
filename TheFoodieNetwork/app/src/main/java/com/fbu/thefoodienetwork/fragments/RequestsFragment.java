@@ -30,7 +30,6 @@ import java.util.List;
 public class RequestsFragment extends Fragment {
     private static final String TAG = "RequestFragment";
     private FragmentRequestsBinding binding;
-    private ParseUser currentUser = ParseUser.getCurrentUser();
     private FriendAdapter friendAdapter;
     private List<ParseUser> requestList;
 
