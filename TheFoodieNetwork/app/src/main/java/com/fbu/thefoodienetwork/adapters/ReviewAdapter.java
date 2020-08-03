@@ -1,6 +1,7 @@
 package com.fbu.thefoodienetwork.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.activities.BookmarkActivity;
+import com.fbu.thefoodienetwork.activities.ProfileActivity;
 import com.fbu.thefoodienetwork.databinding.ItemReviewBinding;
 import com.fbu.thefoodienetwork.keys.UserKeys;
 import com.fbu.thefoodienetwork.models.ParseRestaurant;
@@ -23,6 +25,8 @@ import com.fbu.thefoodienetwork.models.RelativeTime;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -99,6 +103,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             } else {
                 Glide.with(context).load(R.drawable.placeholder).centerCrop().circleCrop().into(binding.userProfilePic);
             }
+
+            setOnClickProfile(author);
 
             //Timestamp
             try {
@@ -195,6 +201,22 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
                 }
             });
+        }
+
+        private void setOnClickProfile(final ParseUser user){
+            binding.userInformation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goToClickedProfile(user);
+                }
+            });
+
+        }
+
+        private void goToClickedProfile(ParseUser user) {
+            Intent intent = new Intent(context, ProfileActivity.class);
+            intent.putExtra("clickedOnProfile", Parcels.wrap(user));
+            context.startActivity(intent);
         }
 
     }
