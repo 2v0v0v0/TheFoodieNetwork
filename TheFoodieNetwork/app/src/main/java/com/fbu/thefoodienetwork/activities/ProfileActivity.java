@@ -11,10 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.fbu.thefoodienetwork.CurrentUserUtilities;
 import com.fbu.thefoodienetwork.OnSwipeTouchListener;
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.adapters.ReviewAdapter;
 import com.fbu.thefoodienetwork.databinding.ActivityProfileBinding;
+import com.fbu.thefoodienetwork.keys.ParcelKeys;
 import com.fbu.thefoodienetwork.keys.UserKeys;
 import com.fbu.thefoodienetwork.models.ParseReview;
 import com.parse.FindCallback;
@@ -23,6 +25,8 @@ import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,10 +34,10 @@ import java.util.List;
 public class ProfileActivity extends AppCompatActivity {
     private final static String TAG = "ProfileActivity";
     private ActivityProfileBinding binding;
-    private ParseUser user = ParseUser.getCurrentUser();
+    private ParseUser user;
+    private boolean isCurrentUser = true;
     private ReviewAdapter reviewAdapter;
     private List<ParseReview> allReviews;
-    private LinearLayoutManager layoutManager;
     private RecyclerView reviewRecyclerView;
 
     @Override
@@ -42,26 +46,40 @@ public class ProfileActivity extends AppCompatActivity {
         binding = ActivityProfileBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
 
+        user = (ParseUser) Parcels.unwrap(getIntent().getParcelableExtra(ParcelKeys.SELECTED_USER));
+
+        if(!CurrentUserUtilities.currentUser.getObjectId().equals(user.getObjectId())){
+            isCurrentUser = false;
+        }
+
+        enableEditFunction(isCurrentUser);
+
         setSwipeListener(view);
         setContentView(view);
 
         reviewRecyclerView = binding.postsRecyclerView;
         allReviews = new ArrayList<>();
+
         reviewAdapter = new ReviewAdapter(this, allReviews);
         reviewRecyclerView.setAdapter(reviewAdapter);
-        layoutManager = new LinearLayoutManager(this);
-        reviewRecyclerView.setLayoutManager(layoutManager);
+        reviewRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         loadData();
 
     }
 
     @Override
-    protected void onResume() {
-        Log.i(TAG, "resume");
+    protected void onRestart() {
+        super.onRestart();
+        try {
+            user.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        reviewAdapter.clear();
         loadData();
-        super.onResume();
     }
+
 
     private void setSwipeListener(View view){
         view.setOnTouchListener(new OnSwipeTouchListener(this) {
@@ -76,13 +94,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void loadData() {
         queryReviews();
-
-        binding.editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goEditProfileActivity();
-            }
-        });
 
         try {
 
@@ -112,6 +123,20 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    private void enableEditFunction(boolean enable){
+        if(!enable){
+            return;
+        }
+
+        binding.editButton.setVisibility(View.VISIBLE);
+        binding.editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goEditProfileActivity();
+            }
+        });
+    }
+
     private void goEditProfileActivity() {
         Intent editIntent = new Intent(ProfileActivity.this, EditProfileActivity.class);
         startActivity(editIntent);
@@ -122,6 +147,11 @@ public class ProfileActivity extends AppCompatActivity {
 
         query.include(ParseReview.AUTHOR_KEY);
         query.include(ParseReview.RESTAURANT_KEY);
+
+        if(!isCurrentUser && !CurrentUserUtilities.currentUserFriendList.contains(user.getObjectId())){
+            query.whereEqualTo(ParseReview.GLOBAL_KEY, true);
+        }
+
         query.whereEqualTo(ParseReview.AUTHOR_KEY, user);
         query.setLimit(10);
         query.addDescendingOrder(ParseReview.CREATED_AT_KEY);

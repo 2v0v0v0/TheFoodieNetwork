@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.fbu.thefoodienetwork.CurrentUserUtilities;
 import com.fbu.thefoodienetwork.OnSwipeTouchListener;
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.databinding.ActivityMainBinding;
@@ -144,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void goToProfile() {
         Intent profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
+        profileIntent.putExtra(ParcelKeys.SELECTED_USER, Parcels.wrap(CurrentUserUtilities.currentUser));
         startActivity(profileIntent);
     }
 

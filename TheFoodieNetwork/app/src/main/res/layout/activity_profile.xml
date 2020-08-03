@@ -62,6 +62,7 @@
                     android:background="@drawable/bg_edit_button"
                     android:padding="8dp"
                     android:elevation="10dp"
+                    android:visibility="gone"
                     android:text="edit profile" />
 
                 <TextView

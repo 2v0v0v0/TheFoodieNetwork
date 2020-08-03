@@ -18,6 +18,7 @@ import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.activities.BookmarkActivity;
 import com.fbu.thefoodienetwork.activities.ProfileActivity;
 import com.fbu.thefoodienetwork.databinding.ItemReviewBinding;
+import com.fbu.thefoodienetwork.keys.ParcelKeys;
 import com.fbu.thefoodienetwork.keys.UserKeys;
 import com.fbu.thefoodienetwork.models.ParseRestaurant;
 import com.fbu.thefoodienetwork.models.ParseReview;
@@ -215,9 +216,14 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
         private void goToClickedProfile(ParseUser user) {
             Intent intent = new Intent(context, ProfileActivity.class);
-            intent.putExtra("clickedOnProfile", Parcels.wrap(user));
+            intent.putExtra(ParcelKeys.SELECTED_USER, Parcels.wrap(user));
             context.startActivity(intent);
         }
 
+    }
+
+    public void clear() {
+        reviewsList.clear();
+        notifyDataSetChanged();
     }
 }
