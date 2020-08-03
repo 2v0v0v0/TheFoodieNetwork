@@ -11,5 +11,8 @@ public interface ZomatoKeys {
 
     String LOCATION_SUGGESTIONS = "location_suggestions";
     String LOCATION = "location";
+
     String RESTAURANTS = "restaurants";
+    String RES_ID = "res_id";
+    String URL = "url";
 }

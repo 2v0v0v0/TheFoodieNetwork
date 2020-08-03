@@ -63,8 +63,6 @@
             android:name=".activities.SearchFriendActivity"
             android:label="Search for People" />
 
-        <activity android:name=".activities.RestaurantDetailsActivity" />
-
         <activity
             android:name=".activities.SignUpActivity"
             android:label="Sign Up" />

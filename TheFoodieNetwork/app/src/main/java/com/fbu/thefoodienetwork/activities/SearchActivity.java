@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -252,9 +253,21 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
     }
 
     private void goToRestaurantDetailsActivity() {
-        Intent intent = new Intent(this, RestaurantDetailsActivity.class);
-        intent.putExtra(ParcelKeys.SELECTED_RESTAURANT, Parcels.wrap(selectedRestaurant));
-        startActivity(intent);
+
+        zomatoRequest.getRestaurantUrl(selectedRestaurant.getId(), new ZomatoRequest.RestaurantUrlCallBacks() {
+            @Override
+            public void onSuccess(String url) {
+                Log.i(TAG, url);
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(browserIntent);
+
+            }
+
+            @Override
+            public void onFailure(IOException e) {
+                Log.e(TAG, e.toString());
+            }
+        });
     }
 
     private void goToComposeFragment() {
@@ -266,12 +279,6 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
 
     private void setSwipeListener(View view){
         view.setOnTouchListener(new OnSwipeTouchListener(this) {
-            @Override
-            public void onSwipeDown() {
-                //TODO swipe down to refresh
-                Toast.makeText(SearchActivity.this, "refresh", Toast.LENGTH_SHORT).show();
-            }
-
             @Override
             public void onSwipeLeft() {
                 Toast.makeText(SearchActivity.this, "Search for People", Toast.LENGTH_SHORT).show();

@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.fbu.thefoodienetwork.CurrentUserUtilities;
 import com.fbu.thefoodienetwork.OnSwipeTouchListener;
 import com.fbu.thefoodienetwork.R;
+import com.fbu.thefoodienetwork.apiservers.ZomatoRequest;
 import com.fbu.thefoodienetwork.databinding.ActivityMainBinding;
 import com.fbu.thefoodienetwork.fragments.ComposeFragment;
 import com.fbu.thefoodienetwork.fragments.GlobeFragment;
@@ -33,6 +34,8 @@ import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
+import java.io.IOException;
+
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivity";
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
         super.onCreate(savedInstanceState);

@@ -104,7 +104,6 @@ public class ZomatoRequest {
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                //TODO
                 Log.i(TAG, "onFailure: " + e);
                 callbacks.onFailure(e);
             }
@@ -150,8 +149,51 @@ public class ZomatoRequest {
         return restaurantList;
     }
 
+    public void getRestaurantUrl(int id, final RestaurantUrlCallBacks callbacks){
+
+        urlBuilder = HttpUrl.parse(BASE_URL + RESTAURANT).newBuilder();
+        urlBuilder.addQueryParameter(ZomatoKeys.API_KEY, API_KEY);
+        urlBuilder.addQueryParameter(ZomatoKeys.RES_ID, String.valueOf(id));
+
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                callbacks.onFailure(e);
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+
+                if (response.isSuccessful()) {
+                    String responseData = response.body().string();
+                    try {
+                        JSONObject json = new JSONObject(responseData);
+                        String resUrl = json.getString(ZomatoKeys.URL);
+                        callbacks.onSuccess(resUrl);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        });
+
+    }
+
     public interface GeoLocationCallbacks {
         void onSuccess(Location location);
+
+        void onFailure(IOException e);
+    }
+
+    public interface RestaurantUrlCallBacks{
+        void onSuccess(String url);
 
         void onFailure(IOException e);
     }
