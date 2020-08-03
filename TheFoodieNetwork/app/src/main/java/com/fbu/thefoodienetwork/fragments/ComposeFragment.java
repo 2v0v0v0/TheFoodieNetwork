@@ -105,8 +105,10 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.scopes_array, android.R.layout.simple_spinner_item);
+
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
@@ -117,6 +119,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
             @Override
             public void onClick(View view) {
                 String reviewText = binding.reviewEditText.getText().toString();
+
                 //check if review text is empty
                 if (reviewText.isEmpty()) {
                     Toast.makeText(getContext(), "Review cannot be empty", Toast.LENGTH_SHORT).show();

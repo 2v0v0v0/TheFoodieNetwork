@@ -98,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void goMainActivity() {
+        //TODO wait for CurrentUserUtilities done with querying
         currentUserUtilities = new CurrentUserUtilities();
 
         Log.i(TAG, ParseUser.getCurrentUser().getUsername());

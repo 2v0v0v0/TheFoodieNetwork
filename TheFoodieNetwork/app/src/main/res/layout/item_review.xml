@@ -117,6 +117,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/selector_bookmark"
-            android:layout_alignParentEnd="true"/>
+            android:layout_toEndOf="@+id/heartCounterTextView"
+            android:layout_marginStart="16dp"/>
+
+        <TextView
+            android:id="@+id/globalStatusTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            tools:text="Friends"/>
     </RelativeLayout>
 </LinearLayout>

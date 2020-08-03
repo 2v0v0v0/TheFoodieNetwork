@@ -65,7 +65,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void queryReviews() {
-        //TODO wait for CurrentUserUtilities done with querying
 
         List<ParseUser> currentUserAndFriends = CurrentUserUtilities.friendParseUserList;
         currentUserAndFriends.add(CurrentUserUtilities.currentUser);

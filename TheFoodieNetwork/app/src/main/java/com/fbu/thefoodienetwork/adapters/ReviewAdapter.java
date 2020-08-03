@@ -63,6 +63,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
         private static final double AMPLITUDE = 0.2;
         private static final double FREQUENCY = 20;
+        private static final String FRIENDS = "Friends";
+        private static final String EVERYONE = "Public";
         private final ItemReviewBinding binding;
         private ImageView heartButton;
         private ImageView bookmarkButton;
@@ -99,6 +101,13 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
                 binding.timeTextView.setText(RelativeTime.getRelativeTimeAgo(review.getTime()));
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+
+            //Review privacy option
+            if(review.getGlobal()){
+                binding.globalStatusTextView.setText(EVERYONE);
+            } else {
+                binding.globalStatusTextView.setText(FRIENDS);
             }
 
             //Review
