@@ -5,28 +5,36 @@
     android:layout_height="wrap_content"
     android:layout_margin="10dp">
 
-    <ImageView
-        android:id="@+id/profileImageView"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="10dp"/>
-
-    <TextView
-        android:id="@+id/screenNameTextView"
+    <RelativeLayout
+        android:id="@+id/userInformation"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:textStyle="bold"
-        android:layout_toEndOf="@+id/profileImageView"
-        tools:text="Screen name" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/usernameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/screenNameTextView"
-        android:layout_toEndOf="@+id/profileImageView"
-        tools:text="username" />
+        <ImageView
+            android:id="@+id/profileImageView"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="10dp"/>
+
+        <TextView
+            android:id="@+id/screenNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:textStyle="bold"
+            android:layout_toEndOf="@+id/profileImageView"
+            tools:text="Screen name" />
+
+        <TextView
+            android:id="@+id/usernameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/screenNameTextView"
+            android:layout_toEndOf="@+id/profileImageView"
+            tools:text="username" />
+
+    </RelativeLayout>
+
 
     <ImageView
         android:id="@+id/addFriendImageView"

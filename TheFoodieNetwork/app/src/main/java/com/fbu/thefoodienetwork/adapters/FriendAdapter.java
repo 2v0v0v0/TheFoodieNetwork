@@ -3,6 +3,8 @@ package com.fbu.thefoodienetwork.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.fbu.thefoodienetwork.CurrentUserUtilities;
 import com.fbu.thefoodienetwork.R;
+import com.fbu.thefoodienetwork.activities.ProfileActivity;
 import com.fbu.thefoodienetwork.databinding.ItemFriendBinding;
 import com.fbu.thefoodienetwork.keys.UserKeys;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -89,6 +94,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
         private ParseUser otherUser;
         private String otherUserUsername;
 
+        private View userInfoView;
         private ImageView profileImageView;
         private TextView screenNameTextView;
         private TextView usernameTextView;
@@ -100,6 +106,8 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
 
         public ViewHolder(ItemFriendBinding binding) {
             super(binding.getRoot());
+
+            userInfoView = binding.userInformation;
             profileImageView = binding.profileImageView;
             screenNameTextView = binding.screenNameTextView;
             usernameTextView = binding.usernameTextView;
@@ -111,6 +119,8 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
         }
 
         public void bind(ParseUser aUser, int relationStatus) throws Exception {
+            setOnClickProfile(aUser);
+
             position = getAdapterPosition();
             otherUser = aUser;
             otherUserUsername = aUser.getUsername();
@@ -142,6 +152,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
                 Glide.with(context).load(R.drawable.placeholder).circleCrop().into(profileImageView);
             }
         }
+
 
         private void sendFRButtonListener() {
             addFriendImageView.setVisibility(View.VISIBLE);
@@ -183,6 +194,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
                 }
             });
         }
+
 
         private void resetButtons() {
             addFriendImageView.setVisibility(View.GONE);
@@ -258,6 +270,23 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
                 resetButtons();
                 notifyItemChanged(position);
             }
+        }
+
+
+        private void setOnClickProfile(final ParseUser user){
+            userInfoView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goToClickedProfile(user);
+                }
+            });
+
+        }
+
+        private void goToClickedProfile(ParseUser user) {
+            Intent intent = new Intent(context, ProfileActivity.class);
+            intent.putExtra("clickedOnProfile", Parcels.wrap(user));
+            context.startActivity(intent);
         }
     }
 }

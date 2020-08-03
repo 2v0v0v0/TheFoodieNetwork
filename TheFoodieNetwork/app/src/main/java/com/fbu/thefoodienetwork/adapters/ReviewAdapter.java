@@ -5,15 +5,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.fbu.thefoodienetwork.MyBounceInterpolator;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.activities.BookmarkActivity;
 import com.fbu.thefoodienetwork.databinding.ItemReviewBinding;
@@ -68,8 +67,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         private final ItemReviewBinding binding;
         private ImageView heartButton;
         private ImageView bookmarkButton;
-        private Animation animation;
-        private MyBounceInterpolator interpolator;
 
         public ViewHolder(ItemReviewBinding binding) {
             super(binding.getRoot());
@@ -78,10 +75,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             heartButton = binding.heartImageView;
             bookmarkButton = binding.bookmarkImageView;
 
-            //animation
-            animation = AnimationUtils.loadAnimation(context, R.anim.bounce);
-            interpolator = new MyBounceInterpolator(AMPLITUDE, FREQUENCY);
-            animation.setInterpolator(interpolator);
         }
 
         public void bind(ParseReview review) throws ParseException {
@@ -157,9 +150,10 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             heartButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                    bookmarkButton.clearAnimation();
-                    heartButton.startAnimation(animation);
+                    YoYo.with(Techniques.FlipInX)
+                            .duration(800)
+                            .repeat(1)
+                            .playOn(heartButton);
 
                     if (heartButton.isSelected()) {
                         heartButton.setSelected(false);
@@ -179,8 +173,10 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
                 @Override
                 public void onClick(View view) {
 
-                    heartButton.clearAnimation();
-                    bookmarkButton.startAnimation(animation);
+                    YoYo.with(Techniques.FlipInY)
+                            .duration(800)
+                            .repeat(1)
+                            .playOn(bookmarkButton);
 
                     if (bookmarkButton.isSelected()) {
                         //remove bookmark
