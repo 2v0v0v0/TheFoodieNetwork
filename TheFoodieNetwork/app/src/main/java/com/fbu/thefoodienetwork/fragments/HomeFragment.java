@@ -92,7 +92,8 @@ public class HomeFragment extends Fragment {
         });
 
         binding.swipeContainer.setColorSchemeResources(
-                R.color.colorBlue,
+                R.color.colorMediumBlue,
+                R.color.colorGreen,
                 R.color.colorPinkAccent);
     }
 

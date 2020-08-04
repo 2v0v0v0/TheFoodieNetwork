@@ -11,7 +11,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.activities.BookmarkActivity;
 import com.fbu.thefoodienetwork.adapters.ReviewAdapter;
 import com.fbu.thefoodienetwork.databinding.FragmentGlobeBinding;
@@ -59,6 +61,31 @@ public class GlobeFragment extends Fragment {
         reviewRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         queryReviews();
+
+        pullRefresh();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
+    protected void pullRefresh() {
+        binding.swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                allReviews.clear();
+                queryReviews();
+                Log.i(TAG, "fetching data");
+                binding.swipeContainer.setRefreshing(false);
+            }
+        });
+
+        binding.swipeContainer.setColorSchemeResources(
+                R.color.colorMediumBlue,
+                R.color.colorGreen,
+                R.color.colorPinkAccent);
     }
 
     private void queryReviews() {
