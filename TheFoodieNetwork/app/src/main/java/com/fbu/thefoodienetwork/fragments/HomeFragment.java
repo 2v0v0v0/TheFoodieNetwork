@@ -18,7 +18,6 @@ import com.fbu.thefoodienetwork.EndlessRecyclerViewScrollListener;
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.activities.BookmarkActivity;
 import com.fbu.thefoodienetwork.adapters.ReviewAdapter;
-import com.fbu.thefoodienetwork.databinding.FragmentGlobeBinding;
 import com.fbu.thefoodienetwork.databinding.FragmentHomeBinding;
 import com.fbu.thefoodienetwork.models.ParseReview;
 import com.parse.FindCallback;
@@ -30,15 +29,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
-    private final String TAG = "HomeFragment";
     private static final int REVIEW_LIMIT = 10;
+    private final String TAG = "HomeFragment";
     protected ReviewAdapter reviewAdapter;
     protected List<ParseReview> allReviews;
+    private FragmentHomeBinding binding;
     private List<ParseUser> currentUserAndFriends;
-    FragmentHomeBinding binding;
     private RecyclerView reviewRecyclerView;
     private LinearLayoutManager layoutManager;
-    private EndlessRecyclerViewScrollListener scrollListener;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -133,7 +131,7 @@ public class HomeFragment extends Fragment {
 
                     review.getHeartRelation();
 
-                    if(BookmarkActivity.bookmarkList.contains(review)){
+                    if (BookmarkActivity.bookmarkList.contains(review)) {
                         review.setBookmark(true);
                     }
 
@@ -160,7 +158,7 @@ public class HomeFragment extends Fragment {
         query.setLimit(REVIEW_LIMIT);
 
         query.whereContainedIn(ParseReview.AUTHOR_KEY, currentUserAndFriends);
-        query.whereLessThan(ParseReview.CREATED_AT_KEY, allReviews.get(allReviews.size()-1).getCreatedAt());
+        query.whereLessThan(ParseReview.CREATED_AT_KEY, allReviews.get(allReviews.size() - 1).getCreatedAt());
         query.addDescendingOrder(ParseReview.CREATED_AT_KEY);
 
         query.findInBackground(new FindCallback<ParseReview>() {
@@ -178,7 +176,7 @@ public class HomeFragment extends Fragment {
 
                     review.getHeartRelation();
 
-                    if(BookmarkActivity.bookmarkList.contains(review)){
+                    if (BookmarkActivity.bookmarkList.contains(review)) {
                         review.setBookmark(true);
                     }
 
@@ -191,9 +189,9 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    public void infiniteScroll(){
+    public void infiniteScroll() {
 
-        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 Log.i(TAG, "onLoadMore: " + page);

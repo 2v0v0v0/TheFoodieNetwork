@@ -27,14 +27,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GlobeFragment extends Fragment {
-    private final String TAG = "GlobeFragment";
     private static final int REVIEW_LIMIT = 10;
+    private final String TAG = "GlobeFragment";
     protected ReviewAdapter reviewAdapter;
     protected List<ParseReview> allReviews;
-    FragmentGlobeBinding binding;
+    private FragmentGlobeBinding binding;
     private LinearLayoutManager layoutManager;
     private RecyclerView reviewRecyclerView;
-    private EndlessRecyclerViewScrollListener scrollListener;
 
     public GlobeFragment() {
         // Required empty public constructor
@@ -60,7 +59,6 @@ public class GlobeFragment extends Fragment {
 
         layoutManager = new LinearLayoutManager(getContext());
 
-        allReviews = new ArrayList<>();
         allReviews = new ArrayList<>();
         reviewAdapter = new ReviewAdapter(getContext(), allReviews);
         reviewRecyclerView.setAdapter(reviewAdapter);
@@ -122,7 +120,7 @@ public class GlobeFragment extends Fragment {
 
                     review.getHeartRelation();
 
-                    if(BookmarkActivity.bookmarkList.contains(review)){
+                    if (BookmarkActivity.bookmarkList.contains(review)) {
                         review.setBookmark(true);
                     }
 
@@ -147,7 +145,7 @@ public class GlobeFragment extends Fragment {
         query.whereEqualTo(ParseReview.GLOBAL_KEY, true);
         query.setLimit(REVIEW_LIMIT);
 
-        query.whereLessThan(ParseReview.CREATED_AT_KEY, allReviews.get(allReviews.size()-1).getCreatedAt());
+        query.whereLessThan(ParseReview.CREATED_AT_KEY, allReviews.get(allReviews.size() - 1).getCreatedAt());
         query.addDescendingOrder(ParseReview.CREATED_AT_KEY);
 
         query.findInBackground(new FindCallback<ParseReview>() {
@@ -165,7 +163,7 @@ public class GlobeFragment extends Fragment {
 
                     review.getHeartRelation();
 
-                    if(BookmarkActivity.bookmarkList.contains(review)){
+                    if (BookmarkActivity.bookmarkList.contains(review)) {
                         review.setBookmark(true);
                     }
 
@@ -178,9 +176,9 @@ public class GlobeFragment extends Fragment {
         });
     }
 
-    public void infiniteScroll(){
+    public void infiniteScroll() {
 
-        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 Log.i(TAG, "onLoadMore: " + page);
