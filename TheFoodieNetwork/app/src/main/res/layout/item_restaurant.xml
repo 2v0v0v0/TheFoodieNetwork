@@ -5,12 +5,15 @@
     android:layout_width="match_parent" android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_margin="10dp"
+    android:padding="20dp"
+    style="@style/roundTextBox"
     android:id="@+id/parent">
 
     <TextView
         android:id="@+id/nameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:textSize="24sp"
         tools:text="What The Pho" />
 
@@ -19,6 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
+        android:layout_marginStart="8dp"
         tools:text="Vietnamese" />
 
     <TextView
@@ -26,6 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
+        android:layout_marginStart="8dp"
         tools:text="2442 Pleasant Hill Rd # 3A, Duluth, GA 30096" />
     <Button
         android:id="@+id/moreInfoButton"

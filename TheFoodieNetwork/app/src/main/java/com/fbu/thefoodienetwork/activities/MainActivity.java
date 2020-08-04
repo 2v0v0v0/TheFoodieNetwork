@@ -19,7 +19,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.fbu.thefoodienetwork.CurrentUserUtilities;
 import com.fbu.thefoodienetwork.OnSwipeTouchListener;
 import com.fbu.thefoodienetwork.R;
-import com.fbu.thefoodienetwork.apiservers.ZomatoRequest;
 import com.fbu.thefoodienetwork.databinding.ActivityMainBinding;
 import com.fbu.thefoodienetwork.fragments.ComposeFragment;
 import com.fbu.thefoodienetwork.fragments.GlobeFragment;
@@ -33,8 +32,6 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
-
-import java.io.IOException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -81,13 +78,8 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNavigation.setSelectedItemId(R.id.action_home);
     }
 
-    private void setSwipeListener(View view){
+    private void setSwipeListener(View view) {
         view.setOnTouchListener(new OnSwipeTouchListener(this) {
-            @Override
-            public void onSwipeDown() {
-                //TODO swipe down to refresh
-                Toast.makeText(MainActivity.this, "refresh", Toast.LENGTH_SHORT).show();
-            }
 
             @Override
             public void onSwipeLeft() {

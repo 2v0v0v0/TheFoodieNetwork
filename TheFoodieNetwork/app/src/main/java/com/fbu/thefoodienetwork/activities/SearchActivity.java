@@ -173,6 +173,8 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
     }
 
     private void performLocationSearch(String keyWord) {
+        binding.progressBar.setVisibility(View.VISIBLE);
+
         this.locationList = zomatoRequest.getLocations(keyWord);
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -182,11 +184,15 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
                 locationAdapter = new LocationAdapter(SearchActivity.this, locationList);
                 binding.resultsRecyclerView.setAdapter(locationAdapter);
 
+                binding.progressBar.setVisibility(View.GONE);
+
             }
         }, 2000);
     }
 
     private void performRestaurantSearch(Location location, String keyWord) {
+        binding.progressBar.setVisibility(View.VISIBLE);
+
         this.restaurantList = zomatoRequest.getRestaurants(location, keyWord, 0, 20);
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -199,11 +205,15 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
                 selectedRestaurant = restaurantList.get(0);//set first result as default value
 
                 setComposeButtonListener();
+
+                binding.progressBar.setVisibility(View.GONE);
             }
         }, 2000);
     }
 
     private void getGPSLocation() {
+        binding.progressBar.setVisibility(View.VISIBLE);
+
         //ask for user permission
         if (ActivityCompat.checkSelfPermission(SearchActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(SearchActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -242,6 +252,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
                     public void run() {
                         if (selectedLocation != null) {
                             setSelectedLocationTitle(selectedLocation.getTitle());
+                            binding.progressBar.setVisibility(View.GONE);
                         }
                     }
                 }, 2000);
@@ -260,7 +271,6 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
                 Log.i(TAG, url);
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 startActivity(browserIntent);
-
             }
 
             @Override
@@ -270,12 +280,21 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         });
     }
 
+    private void setProgressBar (boolean enable){
+        if(enable){
+            binding.progressBar.setVisibility(View.VISIBLE);
+            return;
+        }
+        binding.progressBar.setVisibility(View.GONE);
+    }
+
     private void goToComposeFragment() {
         Intent composeIntent = new Intent(this, MainActivity.class);
         composeIntent.putExtra(ParcelKeys.SELECTED_RESTAURANT, Parcels.wrap(selectedRestaurant));
         setResult(RESULT_OK, composeIntent);
         finish();
     }
+
 
     private void setSwipeListener(View view){
         view.setOnTouchListener(new OnSwipeTouchListener(this) {
