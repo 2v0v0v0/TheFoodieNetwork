@@ -39,6 +39,15 @@ public class MainActivity extends AppCompatActivity {
     private final static int SEARCH_CODE = 55;
     private ActivityMainBinding binding;
 
+    final private Fragment homeFragment = new HomeFragment();
+    final private Fragment globeFragment = new GlobeFragment();
+    final private Fragment composeFragment = new ComposeFragment();
+    private final static String HOME_FRAG_TAG = "HomeFragment";
+    private final static String GLOBE_FRAG_TAG = "GlobeFragment";
+    private final static String COMPOSE_FRAG_TAG = "ComposeFragment";
+    final private FragmentManager fm = getSupportFragmentManager();
+    Fragment active = homeFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -51,27 +60,33 @@ public class MainActivity extends AppCompatActivity {
         setContentView(view);
         setSwipeListener(binding.containerFrameLayout);
 
+        fm.beginTransaction().add(R.id.containerFrameLayout, composeFragment, COMPOSE_FRAG_TAG).hide(composeFragment).commit();
+        fm.beginTransaction().add(R.id.containerFrameLayout, globeFragment, GLOBE_FRAG_TAG).hide(globeFragment).commit();
+        fm.beginTransaction().add(R.id.containerFrameLayout, homeFragment, HOME_FRAG_TAG).commit();
+
         binding.bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragment;
+
                 switch (item.getItemId()) {
+
                     case R.id.action_compose:
-                        fragment = new ComposeFragment();
-                        Log.i(TAG, "menu item: " + "compose");
-                        break;
+                        fm.beginTransaction().hide(active).show(composeFragment).commit();
+                        active = composeFragment;
+                        return true;
+
                     case R.id.action_globe:
-                        fragment = new GlobeFragment();
-                        Log.i(TAG, "menu item: " + "globe");
-                        break;
+                        fm.beginTransaction().hide(active).show(globeFragment).commit();
+                        active = globeFragment;
+                        return true;
+
                     case R.id.action_home:
-                    default:
-                        fragment = new HomeFragment();
-                        Log.i(TAG, "menu item: " + "home");
-                        break;
+                        fm.beginTransaction().hide(active).show(homeFragment).commit();
+                        active = homeFragment;
+                        return true;
                 }
-                fragmentManager.beginTransaction().replace(R.id.containerFrameLayout, fragment).commit();
-                return true;
+
+                return false;
             }
         });
         // Set default selection

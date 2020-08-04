@@ -75,8 +75,9 @@
             android:name=".activities.BookmarkActivity"
             android:label="Bookmark" />
 
-        <activity android:name=".activities.FriendListActivity"
-            android:label="Friends"/>
+        <activity
+            android:name=".activities.FriendListActivity"
+            android:label="Friends" />
 
         <activity android:name=".activities.LoginActivity">
             <intent-filter>
@@ -86,7 +87,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.MainActivity" />
+        <activity
+            android:name=".activities.MainActivity"
+            android:launchMode="singleTop" />
 
         <meta-data
             android:name="preloaded_fonts"
