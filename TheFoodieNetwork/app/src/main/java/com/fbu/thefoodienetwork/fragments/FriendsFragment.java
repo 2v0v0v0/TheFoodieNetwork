@@ -43,8 +43,8 @@ public class FriendsFragment extends Fragment implements AdapterView.OnItemSelec
                     min = k;
 
             ParseUser temp = friendList.get(j);
-            friendList.set(j, friendList.get(min)) ;
-            friendList.set(min, temp) ;
+            friendList.set(j, friendList.get(min));
+            friendList.set(min, temp);
         }
 
         friendAdapter.notifyDataSetChanged();
@@ -60,8 +60,8 @@ public class FriendsFragment extends Fragment implements AdapterView.OnItemSelec
                     max = k;
 
             ParseUser temp = friendList.get(j);
-            friendList.set(j, friendList.get(max)) ;
-            friendList.set(max, temp) ;
+            friendList.set(j, friendList.get(max));
+            friendList.set(max, temp);
         }
 
         friendAdapter.notifyDataSetChanged();
@@ -96,14 +96,12 @@ public class FriendsFragment extends Fragment implements AdapterView.OnItemSelec
     }
 
     private void setSpinner() {
-        // Create an ArrayAdapter using the string array and a default spinner layout
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.sort_array, android.R.layout.simple_spinner_item);
 
-        // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        // Apply the adapter to the spinner
         binding.sortSpinner.setAdapter(adapter);
         binding.sortSpinner.setOnItemSelectedListener(this);
     }
@@ -111,11 +109,11 @@ public class FriendsFragment extends Fragment implements AdapterView.OnItemSelec
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         Log.i(TAG, i + " " + adapterView.getItemAtPosition(i));
-        if (i == AtoZ){
+        if (i == AtoZ) {
             selectionSortAToZ();
             return;
         }
-        if(i== ZtoA){
+        if (i == ZtoA) {
             selectionSortZToA();
             return;
         }
