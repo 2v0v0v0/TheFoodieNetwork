@@ -9,7 +9,7 @@
 
     <style name="RatingBar" parent="Theme.AppCompat">
         <item name="colorControlNormal">@color/colorLightBlue</item>
-        <item name="colorControlActivated">@color/color1</item>
+        <item name="colorControlActivated">@color/colorMediumBlue1</item>
     </style>
 
     <style name="loginEditTextBox" parent="TextAppearance.AppCompat.Caption">

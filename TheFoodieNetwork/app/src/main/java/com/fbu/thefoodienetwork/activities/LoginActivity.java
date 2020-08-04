@@ -86,6 +86,9 @@ public class LoginActivity extends AppCompatActivity {
 
                 //TODO wait for CurrentUserUtilities done with querying
                 CurrentUserUtilities.getInstance();
+                /*while (CurrentUserUtilities.getInstance().getFriendParseUserList().isEmpty()){
+                    Log.i(TAG, "waiting for current user utilities");
+                }*/
                 goMainActivity();
             }
         });

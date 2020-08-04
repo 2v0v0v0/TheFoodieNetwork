@@ -1,6 +1,7 @@
 package com.fbu.thefoodienetwork.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,8 @@ import com.fbu.thefoodienetwork.CurrentUserUtilities;
 import com.fbu.thefoodienetwork.EndlessRecyclerViewScrollListener;
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.activities.BookmarkActivity;
+import com.fbu.thefoodienetwork.activities.SearchActivity;
+import com.fbu.thefoodienetwork.adapters.LocationAdapter;
 import com.fbu.thefoodienetwork.adapters.ReviewAdapter;
 import com.fbu.thefoodienetwork.databinding.FragmentHomeBinding;
 import com.fbu.thefoodienetwork.models.ParseReview;
@@ -34,7 +37,7 @@ public class HomeFragment extends Fragment {
     protected ReviewAdapter reviewAdapter;
     protected List<ParseReview> allReviews;
     private FragmentHomeBinding binding;
-    private List<ParseUser> currentUserAndFriends;
+    private List<ParseUser> currentUserAndFriends = new ArrayList<>();
     private RecyclerView reviewRecyclerView;
     private LinearLayoutManager layoutManager;
 
@@ -67,11 +70,24 @@ public class HomeFragment extends Fragment {
         reviewRecyclerView.setAdapter(reviewAdapter);
         reviewRecyclerView.setLayoutManager(layoutManager);
 
-        pullRefresh();
+        currentUserAndFriends = CurrentUserUtilities.getInstance().getFriendParseUserList();
 
-        queryReviews();
 
-        infiniteScroll();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                currentUserAndFriends.add(CurrentUserUtilities.getInstance().getCurrentUser());
+
+                pullRefresh();
+
+                queryReviews();
+
+                infiniteScroll();
+
+            }
+        }, 1000);
+
+
     }
 
     @Override
@@ -99,10 +115,6 @@ public class HomeFragment extends Fragment {
 
 
     private void queryReviews() {
-
-        currentUserAndFriends = CurrentUserUtilities.getInstance().getFriendParseUserList();
-        currentUserAndFriends.add(CurrentUserUtilities.getInstance().getCurrentUser());
-
         binding.progressBar.setVisibility(View.VISIBLE);
 
         ParseQuery<ParseReview> query = ParseQuery.getQuery(ParseReview.class);

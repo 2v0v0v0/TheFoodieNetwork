@@ -196,6 +196,7 @@ public class CurrentUserUtilities {
                 friendParseUserList.remove(currentUser);
                 currentUserFriendList.remove(currentUser.getObjectId());
 
+                Log.i(TAG , "fetchFriendList is done");
             }
         });
     }
@@ -210,6 +211,7 @@ public class CurrentUserUtilities {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> requests, ParseException e) {
+
                 if (e != null) {
                     Log.i(TAG, "error: " + e);
                     return;
@@ -223,6 +225,7 @@ public class CurrentUserUtilities {
                 }
 
                 Log.i(TAG, "list: " + requestParseUserList.toString());
+                Log.i(TAG , "fetchPendingFriendRequest is done");
             }
         });
     }
@@ -235,10 +238,12 @@ public class CurrentUserUtilities {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> results, ParseException e) {
+
                 if (e != null) {
                     Log.i(TAG, "error: " + e);
                     return;
                 }
+
                 for (ParseObject object : results) {
                     try {
                         ParseUser user = object.fetchIfNeeded().getParseUser(FriendRequestKeys.TO);
@@ -251,6 +256,7 @@ public class CurrentUserUtilities {
                     }
                 }
 
+                Log.i(TAG, "fetchSentFriendRequest is done");
             }
         });
     }
