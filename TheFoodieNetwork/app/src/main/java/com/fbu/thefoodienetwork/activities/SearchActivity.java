@@ -34,7 +34,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO progress bar for waiting for network calls
 public class SearchActivity extends AppCompatActivity implements LocationAdapter.OnClickLocationListener, RestaurantAdapter.OnClickRestaurantListener {
     private static final String TAG = "SearchActivity";
     private static final int REQUEST_LOCATION = 100;
@@ -58,7 +57,6 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         setSwipeListener(binding.resultsRecyclerView);
     }
-
 
 
     //Click listener
@@ -176,6 +174,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         binding.progressBar.setVisibility(View.VISIBLE);
 
         this.locationList = zomatoRequest.getLocations(keyWord);
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -280,14 +279,6 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         });
     }
 
-    private void setProgressBar (boolean enable){
-        if(enable){
-            binding.progressBar.setVisibility(View.VISIBLE);
-            return;
-        }
-        binding.progressBar.setVisibility(View.GONE);
-    }
-
     private void goToComposeFragment() {
         Intent composeIntent = new Intent(this, MainActivity.class);
         composeIntent.putExtra(ParcelKeys.SELECTED_RESTAURANT, Parcels.wrap(selectedRestaurant));
@@ -296,7 +287,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
     }
 
 
-    private void setSwipeListener(View view){
+    private void setSwipeListener(View view) {
         view.setOnTouchListener(new OnSwipeTouchListener(this) {
             @Override
             public void onSwipeLeft() {
@@ -321,4 +312,6 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         Intent searchFriend = new Intent(SearchActivity.this, SearchFriendActivity.class);
         startActivity(searchFriend);
     }
+
+    //TODO onload more search result
 }

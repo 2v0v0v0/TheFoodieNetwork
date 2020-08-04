@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_margin="10dp"
+    android:layout_marginHorizontal="14dp"
+    android:layout_marginVertical="20dp"
     android:padding="20dp"
     style="@style/roundTextBox"
     android:id="@+id/parent">
@@ -22,6 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
+        android:textStyle="italic"
         android:layout_marginStart="8dp"
         tools:text="Vietnamese" />
 
@@ -31,6 +33,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         tools:text="2442 Pleasant Hill Rd # 3A, Duluth, GA 30096" />
     <Button
         android:id="@+id/moreInfoButton"

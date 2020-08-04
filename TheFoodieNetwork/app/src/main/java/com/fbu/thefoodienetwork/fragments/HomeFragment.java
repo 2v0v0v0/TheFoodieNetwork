@@ -11,9 +11,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fbu.thefoodienetwork.CurrentUserUtilities;
 import com.fbu.thefoodienetwork.EndlessRecyclerViewScrollListener;
+import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.activities.BookmarkActivity;
 import com.fbu.thefoodienetwork.adapters.ReviewAdapter;
 import com.fbu.thefoodienetwork.databinding.FragmentGlobeBinding;
@@ -29,7 +31,7 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
     private final String TAG = "HomeFragment";
-    private static final int REVIEW_LIMIT = 2;
+    private static final int REVIEW_LIMIT = 10;
     protected ReviewAdapter reviewAdapter;
     protected List<ParseReview> allReviews;
     private List<ParseUser> currentUserAndFriends;
@@ -67,9 +69,33 @@ public class HomeFragment extends Fragment {
         reviewRecyclerView.setAdapter(reviewAdapter);
         reviewRecyclerView.setLayoutManager(layoutManager);
 
+        pullRefresh();
         queryReviews();
         infiniteScroll();
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
+    protected void pullRefresh() {
+        binding.swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                allReviews.clear();
+                queryReviews();
+                Log.i(TAG, "fetching data");
+                binding.swipeContainer.setRefreshing(false);
+            }
+        });
+
+        binding.swipeContainer.setColorSchemeResources(
+                R.color.colorBlue,
+                R.color.colorPinkAccent);
+    }
+
 
     private void queryReviews() {
 
