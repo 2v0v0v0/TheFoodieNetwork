@@ -70,7 +70,9 @@ public class HomeFragment extends Fragment {
         reviewRecyclerView.setLayoutManager(layoutManager);
 
         pullRefresh();
+
         queryReviews();
+
         infiniteScroll();
     }
 
@@ -109,6 +111,7 @@ public class HomeFragment extends Fragment {
 
         query.include(ParseReview.AUTHOR_KEY);
         query.include(ParseReview.RESTAURANT_KEY);
+
         query.whereContainedIn(ParseReview.AUTHOR_KEY, currentUserAndFriends);
         query.whereEqualTo(ParseReview.GLOBAL_KEY, false);
 
@@ -152,11 +155,12 @@ public class HomeFragment extends Fragment {
 
         query.include(ParseReview.AUTHOR_KEY);
         query.include(ParseReview.RESTAURANT_KEY);
-        query.whereContainedIn(ParseReview.AUTHOR_KEY, currentUserAndFriends);
-        query.whereEqualTo(ParseReview.GLOBAL_KEY, false);
-        query.whereLessThan(ParseReview.CREATED_AT_KEY, allReviews.get(allReviews.size()-1).getCreatedAt());
 
+        query.whereEqualTo(ParseReview.GLOBAL_KEY, false);
         query.setLimit(REVIEW_LIMIT);
+
+        query.whereContainedIn(ParseReview.AUTHOR_KEY, currentUserAndFriends);
+        query.whereLessThan(ParseReview.CREATED_AT_KEY, allReviews.get(allReviews.size()-1).getCreatedAt());
         query.addDescendingOrder(ParseReview.CREATED_AT_KEY);
 
         query.findInBackground(new FindCallback<ParseReview>() {

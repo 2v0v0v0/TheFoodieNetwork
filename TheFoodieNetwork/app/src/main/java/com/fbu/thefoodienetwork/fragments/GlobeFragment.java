@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.fbu.thefoodienetwork.EndlessRecyclerViewScrollListener;
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.activities.BookmarkActivity;
 import com.fbu.thefoodienetwork.adapters.ReviewAdapter;
@@ -31,7 +32,9 @@ public class GlobeFragment extends Fragment {
     protected ReviewAdapter reviewAdapter;
     protected List<ParseReview> allReviews;
     FragmentGlobeBinding binding;
+    private LinearLayoutManager layoutManager;
     private RecyclerView reviewRecyclerView;
+    private EndlessRecyclerViewScrollListener scrollListener;
 
     public GlobeFragment() {
         // Required empty public constructor
@@ -55,14 +58,19 @@ public class GlobeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        layoutManager = new LinearLayoutManager(getContext());
+
+        allReviews = new ArrayList<>();
         allReviews = new ArrayList<>();
         reviewAdapter = new ReviewAdapter(getContext(), allReviews);
         reviewRecyclerView.setAdapter(reviewAdapter);
-        reviewRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        reviewRecyclerView.setLayoutManager(layoutManager);
+
+        pullRefresh();
 
         queryReviews();
 
-        pullRefresh();
+        infiniteScroll();
     }
 
     @Override
@@ -126,5 +134,60 @@ public class GlobeFragment extends Fragment {
             }
         });
 
+    }
+
+    private void loadMoreData() {
+        binding.progressBar.setVisibility(View.VISIBLE);
+
+        ParseQuery<ParseReview> query = ParseQuery.getQuery(ParseReview.class);
+
+        query.include(ParseReview.AUTHOR_KEY);
+        query.include(ParseReview.RESTAURANT_KEY);
+
+        query.whereEqualTo(ParseReview.GLOBAL_KEY, true);
+        query.setLimit(REVIEW_LIMIT);
+
+        query.whereLessThan(ParseReview.CREATED_AT_KEY, allReviews.get(allReviews.size()-1).getCreatedAt());
+        query.addDescendingOrder(ParseReview.CREATED_AT_KEY);
+
+        query.findInBackground(new FindCallback<ParseReview>() {
+            @Override
+            public void done(List<ParseReview> reviewList, ParseException e) {
+
+                binding.progressBar.setVisibility(View.GONE);
+
+                if (e != null) {
+                    Log.e(TAG, "Issue with getting reviews");
+                    return;
+                }
+
+                for (ParseReview review : reviewList) {
+
+                    review.getHeartRelation();
+
+                    if(BookmarkActivity.bookmarkList.contains(review)){
+                        review.setBookmark(true);
+                    }
+
+                    Log.i(TAG, "Post: " + review.getText() + ", username: " + review.getAuthor().getUsername()
+                            + " saved: " + review.getBookmark());
+                }
+                allReviews.addAll(reviewList);
+                reviewAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    public void infiniteScroll(){
+
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Log.i(TAG, "onLoadMore: " + page);
+                loadMoreData();
+            }
+        };
+
+        binding.reviewRecyclerView.addOnScrollListener(scrollListener);
     }
 }
