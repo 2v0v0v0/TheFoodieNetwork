@@ -13,6 +13,12 @@
         <item>Everyone</item>
         <item>Friends</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
+
+    <string-array name="sort_array">
+        <item>Username</item>
+        <item>A to Z</item>
+        <item>Z to A</item>
+    </string-array>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

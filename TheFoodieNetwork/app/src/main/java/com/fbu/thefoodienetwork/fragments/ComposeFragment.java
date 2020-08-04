@@ -204,8 +204,15 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-        shareWithEveryone = position == EVERYONE;
         Log.i(TAG, position + " " + adapterView.getItemAtPosition(position));
+
+        if(position == FRIENDS){
+            shareWithEveryone = false;
+            return;
+        }
+        if(position == EVERYONE){
+            shareWithEveryone = true;
+        }
     }
 
     @Override

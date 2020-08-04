@@ -193,6 +193,8 @@ public class CurrentUserUtilities {
                 }
 
                 friendParseUserList.addAll(results);
+                friendParseUserList.remove(currentUser);
+                currentUserFriendList.remove(currentUser.getObjectId());
 
             }
         });
