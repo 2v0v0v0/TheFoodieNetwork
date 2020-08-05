@@ -13,6 +13,10 @@
     <string name="noPendingRequests">You have no pending requests.</string>
 
     <string name="welcomeMessage">Welcome to the Foodie Network!</string>
+    <string name="ratingPrompt">Select your rating:</string>
+    <string name="restaurantSearch">Search for a restaurant</string>
+
+    <string name="recommendText">Would you recommend this place to a friend?</string>
 
     <string-array name="scopes_array">
         <item>Everyone</item>
