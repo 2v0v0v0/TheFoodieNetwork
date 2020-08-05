@@ -101,8 +101,7 @@
         android:id="@+id/reviewEditText"
         style="@style/composeTextBox"
         android:layout_marginTop="18dp"
-        android:layout_weight="1"
-        android:inputType="textMultiLine" />
+        android:layout_weight="1" />
 
     <Spinner
         android:id="@+id/simpleSpinner"

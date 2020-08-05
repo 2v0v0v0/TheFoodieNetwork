@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RadioGroup;
@@ -13,14 +14,11 @@ import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.fbu.thefoodienetwork.R;
-import com.fbu.thefoodienetwork.activities.MainActivity;
 import com.fbu.thefoodienetwork.activities.SearchActivity;
 import com.fbu.thefoodienetwork.databinding.FragmentComposeBinding;
 import com.fbu.thefoodienetwork.keys.ParcelKeys;
@@ -38,17 +36,16 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
-import static android.app.Activity.RESULT_OK;
-
 public class ComposeFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private static final String TAG = "ComposeFragment";
     private static final int EVERYONE = 0;
     private static final int FRIENDS = 1;
+    private static Restaurant selectedRestaurant;
     private boolean recommended = true;
     private FragmentComposeBinding binding;
-    private Restaurant selectedRestaurant;
     private Spinner spinner;
     private boolean shareWithEveryone = true;
+    private YoYo.YoYoString animation;
 
     public ComposeFragment() {
         // Required empty public constructor
@@ -68,45 +65,63 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
         if (getArguments() != null) {
             selectedRestaurant = (Restaurant) Parcels.unwrap(getArguments().getParcelable(ParcelKeys.SELECTED_RESTAURANT));
         }
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (getArguments() != null) {
+            selectedRestaurant = (Restaurant) Parcels.unwrap(getArguments().getParcelable(ParcelKeys.SELECTED_RESTAURANT));
+            Log.i(TAG, "onStart " + selectedRestaurant.getName());
+        }
+
+        if (selectedRestaurant != null) {
+            ratingListener(true);
+            animation.stop();
+        } else {
+
+            animation = YoYo.with(Techniques.Shake)
+                    .repeat(Animation.INFINITE).playOn(binding.searchIconImageView);
+
+            ratingListener(false);
+        }
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // binding.
+
         binding = FragmentComposeBinding.inflate(getLayoutInflater(), container, false);
         View view = binding.getRoot();
         spinner = binding.simpleSpinner;
 
-        if (selectedRestaurant != null) {
-            ratingListener(true);
-        } else {
-
-            /*binding.parentView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    YoYo.with(Techniques.Shake).playOn(binding.searchIconImageView);
-
-                }
-            });*/
-
-            binding.searchIconImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    goToSearchRestaurant();
-                }
-            });
-
-            ratingListener(false);
-        }
+        binding.searchIconImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToSearchRestaurant();
+            }
+        });
 
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
     private void ratingListener(boolean enable) {
         //if restaurant is selected let user use the rating bar else show message
-        if (enable == true) {
+        if (enable) {
             binding.restaurantInfoTextView.setText(selectedRestaurant.getName());
+            binding.ratingBar.setEnabled(true);
+            binding.ratingBar.setIsIndicator(false);
+            binding.reviewEditText.setEnabled(true);
+            binding.yesRadioButton.setEnabled(true);
             binding.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                 @Override
                 public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
@@ -119,15 +134,16 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
             setRecommendRadioGroupListener();
         } else {
 
+            binding.reviewEditText.setText("");
+            binding.ratingBar.setRating(0);
             binding.ratingBar.setEnabled(false);
             binding.ratingBar.setIsIndicator(true);
             binding.reviewEditText.setEnabled(false);
-            binding.recommendRadioGroup.setEnabled(false);
+            binding.yesRadioButton.setEnabled(false);
+            binding.noRadioButton.setEnabled(false);
             spinner.setEnabled(false);
 
         }
-
-        //TODO: set up some message when selected restaurant is null
     }
 
     private void setScopeSpinner() {
@@ -157,36 +173,36 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
 
                 float reviewRating = binding.ratingBar.getRating();
                 ParseUser author = ParseUser.getCurrentUser();
-                saveReview(selectedRestaurant, author, reviewText, reviewRating, recommended, shareWithEveryone);
+                saveReview(author, reviewText, reviewRating, recommended, shareWithEveryone);
             }
         });
     }
 
-    private void setRecommendRadioGroupListener(){
+    private void setRecommendRadioGroupListener() {
         binding.recommendRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                if(i == binding.noRadioButton.getId()){
+                if (i == binding.noRadioButton.getId()) {
                     recommended = false;
                 }
-                if(i == binding.yesRadioButton.getId()){
+                if (i == binding.yesRadioButton.getId()) {
                     recommended = true;
                 }
             }
         });
     }
 
-    private void saveReview(Restaurant selectedRestaurant, ParseUser author, String text, float rating, boolean recommend, boolean shareWithEveryone) {
+    private void saveReview( ParseUser author, String text, float rating, boolean recommend, boolean shareWithEveryone) {
         ParseReview review = new ParseReview();
         review.setAuthor(author);
         review.setRating(rating);
         review.setRecommend(recommend);
         review.setText(text);
         review.setGlobal(shareWithEveryone);
-        checkRestaurantExistAndSave(selectedRestaurant, review);
+        checkRestaurantExistAndSave( review);
     }
 
-    private void checkRestaurantExistAndSave(final Restaurant selectedRestaurant, final ParseReview review) {
+    private void checkRestaurantExistAndSave( final ParseReview review) {
         ParseQuery<ParseRestaurant> parseRestaurantQuery = ParseQuery.getQuery(ParseRestaurant.class);
         parseRestaurantQuery.whereEqualTo(ParseRestaurant.ZOMATO_ID_KEY, selectedRestaurant.getId());
         parseRestaurantQuery.findInBackground(new FindCallback<ParseRestaurant>() {
@@ -195,7 +211,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
                 //if restaurant is not exist yet on Parse go ahead an save to Parse
                 //else get the exist restaurant and set the review points to that
                 if (restaurants.isEmpty() || e != null) {
-                    review.setRestaurant(SaveRestaurant(selectedRestaurant));
+                    review.setRestaurant(SaveRestaurant());
                 } else {
                     review.setRestaurant(restaurants.get(0));
                 }
@@ -206,7 +222,16 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
                             Log.e(TAG, "Error while saving review", e);
                         } else {
                             Log.i(TAG, "Review save was success!!");
+                            Toast.makeText(getContext(), "Successfully save review", Toast.LENGTH_LONG).show();
+                            selectedRestaurant = null;
+                            Log.i(TAG,"" + selectedRestaurant);
+                            ComposeFragment.this.setArguments(null);
+                            getFragmentManager().beginTransaction()
+                                    .detach(ComposeFragment.this)
+                                    .attach(ComposeFragment.this)
+                                    .commitAllowingStateLoss();
                         }
+
                     }
                 });
                 return;
@@ -215,7 +240,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
     }
 
     //Save restaurant to Parse
-    private ParseRestaurant SaveRestaurant(Restaurant selectedRestaurant) {
+    private ParseRestaurant SaveRestaurant() {
         ParseRestaurant parseRestaurant = new ParseRestaurant(selectedRestaurant);
         parseRestaurant.set();
         parseRestaurant.saveInBackground(new SaveCallback() {
@@ -235,11 +260,11 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
         Log.i(TAG, position + " " + adapterView.getItemAtPosition(position));
 
-        if(position == FRIENDS){
+        if (position == FRIENDS) {
             shareWithEveryone = false;
             return;
         }
-        if(position == EVERYONE){
+        if (position == EVERYONE) {
             shareWithEveryone = true;
         }
     }

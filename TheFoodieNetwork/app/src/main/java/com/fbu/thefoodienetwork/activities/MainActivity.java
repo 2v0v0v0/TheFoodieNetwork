@@ -178,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void logoutUser() {
+        //TODO progress bar
         ParseUser.logOut();
         ParseUser currentUser = ParseUser.getCurrentUser();
 
@@ -204,12 +205,13 @@ public class MainActivity extends AppCompatActivity {
             Restaurant restaurant = Parcels.unwrap(data.getParcelableExtra(ParcelKeys.SELECTED_RESTAURANT));
             Log.i(TAG, restaurant.toString());
 
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ComposeFragment composeFragment = ComposeFragment.newInstance(restaurant);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(ParcelKeys.SELECTED_RESTAURANT, data.getParcelableExtra(ParcelKeys.SELECTED_RESTAURANT)); // Put anything what you want
+
+            composeFragment.setArguments(bundle);
 
             binding.bottomNavigation.setSelectedItemId(R.id.action_compose);
-            ft.replace(R.id.containerFrameLayout, composeFragment);
-            ft.commit();
+
         }
     }
 
