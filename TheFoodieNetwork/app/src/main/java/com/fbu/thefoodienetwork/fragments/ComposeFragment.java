@@ -1,5 +1,6 @@
 package com.fbu.thefoodienetwork.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,11 +13,18 @@ import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.fbu.thefoodienetwork.R;
+import com.fbu.thefoodienetwork.activities.MainActivity;
+import com.fbu.thefoodienetwork.activities.SearchActivity;
 import com.fbu.thefoodienetwork.databinding.FragmentComposeBinding;
 import com.fbu.thefoodienetwork.keys.ParcelKeys;
+import com.fbu.thefoodienetwork.keys.RequestCode;
 import com.fbu.thefoodienetwork.models.ParseRestaurant;
 import com.fbu.thefoodienetwork.models.ParseReview;
 import com.fbu.thefoodienetwork.models.Restaurant;
@@ -30,13 +38,15 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 public class ComposeFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private static final String TAG = "ComposeFragment";
     private static final int EVERYONE = 0;
     private static final int FRIENDS = 1;
     private boolean recommended = true;
     private FragmentComposeBinding binding;
-    private Restaurant mRestaurant;
+    private Restaurant selectedRestaurant;
     private Spinner spinner;
     private boolean shareWithEveryone = true;
 
@@ -56,7 +66,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mRestaurant = (Restaurant) Parcels.unwrap(getArguments().getParcelable(ParcelKeys.SELECTED_RESTAURANT));
+            selectedRestaurant = (Restaurant) Parcels.unwrap(getArguments().getParcelable(ParcelKeys.SELECTED_RESTAURANT));
         }
     }
 
@@ -68,9 +78,25 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
         View view = binding.getRoot();
         spinner = binding.simpleSpinner;
 
-        if (mRestaurant != null) {
+        if (selectedRestaurant != null) {
             ratingListener(true);
         } else {
+
+            /*binding.parentView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    YoYo.with(Techniques.Shake).playOn(binding.searchIconImageView);
+
+                }
+            });*/
+
+            binding.searchIconImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goToSearchRestaurant();
+                }
+            });
+
             ratingListener(false);
         }
 
@@ -80,7 +106,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
     private void ratingListener(boolean enable) {
         //if restaurant is selected let user use the rating bar else show message
         if (enable == true) {
-            binding.restaurantInfoTextView.setText(mRestaurant.getName());
+            binding.restaurantInfoTextView.setText(selectedRestaurant.getName());
             binding.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                 @Override
                 public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
@@ -92,6 +118,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
             setScopeSpinner();
             setRecommendRadioGroupListener();
         } else {
+
             binding.ratingBar.setEnabled(false);
             binding.ratingBar.setIsIndicator(true);
             binding.reviewEditText.setEnabled(false);
@@ -99,7 +126,8 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
             spinner.setEnabled(false);
 
         }
-        //TODO: set up some message
+
+        //TODO: set up some message when selected restaurant is null
     }
 
     private void setScopeSpinner() {
@@ -129,7 +157,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
 
                 float reviewRating = binding.ratingBar.getRating();
                 ParseUser author = ParseUser.getCurrentUser();
-                saveReview(mRestaurant, author, reviewText, reviewRating, recommended, shareWithEveryone);
+                saveReview(selectedRestaurant, author, reviewText, reviewRating, recommended, shareWithEveryone);
             }
         });
     }
@@ -220,4 +248,10 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+    public void goToSearchRestaurant() {
+        Intent searchRestaurantIntent = new Intent(getActivity(), SearchActivity.class);
+        getActivity().startActivityForResult(searchRestaurantIntent, RequestCode.RES_SEARCH_CODE);
+    }
+
 }

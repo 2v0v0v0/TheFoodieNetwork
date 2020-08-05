@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -17,16 +18,16 @@
             android:id="@+id/restaurantInfoTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/restaurantSearch"
             android:textSize="24sp"
-            android:textStyle="italic"
-            android:text="@string/restaurantSearch" />
+            android:textStyle="italic" />
 
         <ImageView
             android:id="@+id/searchIconImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
             android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_action_search" />
 
@@ -35,9 +36,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
         android:layout_margin="8dp"
-        android:text="@string/ratingPrompt"/>
+        android:text="@string/ratingPrompt"
+        android:textSize="20sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -60,9 +61,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/amiko"
-            android:textColor="@color/colorBlue"
             android:inputType="numberDecimal"
             android:text="0.0"
+            android:textColor="@color/colorBlue"
             android:textSize="24sp" />
 
     </LinearLayout>
@@ -70,16 +71,16 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
         android:layout_margin="8dp"
-        android:text="@string/recommendText"/>
+        android:text="@string/recommendText"
+        android:textSize="20sp" />
 
     <RadioGroup
         android:id="@+id/recommendRadioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/yesRadioButton"
@@ -99,9 +100,9 @@
     <EditText
         android:id="@+id/reviewEditText"
         style="@style/composeTextBox"
-        android:inputType="textMultiLine"
         android:layout_marginTop="18dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:inputType="textMultiLine" />
 
     <Spinner
         android:id="@+id/simpleSpinner"
@@ -113,8 +114,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:background="@color/colorPastelGreen"
         android:layout_margin="8dp"
+        android:background="@color/colorPastelGreen"
         android:text="Submit" />
 
 </LinearLayout>
