@@ -1,5 +1,7 @@
 package com.fbu.thefoodienetwork.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,10 +9,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.versionedparcelable.VersionedParcel;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.fbu.thefoodienetwork.CurrentUserUtilities;
+import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.databinding.ActivityLoginBinding;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -30,7 +34,15 @@ public class LoginActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        setLogoAnimation();
+        logoAnimation();
+
+        //Wobble on click
+        binding.logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logoAnimation();
+            }
+        });
 
         if (ParseUser.getCurrentUser() != null) {
             goMainActivity();
@@ -40,21 +52,11 @@ public class LoginActivity extends AppCompatActivity {
         onClickRegister();
     }
 
-    private void setLogoAnimation(){
+    private void logoAnimation(){
         YoYo.with(Techniques.Wobble)
                 .duration(600)
                 .repeat(1)
                 .playOn(binding.logo);
-        //Wobble on click
-        binding.logo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                YoYo.with(Techniques.Wobble)
-                        .duration(600)
-                        .repeat(1)
-                        .playOn(binding.logo);
-            }
-        });
     }
 
     private void onClickLogin() {
@@ -75,20 +77,33 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void done(ParseUser user, ParseException e) {
                 if (e != null) {
-                    //TODO: Fail login message
-                    Log.e(TAG, "Issue with login", e);
-                    Toast.makeText(LoginActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+
+                    AlertDialog.Builder errorAlert  = new AlertDialog.Builder(LoginActivity.this, R.style.ErrorAlertDialog);
+
+                    errorAlert.setMessage("Incorrect username or password.");
+                    errorAlert.setTitle("Error Message...");
+                    errorAlert.setPositiveButton("OK", null);
+                    errorAlert.setCancelable(true);
+                    errorAlert.create().show();
+
+                    errorAlert.setPositiveButton("Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+
                     return;
                 }
+
+                logoAnimation();
 
                 ParseInstallation.getCurrentInstallation().put("user", user);
                 ParseInstallation.getCurrentInstallation().saveInBackground();
 
-                //TODO wait for CurrentUserUtilities done with querying
+                //fetching user data
                 CurrentUserUtilities.getInstance();
-                /*while (CurrentUserUtilities.getInstance().getFriendParseUserList().isEmpty()){
-                    Log.i(TAG, "waiting for current user utilities");
-                }*/
+
                 goMainActivity();
             }
         });

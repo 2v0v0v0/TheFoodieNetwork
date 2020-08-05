@@ -46,6 +46,12 @@
         <item name="android:elevation">8dp</item>
     </style>
 
+    <style name="ErrorAlertDialog" parent="Base.Theme.AppCompat.Light.Dialog">
+        <item name="android:textColor">@color/colorRed</item>
+        <item name="android:textColorPrimary">#595959</item>
+        <item name="android:colorAccent">@color/colorMediumBlue</item>
+    </style>
+
     <style name="BottomNavigationView" parent="@style/TextAppearance.AppCompat.Caption">
         <item name="android:textSize">18sp</item>
     </style>

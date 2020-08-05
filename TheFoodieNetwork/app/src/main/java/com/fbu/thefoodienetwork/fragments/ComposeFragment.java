@@ -97,6 +97,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
             binding.reviewEditText.setEnabled(false);
             binding.recommendRadioGroup.setEnabled(false);
             spinner.setEnabled(false);
+
         }
         //TODO: set up some message
     }
