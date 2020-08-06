@@ -1,7 +1,6 @@
 package com.fbu.thefoodienetwork.activities;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -19,7 +18,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class FriendListActivity extends AppCompatActivity {
     private final static String TAG = "FriendList";
+    private final static String FRIENDS_FRAG_TAG = "FriendsFragment";
+    private final static String PENDING_FRAG_TAG = "PendingFragment";
+    private final static String REQUESTS_FRAG_TAG = "RequestsFragment";
+
+    private final Fragment friendsFragment = new FriendsFragment();
+    private final Fragment pendingFragment = new PendingFragment();
+    private final Fragment requestsFragment = new RequestsFragment();
+    final private FragmentManager fragmentManager = getSupportFragmentManager();
+
     private ActivityFriendListBinding binding;
+
+    private Fragment active = friendsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,27 +38,32 @@ public class FriendListActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        final FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().add(R.id.friendContainerFrameLayout, requestsFragment, REQUESTS_FRAG_TAG).hide(requestsFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.friendContainerFrameLayout, pendingFragment, PENDING_FRAG_TAG).hide(pendingFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.friendContainerFrameLayout, friendsFragment, FRIENDS_FRAG_TAG).commit();
 
-        fragmentManager.beginTransaction().replace(R.id.friendContainerFrameLayout, new FriendsFragment()).commit();
 
         binding.tabsNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragment;
+
                 switch (item.getItemId()) {
                     case R.id.action_requests:
-                        fragment = new RequestsFragment();
-                        break;
+                        fragmentManager.beginTransaction().hide(active).show(requestsFragment).commit();
+                        active = requestsFragment;
+                        return true;
+
                     case R.id.action_pending:
-                        fragment = new PendingFragment();
-                        break;
-                    default:
-                        fragment = new FriendsFragment();
-                        break;
+                        fragmentManager.beginTransaction().hide(active).show(pendingFragment).commit();
+                        active = pendingFragment;
+                        return true;
+                    case R.id.action_friends:
+                        fragmentManager.beginTransaction().hide(active).show(friendsFragment).commit();
+                        active = friendsFragment;
+                        return true;
                 }
-                fragmentManager.beginTransaction().replace(R.id.friendContainerFrameLayout, fragment).commit();
-                return true;
+
+                return false;
             }
         });
         // Set default selection
