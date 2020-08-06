@@ -6,10 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.versionedparcelable.VersionedParcel;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -52,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         onClickRegister();
     }
 
-    private void logoAnimation(){
+    private void logoAnimation() {
         YoYo.with(Techniques.Wobble)
                 .duration(600)
                 .repeat(1)
@@ -66,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i(TAG, "Onclick login button");
                 username = binding.usernameEditText.getText().toString();
                 password = binding.passwordEditText.getText().toString();
-                loginUser(username, password);
+                loginUser(username.trim(), password);
             }
         });
     }
@@ -78,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
             public void done(ParseUser user, ParseException e) {
                 if (e != null) {
 
-                    AlertDialog.Builder errorAlert  = new AlertDialog.Builder(LoginActivity.this, R.style.ErrorAlertDialog);
+                    AlertDialog.Builder errorAlert = new AlertDialog.Builder(LoginActivity.this, R.style.ErrorAlertDialog);
 
                     errorAlert.setMessage("Incorrect username or password.");
                     errorAlert.setTitle("Error Message...");
