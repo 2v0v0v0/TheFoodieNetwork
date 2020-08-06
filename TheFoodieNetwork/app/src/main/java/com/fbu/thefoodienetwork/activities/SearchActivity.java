@@ -214,7 +214,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
     }
 
 
-    private void performRestaurantSearch(Location location, String keyWord) {
+    private void performRestaurantSearch(final Location location, final String keyWord) {
         binding.progressBar.setVisibility(View.VISIBLE);
 
         zomatoRequest.getRestaurants(location, keyWord, 0, new ZomatoRequest.ResResultsCallbacks() {
@@ -247,6 +247,33 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
 
                 setComposeButtonListener();
 
+                binding.progressBar.setVisibility(View.GONE);
+
+            }
+        }, 2000);
+    }
+
+    private void loadMoreRestaurantSearch(Location location, String keyWord, int start) {
+        binding.progressBar.setVisibility(View.VISIBLE);
+
+        zomatoRequest.getRestaurants(location, keyWord, start, new ZomatoRequest.ResResultsCallbacks() {
+            @Override
+            public void onSuccess(List<Restaurant> restaurants, int max) {
+                restaurantList.addAll(restaurants);
+            }
+
+            @Override
+            public void onFailure(IOException e) {
+
+            }
+        });
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                restaurantAdapter.notifyDataSetChanged();
+                Log.i(TAG, ""+restaurantList.size());
                 binding.progressBar.setVisibility(View.GONE);
             }
         }, 2000);
