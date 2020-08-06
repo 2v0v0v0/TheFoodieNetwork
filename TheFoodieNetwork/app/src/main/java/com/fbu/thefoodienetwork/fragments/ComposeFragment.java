@@ -79,7 +79,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
 
         if (selectedRestaurant != null) {
             ratingListener(true);
-            animation.stop();
+            animation.stop(true);
         } else {
 
             animation = YoYo.with(Techniques.Shake)
@@ -106,13 +106,10 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
             }
         });
 
+
         return view;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
 
     private void ratingListener(boolean enable) {
         //if restaurant is selected let user use the rating bar else show message
@@ -128,7 +125,10 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
                     binding.ratingTextView.setText(String.valueOf(ratingBar.getRating()));
                 }
             });
+
             setSubmitButtonListener();
+            setClearButtonListener();
+
             spinner.setEnabled(true);
             setScopeSpinner();
             setRecommendRadioGroupListener();
@@ -157,6 +157,15 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+    }
+
+    private void setClearButtonListener(){
+        binding.clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clearContent();
+            }
+        });
     }
 
     private void setSubmitButtonListener() {
@@ -223,13 +232,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
                         } else {
                             Log.i(TAG, "Review save was success!!");
                             Toast.makeText(getContext(), "Successfully save review", Toast.LENGTH_LONG).show();
-                            selectedRestaurant = null;
-                            Log.i(TAG,"" + selectedRestaurant);
-                            ComposeFragment.this.setArguments(null);
-                            getFragmentManager().beginTransaction()
-                                    .detach(ComposeFragment.this)
-                                    .attach(ComposeFragment.this)
-                                    .commitAllowingStateLoss();
+                            clearContent();
                         }
 
                     }
@@ -254,6 +257,17 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
             }
         });
         return parseRestaurant;
+    }
+
+    private void clearContent(){
+        selectedRestaurant = null;
+        Log.i(TAG,"" + selectedRestaurant);
+        ComposeFragment.this.setArguments(null);
+
+        getFragmentManager().beginTransaction()
+                .detach(ComposeFragment.this)
+                .attach(ComposeFragment.this)
+                .commitAllowingStateLoss();
     }
 
     @Override

@@ -197,6 +197,12 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
             @Override
             public void run() {
 
+                if(restaurantList.isEmpty()){
+                    binding.progressBar.setVisibility(View.GONE);
+                    Toast.makeText(SearchActivity.this, "Can't find result, try again", Toast.LENGTH_LONG).show();
+                    //TODO show error message
+                    return;
+                }
                 Log.i(TAG, restaurantList.toString());
 
                 restaurantAdapter = new RestaurantAdapter(SearchActivity.this, restaurantList);

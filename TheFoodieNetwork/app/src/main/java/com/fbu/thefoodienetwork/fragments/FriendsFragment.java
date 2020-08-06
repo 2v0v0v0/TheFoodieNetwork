@@ -86,6 +86,7 @@ public class FriendsFragment extends Fragment implements AdapterView.OnItemSelec
         super.onViewCreated(view, savedInstanceState);
 
         friendList = CurrentUserUtilities.getInstance().getFriendParseUserList();
+        friendList.remove(CurrentUserUtilities.getInstance().getCurrentUser());
 
         binding.friendRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         friendAdapter = new FriendAdapter(getContext(), friendList);
