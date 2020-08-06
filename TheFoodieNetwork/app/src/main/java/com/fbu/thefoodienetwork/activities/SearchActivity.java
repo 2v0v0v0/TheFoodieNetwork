@@ -320,5 +320,4 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         startActivity(searchFriend);
     }
 
-    //TODO onload more search result
 }
