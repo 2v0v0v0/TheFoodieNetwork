@@ -61,7 +61,10 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/resultsRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:paddingBottom="20dp"
+            android:clipToPadding="false"
+            android:scrollbarStyle="outsideOverlay"/>
 
     </LinearLayout>
 
@@ -81,7 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
+        android:layout_margin="20dp"
         android:src="@drawable/ic_edit"
         android:tint="@color/gray"
         android:visibility="visible" />
