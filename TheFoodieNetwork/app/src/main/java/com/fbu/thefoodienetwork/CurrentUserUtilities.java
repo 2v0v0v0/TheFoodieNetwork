@@ -5,6 +5,7 @@ import android.util.Log;
 import com.fbu.thefoodienetwork.activities.BookmarkActivity;
 import com.fbu.thefoodienetwork.keys.FriendRequestKeys;
 import com.fbu.thefoodienetwork.keys.UserKeys;
+import com.fbu.thefoodienetwork.models.Location;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -26,7 +27,9 @@ public class CurrentUserUtilities {
     private List<ParseUser> friendParseUserList;
     private List<ParseUser> requestParseUserList;
     private List<ParseUser> pendingParseUserList;
+
     private ParseUser currentUser;
+    private Location currentUserSavedLocation;
 
     private CurrentUserUtilities() {
         currentUser = ParseUser.getCurrentUser();
@@ -290,5 +293,13 @@ public class CurrentUserUtilities {
 
     public ParseUser getCurrentUser() {
         return currentUser;
+    }
+
+    public Location getCurrentUserSavedLocation() {
+        return currentUserSavedLocation;
+    }
+
+    public void setCurrentUserSavedLocation(Location currentUserSavedLocation) {
+        this.currentUserSavedLocation = currentUserSavedLocation;
     }
 }

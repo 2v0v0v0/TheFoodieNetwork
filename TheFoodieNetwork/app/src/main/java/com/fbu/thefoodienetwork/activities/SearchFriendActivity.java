@@ -43,39 +43,13 @@ public class SearchFriendActivity extends AppCompatActivity {
         setContentView(view);
 
         setSearchListener();
-        setSwipeListener(binding.resultsRecyclerView);
 
         currentUserFriendList = CurrentUserUtilities.getInstance().getCurrentUserFriendList();
         currentUserReceivedFriendRequest = CurrentUserUtilities.getInstance().getCurrentUserReceivedFriendRequest();
 
         resultList = new ArrayList<>();
-    }
 
-    private void setSwipeListener(View view){
-        view.setOnTouchListener(new OnSwipeTouchListener(this) {
-
-            @Override
-            public void onSwipeLeft() {
-                Toast.makeText(SearchFriendActivity.this, "Home", Toast.LENGTH_SHORT).show();
-                goToMain();
-            }
-
-            @Override
-            public void onSwipeRight() {
-                Toast.makeText(SearchFriendActivity.this, "Search for Restaurant", Toast.LENGTH_SHORT).show();
-                goToSearchRestaurant();
-            }
-        });
-    }
-
-    private void goToMain() {
-        Intent mainIntent = new Intent(SearchFriendActivity.this, MainActivity.class);
-        startActivity(mainIntent);
-    }
-
-    private void goToSearchRestaurant() {
-        Intent searchRestaurantIntent = new Intent(SearchFriendActivity.this, SearchActivity.class);
-        startActivity(searchRestaurantIntent);
+        setSwipeListener(binding.resultsRecyclerView);
     }
 
 
@@ -124,6 +98,20 @@ public class SearchFriendActivity extends AppCompatActivity {
                 friendAdapter = new FriendAdapter(SearchFriendActivity.this, resultList);
                 binding.resultsRecyclerView.setAdapter(friendAdapter);
             }
+        });
+    }
+
+    private void setSwipeListener(View view) {
+        view.setOnTouchListener(new OnSwipeTouchListener(this) {
+
+            @Override
+            public void onSwipeLeft() {
+                Toast.makeText(SearchFriendActivity.this, "Go to friend list", Toast.LENGTH_SHORT).show();
+                Intent friendListIntent = new Intent(SearchFriendActivity.this, FriendListActivity.class);
+                startActivity(friendListIntent);
+                finish();
+            }
+
         });
     }
 

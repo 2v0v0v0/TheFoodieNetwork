@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,8 +17,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.fbu.thefoodienetwork.CurrentUserUtilities;
 import com.fbu.thefoodienetwork.EndlessRecyclerViewScrollListener;
+import com.fbu.thefoodienetwork.OnSwipeTouchListener;
 import com.fbu.thefoodienetwork.R;
 import com.fbu.thefoodienetwork.activities.BookmarkActivity;
+import com.fbu.thefoodienetwork.activities.MainActivity;
 import com.fbu.thefoodienetwork.activities.SearchActivity;
 import com.fbu.thefoodienetwork.adapters.LocationAdapter;
 import com.fbu.thefoodienetwork.adapters.ReviewAdapter;
@@ -213,4 +216,5 @@ public class HomeFragment extends Fragment {
 
         binding.reviewRecyclerView.addOnScrollListener(scrollListener);
     }
+
 }

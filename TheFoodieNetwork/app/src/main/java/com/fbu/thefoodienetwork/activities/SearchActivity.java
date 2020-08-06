@@ -18,7 +18,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.fbu.thefoodienetwork.CurrentUserUtilities;
+import com.fbu.thefoodienetwork.EndlessRecyclerViewScrollListener;
 import com.fbu.thefoodienetwork.OnSwipeTouchListener;
 import com.fbu.thefoodienetwork.adapters.LocationAdapter;
 import com.fbu.thefoodienetwork.adapters.RestaurantAdapter;
@@ -53,29 +56,29 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         super.onCreate(savedInstanceState);
         binding = ActivitySearchBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
+        setInitialLocation();
+
         setContentView(view);
         setSearchListener();
         layoutManager = new LinearLayoutManager(this);
         binding.resultsRecyclerView.setLayoutManager(layoutManager);
-        setSwipeListener(binding.resultsRecyclerView);
+
     }
 
 
     //Click listener
-    private void setSwipeListener(View view) {
-        view.setOnTouchListener(new OnSwipeTouchListener(this) {
-            @Override
-            public void onSwipeLeft() {
-                Toast.makeText(SearchActivity.this, "Search for People", Toast.LENGTH_SHORT).show();
-                goToSearchFriend();
-            }
+    public void infiniteScroll(final Location location, final String keyWord, int max) {
 
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
-            public void onSwipeRight() {
-                Toast.makeText(SearchActivity.this, "Home", Toast.LENGTH_SHORT).show();
-                goToMain();
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Log.i(TAG, "onLoadMore: " + page);
+                Log.i(TAG, "totalItemsCount: " + totalItemsCount);
+                loadMoreRestaurantSearch(location, keyWord, 20*page+1);
             }
-        });
+        };
+
+        binding.resultsRecyclerView.addOnScrollListener(scrollListener);
     }
 
 
@@ -120,6 +123,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
                     String keyWord = binding.restaurantSearch.getText().toString();
                     Log.i(TAG, keyWord);
 
+                    restaurantList.clear();
                     performRestaurantSearch(selectedLocation, keyWord);
                     return true;
                 }
@@ -151,7 +155,10 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
 
     @Override
     public void onClickLocation(int position) {
+
         selectedLocation = locationList.get(position);
+
+        CurrentUserUtilities.getInstance().setCurrentUserSavedLocation(selectedLocation);
 
         String locationTitle = selectedLocation.getTitle();
 
@@ -183,6 +190,13 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
 
 
     //actions
+    private void setInitialLocation() {
+        if(CurrentUserUtilities.getInstance().getCurrentUserSavedLocation() != null){
+            selectedLocation = CurrentUserUtilities.getInstance().getCurrentUserSavedLocation();
+            setSelectedLocationTitle(selectedLocation.getTitle());
+        }
+    }
+
     private void setSelectedLocationTitle(String locationTitle) {
         //show selected location as text view
         binding.locationSearch.getText().clear();
@@ -221,6 +235,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
             @Override
             public void onSuccess(List<Restaurant> restaurants, int max) {
                 restaurantList.addAll(restaurants);
+                infiniteScroll(location, keyWord, max);
             }
 
             @Override
@@ -305,6 +320,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
                     @Override
                     public void onSuccess(Location location) {
                         selectedLocation = location;
+                        CurrentUserUtilities.getInstance().setCurrentUserSavedLocation(selectedLocation);
                         Log.i(TAG, location.toString());
                     }
 
@@ -357,18 +373,6 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         composeIntent.putExtra(ParcelKeys.SELECTED_RESTAURANT, Parcels.wrap(selectedRestaurant));
         setResult(RESULT_OK, composeIntent);
         finish();
-    }
-
-
-    private void goToMain() {
-        Intent mainIntent = new Intent(SearchActivity.this, MainActivity.class);
-        startActivity(mainIntent);
-    }
-
-
-    private void goToSearchFriend() {
-        Intent searchFriend = new Intent(SearchActivity.this, SearchFriendActivity.class);
-        startActivity(searchFriend);
     }
 
 }

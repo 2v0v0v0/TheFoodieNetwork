@@ -6,16 +6,6 @@
     android:background="@color/white"
     tools:context=".activities.SearchActivity">
 
-    <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/progressBar"
-        style="@style/SpinKitView.Large.FadingCircle"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:padding="100dp"
-        android:visibility="gone"
-        app:SpinKit_Color="@color/colorMediumBlue" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -74,6 +64,16 @@
             android:layout_height="match_parent" />
 
     </LinearLayout>
+
+    <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/progressBar"
+        style="@style/SpinKitView.Large.FadingCircle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:padding="100dp"
+        android:visibility="gone"
+        app:SpinKit_Color="@color/colorMediumBlue" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/composeFltButton"

@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
 
         setContentView(view);
-        setSwipeListener(binding.containerFrameLayout);
 
         fragmentManager.beginTransaction().add(R.id.containerFrameLayout, composeFragment, COMPOSE_FRAG_TAG).hide(composeFragment).commit();
         fragmentManager.beginTransaction().add(R.id.containerFrameLayout, globeFragment, GLOBE_FRAG_TAG).hide(globeFragment).commit();
@@ -91,23 +90,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Set default selection
         binding.bottomNavigation.setSelectedItemId(R.id.action_home);
-    }
-
-    private void setSwipeListener(View view) {
-        view.setOnTouchListener(new OnSwipeTouchListener(this) {
-
-            @Override
-            public void onSwipeLeft() {
-                Toast.makeText(MainActivity.this, "Search for Restaurant", Toast.LENGTH_SHORT).show();
-                goToSearchRestaurant();
-            }
-
-            @Override
-            public void onSwipeRight() {
-                Toast.makeText(MainActivity.this, "Search for People", Toast.LENGTH_SHORT).show();
-                goToSearchFriend();
-            }
-        });
     }
 
     @Override
