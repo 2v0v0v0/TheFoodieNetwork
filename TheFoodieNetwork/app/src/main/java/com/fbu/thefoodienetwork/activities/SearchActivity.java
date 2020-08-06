@@ -39,6 +39,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
     private static final int REQUEST_LOCATION = 100;
     private static LocationManager locationManager;
     private ActivitySearchBinding binding;
+    private LinearLayoutManager layoutManager;
     private ZomatoRequest zomatoRequest = new ZomatoRequest();
     private List<Location> locationList = new ArrayList<>();
     private List<Restaurant> restaurantList = new ArrayList<>();
@@ -54,12 +55,30 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         View view = binding.getRoot();
         setContentView(view);
         setSearchListener();
-        binding.resultsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        layoutManager = new LinearLayoutManager(this);
+        binding.resultsRecyclerView.setLayoutManager(layoutManager);
         setSwipeListener(binding.resultsRecyclerView);
     }
 
 
     //Click listener
+    private void setSwipeListener(View view) {
+        view.setOnTouchListener(new OnSwipeTouchListener(this) {
+            @Override
+            public void onSwipeLeft() {
+                Toast.makeText(SearchActivity.this, "Search for People", Toast.LENGTH_SHORT).show();
+                goToSearchFriend();
+            }
+
+            @Override
+            public void onSwipeRight() {
+                Toast.makeText(SearchActivity.this, "Home", Toast.LENGTH_SHORT).show();
+                goToMain();
+            }
+        });
+    }
+
+
     private void setSearchListener() {
         binding.getMyLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +137,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         });
     }
 
+
     private void setComposeButtonListener() {
         binding.composeFltButton.setVisibility(View.VISIBLE);
         binding.composeFltButton.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +147,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
             }
         });
     }
+
 
     @Override
     public void onClickLocation(int position) {
@@ -142,6 +163,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         locationAdapter.notifyDataSetChanged();
     }
 
+
     @Override
     public void onClickRestaurant(int position) {
         selectedRestaurant = restaurantList.get(position);
@@ -150,6 +172,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
 
         Log.i(TAG, "selected: " + restaurantName);
     }
+
 
     @Override
     public void onClickMoreInfo(boolean indicator) {
@@ -170,6 +193,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         binding.locationResultTextView.setVisibility(View.VISIBLE);
     }
 
+
     private void performLocationSearch(String keyWord) {
         binding.progressBar.setVisibility(View.VISIBLE);
 
@@ -189,10 +213,21 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         }, 2000);
     }
 
+
     private void performRestaurantSearch(Location location, String keyWord) {
         binding.progressBar.setVisibility(View.VISIBLE);
 
-        this.restaurantList = zomatoRequest.getRestaurants(location, keyWord, 0);
+        zomatoRequest.getRestaurants(location, keyWord, 0, new ZomatoRequest.ResResultsCallbacks() {
+            @Override
+            public void onSuccess(List<Restaurant> restaurants, int max) {
+                restaurantList.addAll(restaurants);
+            }
+
+            @Override
+            public void onFailure(IOException e) {
+
+            }
+        });
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -216,6 +251,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
             }
         }, 2000);
     }
+
 
     private void getGPSLocation() {
         binding.progressBar.setVisibility(View.VISIBLE);
@@ -269,6 +305,8 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         }
     }
 
+
+    //intent navigation
     private void goToRestaurantDetailsActivity() {
 
         zomatoRequest.getRestaurantUrl(selectedRestaurant.getId(), new ZomatoRequest.RestaurantUrlCallBacks() {
@@ -286,6 +324,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         });
     }
 
+
     private void goToComposeFragment() {
         Intent composeIntent = new Intent(this, MainActivity.class);
         composeIntent.putExtra(ParcelKeys.SELECTED_RESTAURANT, Parcels.wrap(selectedRestaurant));
@@ -294,26 +333,11 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
     }
 
 
-    private void setSwipeListener(View view) {
-        view.setOnTouchListener(new OnSwipeTouchListener(this) {
-            @Override
-            public void onSwipeLeft() {
-                Toast.makeText(SearchActivity.this, "Search for People", Toast.LENGTH_SHORT).show();
-                goToSearchFriend();
-            }
-
-            @Override
-            public void onSwipeRight() {
-                Toast.makeText(SearchActivity.this, "Home", Toast.LENGTH_SHORT).show();
-                goToMain();
-            }
-        });
-    }
-
     private void goToMain() {
         Intent mainIntent = new Intent(SearchActivity.this, MainActivity.class);
         startActivity(mainIntent);
     }
+
 
     private void goToSearchFriend() {
         Intent searchFriend = new Intent(SearchActivity.this, SearchFriendActivity.class);

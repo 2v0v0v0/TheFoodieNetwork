@@ -113,8 +113,8 @@ public class ZomatoRequest {
         });
     }
 
-    public List<Restaurant> getRestaurants(Location location, String query, int start) {
-        //Sprint3Res
+    public List<Restaurant> getRestaurants(Location location, String query, int start, final ResResultsCallbacks callbacks) {
+
         final List<Restaurant> restaurantList = new ArrayList<>();
 
         urlBuilder = HttpUrl.parse(BASE_URL + SEARCH).newBuilder();
@@ -144,6 +144,7 @@ public class ZomatoRequest {
                     JSONArray restaurants = json.getJSONArray(ZomatoKeys.RESTAURANTS);
                     restaurantList.addAll(Restaurant.fromJsonArray(restaurants));
 
+                    callbacks.onSuccess(restaurantList, numOfResults);
                     Log.i(TAG, restaurants.toString());
                     Log.i(TAG, restaurantList.toString());
                     Log.i(TAG, "results found: " + numOfResults);
@@ -155,6 +156,7 @@ public class ZomatoRequest {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Log.d(TAG, "onFaliure");
+                callbacks.onFailure(e);
             }
         });
         return restaurantList;
@@ -197,6 +199,12 @@ public class ZomatoRequest {
 
     }
 
+
+    public interface ResResultsCallbacks {
+        void onSuccess(List<Restaurant> restaurants, int max);
+
+        void onFailure(IOException e);
+    }
 
     public interface GeoLocationCallbacks {
         void onSuccess(Location location);
