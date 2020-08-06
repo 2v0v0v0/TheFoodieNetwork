@@ -2,6 +2,8 @@ package com.fbu.thefoodienetwork.apiservers;
 
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.fbu.thefoodienetwork.BuildConfig;
 import com.fbu.thefoodienetwork.keys.ZomatoKeys;
 import com.fbu.thefoodienetwork.models.Location;
@@ -113,7 +115,7 @@ public class ZomatoRequest {
         });
     }
 
-    public List<Restaurant> getRestaurants(Location location, String query, int start, final ResResultsCallbacks callbacks) {
+    public List<Restaurant> getRestaurants(Location location, String query, int start, @Nullable String count, final ResResultsCallbacks callbacks) {
 
         final List<Restaurant> restaurantList = new ArrayList<>();
 
@@ -126,7 +128,13 @@ public class ZomatoRequest {
         urlBuilder.addQueryParameter(ZomatoKeys.SORT, ZomatoKeys.REAL_DISTANCE); // sort results by distance
         urlBuilder.addQueryParameter(ZomatoKeys.Q, query); //search keyword
         urlBuilder.addQueryParameter(ZomatoKeys.START, String.valueOf(start)); //fetch results after offset
-        urlBuilder.addQueryParameter(ZomatoKeys.COUNT, MAX_RESULTS); //max number of results to display
+
+        if(count == null){
+            urlBuilder.addQueryParameter(ZomatoKeys.COUNT, MAX_RESULTS); //max number of results to display
+        }else {
+            urlBuilder.addQueryParameter(ZomatoKeys.COUNT, count); //max number of results to display
+        }
+
 
         String url = urlBuilder.build().toString();
 

@@ -30,6 +30,7 @@ import com.fbu.thefoodienetwork.databinding.ActivitySearchBinding;
 import com.fbu.thefoodienetwork.keys.ParcelKeys;
 import com.fbu.thefoodienetwork.models.Location;
 import com.fbu.thefoodienetwork.models.Restaurant;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.parceler.Parcels;
 
@@ -67,18 +68,36 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
 
 
     //Click listener
-    public void infiniteScroll(final Location location, final String keyWord, int max) {
+    public void infiniteScroll(final Location location, final String keyWord, final int max) {
 
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 Log.i(TAG, "onLoadMore: " + page);
-                Log.i(TAG, "totalItemsCount: " + totalItemsCount);
-                loadMoreRestaurantSearch(location, keyWord, 20*page+1);
+                if (max - totalItemsCount < 20) {
+                    loadMoreRestaurantSearch(location, keyWord, 20 * page + 1, String.valueOf((max - totalItemsCount)));
+                    showScrollSnackbar();
+                    return;
+                }
+                loadMoreRestaurantSearch(location, keyWord, 20 * page + 1, null);
+
             }
         };
 
         binding.resultsRecyclerView.addOnScrollListener(scrollListener);
+    }
+
+    private void showScrollSnackbar(){
+        final Snackbar scrollSB = Snackbar.make(binding.resultsRecyclerView, "end of results", Snackbar.LENGTH_LONG).setDuration(8000);
+        scrollSB.show();
+
+        scrollSB.setAction("Go to the top", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scrollSB.dismiss();
+                layoutManager.scrollToPositionWithOffset(0, 0);
+            }
+        });
     }
 
 
@@ -231,7 +250,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
     private void performRestaurantSearch(final Location location, final String keyWord) {
         binding.progressBar.setVisibility(View.VISIBLE);
 
-        zomatoRequest.getRestaurants(location, keyWord, 0, new ZomatoRequest.ResResultsCallbacks() {
+        zomatoRequest.getRestaurants(location, keyWord, 0, null,  new ZomatoRequest.ResResultsCallbacks() {
             @Override
             public void onSuccess(List<Restaurant> restaurants, int max) {
                 restaurantList.addAll(restaurants);
@@ -268,10 +287,10 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
         }, 2000);
     }
 
-    private void loadMoreRestaurantSearch(Location location, String keyWord, int start) {
+    private void loadMoreRestaurantSearch(Location location, String keyWord, int start, String count) {
         binding.progressBar.setVisibility(View.VISIBLE);
 
-        zomatoRequest.getRestaurants(location, keyWord, start, new ZomatoRequest.ResResultsCallbacks() {
+        zomatoRequest.getRestaurants(location, keyWord, start, count, new ZomatoRequest.ResResultsCallbacks() {
             @Override
             public void onSuccess(List<Restaurant> restaurants, int max) {
                 restaurantList.addAll(restaurants);
