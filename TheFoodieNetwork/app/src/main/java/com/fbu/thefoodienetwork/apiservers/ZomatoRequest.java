@@ -34,6 +34,9 @@ public class ZomatoRequest {
     private static final String API_KEY = BuildConfig.ZOMATO_KEY;
     private static final String BASE_URL = "https://developers.zomato.com/api/v2.1/";
 
+    //max number of results to display
+    private static final String MAX_RESULTS = "20";
+
 
     private OkHttpClient client = new OkHttpClient();
     private HttpUrl.Builder urlBuilder;
@@ -110,15 +113,19 @@ public class ZomatoRequest {
         });
     }
 
-    public List<Restaurant> getRestaurants(Location location, String query, int start, int count) {
+    public List<Restaurant> getRestaurants(Location location, String query, int start) {
         final List<Restaurant> restaurantList = new ArrayList<>();
+
         urlBuilder = HttpUrl.parse(BASE_URL + SEARCH).newBuilder();
+
         urlBuilder.addQueryParameter(ZomatoKeys.API_KEY, API_KEY);
         urlBuilder.addQueryParameter(ZomatoKeys.LAT, String.valueOf(location.getLatitude()));
         urlBuilder.addQueryParameter(ZomatoKeys.LON, String.valueOf(location.getLongitude()));
+
+        urlBuilder.addQueryParameter(ZomatoKeys.SORT, ZomatoKeys.REAL_DISTANCE); // sort results by distance
         urlBuilder.addQueryParameter(ZomatoKeys.Q, query); //search keyword
         urlBuilder.addQueryParameter(ZomatoKeys.START, String.valueOf(start)); //fetch results after offset
-        urlBuilder.addQueryParameter(ZomatoKeys.COUNT, String.valueOf(count)); //max number of results to display
+        urlBuilder.addQueryParameter(ZomatoKeys.COUNT, MAX_RESULTS); //max number of results to display
 
         String url = urlBuilder.build().toString();
 
@@ -132,10 +139,13 @@ public class ZomatoRequest {
                 try {
                     String responseData = response.body().string();
                     JSONObject json = new JSONObject(responseData);
+                    int numOfResults = json.getInt(ZomatoKeys.RESULTS_FOUND);
                     JSONArray restaurants = json.getJSONArray(ZomatoKeys.RESTAURANTS);
                     restaurantList.addAll(Restaurant.fromJsonArray(restaurants));
+
                     Log.i(TAG, restaurants.toString());
                     Log.i(TAG, restaurantList.toString());
+                    Log.i(TAG, "results found: " + numOfResults);
                 } catch (JSONException e) {
                     Log.i(TAG, "error: " + e);
                 }
@@ -185,6 +195,7 @@ public class ZomatoRequest {
         });
 
     }
+
 
     public interface GeoLocationCallbacks {
         void onSuccess(Location location);

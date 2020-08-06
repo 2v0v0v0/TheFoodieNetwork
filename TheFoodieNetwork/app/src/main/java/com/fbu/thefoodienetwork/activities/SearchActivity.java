@@ -192,7 +192,8 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
     private void performRestaurantSearch(Location location, String keyWord) {
         binding.progressBar.setVisibility(View.VISIBLE);
 
-        this.restaurantList = zomatoRequest.getRestaurants(location, keyWord, 0, 20);
+        this.restaurantList = zomatoRequest.getRestaurants(location, keyWord, 0);
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
