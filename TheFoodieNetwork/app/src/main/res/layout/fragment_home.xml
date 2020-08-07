@@ -6,6 +6,31 @@
     android:background="@drawable/home_gradient"
     tools:context=".fragments.HomeFragment">
 
+    <LinearLayout
+        android:id="@+id/emptyHomeView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/dumpling_horizontal"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:padding="20dp"
+            android:textColor="@color/colorBlue"
+            android:text="Your home is empty! search for friends or start writing review."/>
+
+    </LinearLayout>
+
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
