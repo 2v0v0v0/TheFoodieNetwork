@@ -170,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(loginIntent);
 
         ParseInstallation.getCurrentInstallation().remove("user");
+        ParseInstallation.getCurrentInstallation().remove("userId");
         ParseInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {

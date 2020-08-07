@@ -17,6 +17,7 @@ import com.fbu.thefoodienetwork.databinding.ActivityLoginBinding;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {
@@ -97,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                 logoAnimation();
 
                 ParseInstallation.getCurrentInstallation().put("user", user);
+                ParseInstallation.getCurrentInstallation().put("userId", user.getObjectId());
                 ParseInstallation.getCurrentInstallation().saveInBackground();
 
                 //fetching user data
