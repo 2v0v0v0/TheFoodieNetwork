@@ -7,6 +7,7 @@ import com.fbu.thefoodienetwork.keys.FriendRequestKeys;
 import com.fbu.thefoodienetwork.keys.UserKeys;
 import com.fbu.thefoodienetwork.models.Location;
 import com.parse.FindCallback;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -14,6 +15,7 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class CurrentUserUtilities {
@@ -84,6 +86,11 @@ public class CurrentUserUtilities {
                 return false;
             }
         }
+
+        //send push notification
+        HashMap<String, String> param = new HashMap<>();
+        param.put("otherUser", otherUser.getObjectId());
+        ParseCloud.callFunctionInBackground("sendFR", param);
 
         //update currentUser local data
         currentUserSentFriendRequest.add(otherUser.getObjectId());
