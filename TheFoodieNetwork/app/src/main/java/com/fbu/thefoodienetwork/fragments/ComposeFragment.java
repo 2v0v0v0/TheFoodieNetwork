@@ -38,6 +38,7 @@ import java.util.List;
 
 public class ComposeFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private static final String TAG = "ComposeFragment";
+    private static final int MAX_REVIEW_LENGTH =1000;
     private static final int EVERYONE = 0;
     private static final int FRIENDS = 1;
     private static Restaurant selectedRestaurant;
@@ -176,7 +177,7 @@ public class ComposeFragment extends Fragment implements AdapterView.OnItemSelec
 
                 //check if review text is empty
                 if (reviewText.isEmpty()) {
-                    Toast.makeText(getContext(), "Review cannot be empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Review cannot be empty!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 

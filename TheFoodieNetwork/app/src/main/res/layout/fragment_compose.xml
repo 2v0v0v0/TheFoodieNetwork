@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parentView"
     android:layout_width="match_parent"
@@ -97,35 +98,50 @@
 
     </RadioGroup>
 
-    <EditText
-        android:id="@+id/reviewEditText"
-        style="@style/composeTextBox"
-        android:layout_marginTop="18dp"
-        android:layout_weight="1" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColorHint="@android:color/black"
+        app:counterEnabled="true"
+        app:counterMaxLength="1000"
+        app:counterOverflowTextAppearance="@style/counterOverride"
+        app:counterTextAppearance="@style/counterText">
 
-    <Spinner
-        android:id="@+id/simpleSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/reviewEditText"
+            style="@style/composeTextBox"
+            android:maxLength="1000"
+            android:layout_weight="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="end">
+
+        <Spinner
+            android:id="@+id/simpleSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/clearButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            android:layout_toStartOf="@+id/submitButton"
             android:background="@color/colorLightRed"
             android:text="Clear" />
+
         <Button
             android:id="@+id/submitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_margin="8dp"
-            android:layout_toEndOf="@+id/clearButton"
             android:background="@color/colorPastelGreen"
             android:text="Submit" />
 

@@ -41,12 +41,11 @@
 
     <style name="composeTextBox" parent="TextAppearance.AppCompat.Body1">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">top|left</item>
         <item name="android:padding">10dp</item>
         <item name="android:textSize">18sp</item>
         <item name="android:background">@drawable/compose_text_box</item>
-        <item name="android:elevation">8dp</item>
     </style>
 
     <style name="ErrorAlertDialog" parent="Base.Theme.AppCompat.Light.Dialog">
@@ -62,6 +61,14 @@
     <style name="BottomNavigationView.Active" parent="@style/TextAppearance.AppCompat.Caption">
         <item name="android:textSize">22sp</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="counterText" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="counterOverride" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorRed</item>
     </style>
 
 </resources>
