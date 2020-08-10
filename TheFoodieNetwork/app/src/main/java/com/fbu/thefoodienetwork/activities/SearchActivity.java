@@ -363,6 +363,7 @@ public class SearchActivity extends AppCompatActivity implements LocationAdapter
 
             } else {
                 Toast.makeText(this, "Unable to find location.", Toast.LENGTH_SHORT).show();
+                binding.progressBar.setVisibility(View.GONE);
             }
         }
     }
