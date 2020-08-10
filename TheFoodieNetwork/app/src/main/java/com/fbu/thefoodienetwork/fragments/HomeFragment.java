@@ -192,6 +192,11 @@ public class HomeFragment extends Fragment {
                     return;
                 }
 
+                if (reviewList.isEmpty()) {
+                    binding.emptyHomeView.setVisibility(View.VISIBLE);
+                    return;
+                }
+
                 for (ParseReview review : reviewList) {
 
                     review.getHeartRelation();
